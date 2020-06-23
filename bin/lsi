@@ -53,7 +53,7 @@ for dir in dirs:
         with open(dir+'/'+desc_name, 'r') as f:
             description = f.read().replace('\n', '\n       '+' '*len(d))
     else:
-        description = 'No description.'
+        description = 'Dir'
     d = col.CYAN + col.UNDERLINE + d + col.END
     if set(description.split('\n')[-1])==set(' '):
         description = '\n'.join(description.split('\n')[:-1])
