@@ -34,51 +34,58 @@ class Lsi():
         self.c_under = pycolor.UNDERLINE
 
     # Raise Error
-    def assert_dir_existance(self):
-        if not os.path.isdir(self.dir):
-            print('error: ' + self.dir[:-1] + ' is not a directory.')
+    def _assert_dir_existance(self, dir):
+        if not os.path.isdir(dir):
+            print('error: ' + dir[:-1] + ' is not a directory.')
             exit()
 
     # Get children
-    def get_children_of_dir(self):
+    def _get_children_of_dir(self, dir):
         pathes = []
         if self.is_all:
-            pathes = glob(self.dir+'.*')
-        pathes += glob(self.dir+'*')
+            pathes = glob(dir+'.*')
+        pathes += glob(dir+'*')
         children_d = [p for p in pathes if os.path.isdir(p)]
         children_f = [p for p in pathes if os.path.isfile(p)]
         return children_d, children_f
 
     # load descriprion
-    def _read_description(self, path, dir_length):
-        if os.path.exists(path):
-            with open(path, 'r') as f:
+    def _read_description(self, desc_path, dir_length):
+        if os.path.exists(desc_path):
+            with open(desc_path, 'r') as f:
                 description = f.read().replace('\n', '\n       '+' '*dir_length)
         else:
             description = 'Dir'
         return description
     
-    def print_children_d(self, children_d):
+    def _print_children_d(self, children_d):
         for dir in children_d:
             dir_name = dir.split('/')[-1]
             dir_name = self.c_dir + self.c_under + dir_name + self.c_end
             desc_path = dir +'/' + self.desc_name
             description = self._read_description(desc_path, len(dir_name))
+            ## 最終行が空白のみの場合除去
             if set(description.split('\n')[-1])==set(' '):
-                ## 最終行が空白のみの場合除去
                 description = '\n'.join(description.split('\n')[:-1])
             ## descriptionが指定されているなら色を付ける
             description = self.c_desc + description + self.c_end if description != 'Dir' else description
             output = ' -- ' + dir_name + ' / ' + description
             print(output)
 
-    def print_children_f(self, children_f):
+    def _print_children_f(self, children_f):
         for file in children_f:
             file_name = file.split('/')[-1]
             description = 'File'
             description = self.c_desc + description + self.c_end if description != 'File' else description
             output = ' -- ' + file_name +' / '+description
             print(output)
+
+    def run(self):
+        self._assert_dir_existance(self.dir)
+        children_d, children_f = self._get_children_of_dir(self.dir)
+        self._print_children_d(children_d)
+        self._print_children_f(children_f)
+
 
 
 # Parser setting
@@ -93,7 +100,4 @@ dir = dir+'/' if dir[-1] != '/' else dir
 is_all = args.all
 
 lsi = Lsi(dir, is_all=is_all)
-lsi.assert_dir_existance()
-children_d, children_f = lsi.get_children_of_dir()
-lsi.print_children_d(children_d)
-lsi.print_children_f(children_f)
+lsi.run()
