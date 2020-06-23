@@ -57,13 +57,14 @@ for dir in dirs:
     d = col.CYAN + col.UNDERLINE + d + col.END
     if set(description.split('\n')[-1])==set(' '):
         description = '\n'.join(description.split('\n')[:-1])
-    description = col.YELLOW + description + col.END
+    description = col.YELLOW + description + col.END if description != 'Dir' else description
     output = ' -- ' + d + ' / ' + description
     print(output)
 for file in files:
     f = file.split('/')[-1]
     f = f
-    description = col.YELLOW + 'File' + col.END
+    description = 'File'
+    #description = col.YELLOW + description + col.END
     output = ' -- ' + f+' / '+description
     print(output)
 
