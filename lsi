@@ -1,0 +1,69 @@
+#!/usr/bin/env python
+
+import os
+import argparse
+from glob import glob
+
+
+# Other settings
+desc_name = '.description.lsi'
+class pycolor:
+    RED = '\033[31m'
+    GREEN = '\033[32m'
+    YELLOW = '\033[33m'
+    BLUE = '\033[34m'
+    PURPLE = '\033[35m'
+    CYAN = '\033[36m'
+    WHITE = '\033[37m'
+    END = '\033[0m'
+    BOLD = '\038[1m'
+    UNDERLINE = '\033[4m'
+    INVISIBLE = '\033[08m'
+    REVERCE = '\033[07m'
+
+# Parser setting
+parser = argparse.ArgumentParser(description="lsi ==lsImproved==")
+parser.add_argument('dir', type=str, nargs='?', default="./", metavar='DirectoryPath', help='directory where you want to look. (default: current directory)')
+parser.add_argument('-a','--all', action='store_true', help='show hidden files and directories. (default: Hidden)')
+args = parser.parse_args()
+
+# Get parser arguments
+dir = args.dir
+dir = dir+'/' if dir[-1] != '/' else dir
+is_all = args.all
+
+# Raise Error
+if not os.path.isdir(dir):
+    print('error: ' + dir[:-1] + ' is not a directory.')
+    exit()
+
+# Get children
+pathes = []
+if is_all:
+    pathes = glob(dir+'.*')
+pathes += glob(dir+'*')
+dirs = [p for p in pathes if os.path.isdir(p)]
+files = [p for p in pathes if os.path.isfile(p)]
+
+# Print
+col = pycolor
+for dir in dirs:
+    d = dir.split('/')[-1]
+    if os.path.exists(dir+'/'+desc_name):
+        with open(dir+'/'+desc_name, 'r') as f:
+            description = f.read().replace('\n', '\n       '+' '*len(d))
+    else:
+        description = 'No description.'
+    d = col.CYAN + col.UNDERLINE + d + col.END
+    if set(description.split('\n')[-1])==set(' '):
+        description = '\n'.join(description.split('\n')[:-1])
+    description = col.YELLOW + description + col.END
+    output = ' -- ' + d + ' / ' + description
+    print(output)
+for file in files:
+    f = file.split('/')[-1]
+    f = f
+    description = col.YELLOW + 'File' + col.END
+    output = ' -- ' + f+' / '+description
+    print(output)
+

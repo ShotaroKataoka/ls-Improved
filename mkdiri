@@ -1,0 +1,51 @@
+#!/usr/bin/env python
+
+import os
+import argparse
+
+
+# Other settings
+disc_name = '.description.lsi'
+class pycolor:
+    RED = '\033[31m'
+    GREEN = '\033[32m'
+    YELLOW = '\033[33m'
+    BLUE = '\033[34m'
+    PURPLE = '\033[35m'
+    CYAN = '\033[36m'
+    WHITE = '\033[37m'
+    END = '\033[0m'
+    BOLD = '\038[1m'
+    UNDERLINE = '\033[4m'
+    INVISIBLE = '\033[08m'
+    REVERCE = '\033[07m'
+
+# Parser setting
+parser = argparse.ArgumentParser(description="mkdiri ==mkdirImproved==")
+parser.add_argument('dir', type=str, default="./", metavar='DirectoryPath', help='directory where you want to look. (default: current directory)')
+parser.add_argument('description', type=str, nargs='?', default='No description.', help='description message (default:No description.)')
+parser.add_argument('-a','--add', action='store_true', help='add description if directory already exists. (default:False)')
+args = parser.parse_args()
+
+# Get parser arguments
+dir = args.dir
+dir = dir+'/' if dir[-1] != '/' else dir
+description = args.description
+is_add_mode = args.add
+
+try:
+    os.mkdir(dir)
+    with open(dir+'.description.lsi', 'w') as f:
+        f.write(description)
+except OSError as e:
+    if 'File exists' in e:
+        if is_add_mode:
+            with open(dir+'.description.lsi', 'w') as f:
+                f.write(description)
+        else:
+            print('error: "' + dir[:-1] + '" already exists.')
+            print('if you want to add a description, use "-a" option please.')
+            exit()
+    if 'No such file or directory' in e:
+        print('error: invalid path.')
+
