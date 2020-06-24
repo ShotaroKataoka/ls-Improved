@@ -41,9 +41,9 @@ sudo ./install.sh
 ```
 mkdir ls-Improve
 cd ls-Improve
-wget https://github.com/ShotaroKataoka/ls-Improved/archive/v0.0-alpha.zip
-unzip v0.0-alpha.zip
-cd ls-Improved-0.0-alpha
+wget https://github.com/ShotaroKataoka/ls-Improved/archive/v0.1-alpha.zip
+unzip v0.1-alpha.zip
+cd ls-Improved-0.1-alpha
 sudo ./install.sh
 ```
 
