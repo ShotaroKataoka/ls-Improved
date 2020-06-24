@@ -51,6 +51,7 @@ class Mkdiri():
         try:
             self._mkdiri(self.dir, self.description)
         except OSError as e:
+            e = str(e)
             if 'File exists' in e:
                 self._raise_file_exists_error(self.dir, self.description)
             if 'No such file or directory' in e:
