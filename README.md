@@ -10,7 +10,7 @@ experiment_04
 experiment_05
 .......
 ```
-このような機械的なディレクトリから必要なディレクトリを見つけることは容易ではありません。  
+このような機械的なディレクトリ群から必要なディレクトリを見つけることは容易ではありません。  
 従来はテキストファイルや外部ツールを使ってこれらのディレクトリを管理する必要がありましたが，lsiではコマンド１つで下記のように一覧性良くディレクトリの説明文を表示することができます。  
 ```
 experiment_00 / score=0.85, lr=1e-6, batch_size=16
@@ -27,44 +27,20 @@ experiment_05 / score=0.93, lr=1e-6, batch_size=32, with BatchNorm
 python2.7とpython3.7で動作確認  
 
 ## Install
-`install.sh` を実行すると `/usr/local/bin` にコマンドが追加されます。  
-`/usr/local/bin` を汚したくない場合は，任意の場所にダウンロードしたあと `export PATH=$PATH:lsiディレクトリのパス/bin` を `.bashrc` とか `.zshrc` とかに追加してください。  
-
-### GitHubからcloneする方法
-```
-git clone https://github.com/ShotaroKataoka/lsi.git
-cd ls-Improved
-sudo ./install.sh
-```
-
-### zipファイルをダウンロードする方法
-```
-mkdir ls-Improve
-cd ls-Improve
-wget https://github.com/ShotaroKataoka/ls-Improved/archive/v0.2-alpha.zip
-unzip v0.2-alpha.zip
-cd ls-Improved-0.2-alpha
-sudo ./install.sh
-```
-
-## Uninstall
-```
-sudo ./uninstall.sh
-```
-もしくは `/usr/local/bin/lsi` と `/usr/local/bin/mkdiri` を削除することで完全にアンインストールできます。  
+`pip install git+https://github.com/ShotaroKataoka/ls-Improved`
 
 ## Usage
-### lsi
-`lsi` : カレントディレクトリ内のファイルとディレクトリを表示  
-`lsi ディレクトリのパス` : パス内のファイルとディレクトリを表示  
-`lsi -a` : 隠れファイル・ディレクトリも表示  
-
 ### mkdiri
 `mkdiri 作成するディレクトリ ディレクトリに付加する説明文` : ディレクトリを作成し，説明文を作成  
 `mkdiri 作成するディレクトリ` : ディレクトリを作成し，説明文を初期値で作成  
 `mkdiri -a 既存ディレクトリ ディレクトリに付加する説明文` : 既存のディレクトリに説明文を上書き  
 
+### lsi
+`lsi` : カレントディレクトリ内のファイルとディレクトリを表示  
+`lsi ディレクトリのパス` : パス内のファイルとディレクトリを表示  
+`lsi -a` : 隠れファイル・ディレクトリも表示  
+
 ### 仕組み
-`lsi` ではディレクトリ内の `.description.lsi` というテキストファイルを読み取って表示します。  
 `mkdiri` はディレクトリ作成と同時に `.description.lsi` というテキストファイルを作成します。  
+`lsi` はディレクトリ内の `.description.lsi` というテキストファイルを読み取って表示します。  
 `.description.lsi` を直接編集することで説明文を編集することもできます。このとき，複数行の説明文を作成することも可能です。  

@@ -1,6 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
 import os
 import argparse
 from glob import glob
@@ -88,17 +85,20 @@ class Lsi():
         self._print_children_f(children_f)
 
 
+def main():
+    # Parser setting
+    parser = argparse.ArgumentParser(description="lsi ==lsImproved==")
+    parser.add_argument('dir', type=str, nargs='?', default="./", metavar='DirectoryPath', help='directory where you want to look. (default: current directory)')
+    parser.add_argument('-a','--all', action='store_true', help='show hidden files and directories. (default: Hidden)')
+    args = parser.parse_args()
 
-# Parser setting
-parser = argparse.ArgumentParser(description="lsi ==lsImproved==")
-parser.add_argument('dir', type=str, nargs='?', default="./", metavar='DirectoryPath', help='directory where you want to look. (default: current directory)')
-parser.add_argument('-a','--all', action='store_true', help='show hidden files and directories. (default: Hidden)')
-args = parser.parse_args()
+    # Get parser arguments
+    dir = args.dir
+    dir = dir+'/' if dir[-1] != '/' else dir
+    is_all = args.all
 
-# Get parser arguments
-dir = args.dir
-dir = dir+'/' if dir[-1] != '/' else dir
-is_all = args.all
+    lsi = Lsi(dir, is_all=is_all)
+    lsi.run()
 
-lsi = Lsi(dir, is_all=is_all)
-lsi.run()
+if __name__ == '__main__':
+    main()
