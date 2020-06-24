@@ -31,15 +31,15 @@ python3.5で動作確認
 ### GitHubからcloneする方法
 ```
 git clone https://github.com/ShotaroKataoka/lsi.git
-cd lsi
+cd ls-Improved
 sudo ./install.sh
 ```
 
 ### zipファイルをダウンロードする方法
 ```
-wget ~~~
-unzip ~~~
-cd lsi
+wget https://github.com/ShotaroKataoka/ls-Improved/archive/v0.0-alpha.zip
+unzip ls-Improved.zip
+cd ls-Improved
 sudo ./install.sh
 ```
 
