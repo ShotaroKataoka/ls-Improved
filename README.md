@@ -24,7 +24,7 @@ experiment_05 / score=0.93, lr=1e-6, batch_size=32, with BatchNorm
 ```
 
 ## Requirements
-python3.5で動作確認  
+python2.7とpython3.7で動作確認  
 
 ## Install
 `install.sh` を実行すると `/usr/local/bin` にコマンドが追加されます。  
