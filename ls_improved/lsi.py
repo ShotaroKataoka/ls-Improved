@@ -1,6 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
 import os
 import argparse
 from glob import glob
@@ -61,9 +58,10 @@ class Lsi():
     def _print_children_d(self, children_d):
         for dir in children_d:
             dir_name = dir.split('/')[-1]
+            dir_length = len(dir_name)
             dir_name = self.c_dir + self.c_under + dir_name + self.c_end
             desc_path = dir +'/' + self.desc_name
-            description = self._read_description(desc_path, len(dir_name))
+            description = self._read_description(desc_path, dir_length)
             ## 最終行が空白のみの場合除去
             if set(description.split('\n')[-1])==set(' '):
                 description = '\n'.join(description.split('\n')[:-1])
@@ -87,17 +85,20 @@ class Lsi():
         self._print_children_f(children_f)
 
 
+def main():
+    # Parser setting
+    parser = argparse.ArgumentParser(description="lsi ==lsImproved==")
+    parser.add_argument('dir', type=str, nargs='?', default="./", metavar='DirectoryPath', help='directory where you want to look. (default: current directory)')
+    parser.add_argument('-a','--all', action='store_true', help='show hidden files and directories. (default: Hidden)')
+    args = parser.parse_args()
 
-# Parser setting
-parser = argparse.ArgumentParser(description="lsi ==lsImproved==")
-parser.add_argument('dir', type=str, nargs='?', default="./", metavar='DirectoryPath', help='directory where you want to look. (default: current directory)')
-parser.add_argument('-a','--all', action='store_true', help='show hidden files and directories. (default: Hidden)')
-args = parser.parse_args()
+    # Get parser arguments
+    dir = args.dir
+    dir = dir+'/' if dir[-1] != '/' else dir
+    is_all = args.all
 
-# Get parser arguments
-dir = args.dir
-dir = dir+'/' if dir[-1] != '/' else dir
-is_all = args.all
+    lsi = Lsi(dir, is_all=is_all)
+    lsi.run()
 
-lsi = Lsi(dir, is_all=is_all)
-lsi.run()
+if __name__ == '__main__':
+    main()
