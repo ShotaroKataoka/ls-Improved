@@ -1,6 +1,6 @@
 # ls-Improved
 ## Description
-ls-Improved (lsi)は大量のディレクトリ群から目当てのディレクトリを見つけることを補助するためのコマンドです。
+ls-Improved (lsi)は大量のディレクトリ群から目当てのディレクトリを見つけることを補助するためのコマンドです。  
 ```
 experiment_00
 experiment_01
@@ -20,14 +20,16 @@ experiment_03 / score=0.80, lr=1e-3, batch_size=32
 experiment_04 / score=0.95, lr=1e-6, batch_size=16, with BatchNorm
                 best validation result.
 experiment_05 / score=0.93, lr=1e-6, batch_size=32, with BatchNorm
+......
 ```
 
 ## Requirements
-python3.5で動作確認
+python3.5で動作確認  
 
 ## Install
 `install.sh` を実行すると `/usr/local/bin` にコマンドが追加されます。  
-`/usr/local/bin` を汚したくない場合は，任意の場所にダウンロードしたあと `export PATH=$PATH:lsiディレクトリのパス/bin` を `.bashrc` とか `.zshrc` とかに追加してください。
+`/usr/local/bin` を汚したくない場合は，任意の場所にダウンロードしたあと `export PATH=$PATH:lsiディレクトリのパス/bin` を `.bashrc` とか `.zshrc` とかに追加してください。  
+
 ### GitHubからcloneする方法
 ```
 git clone https://github.com/ShotaroKataoka/lsi.git
@@ -37,9 +39,11 @@ sudo ./install.sh
 
 ### zipファイルをダウンロードする方法
 ```
+mkdir ls-Improve
+cd ls-Improve
 wget https://github.com/ShotaroKataoka/ls-Improved/archive/v0.0-alpha.zip
-unzip ls-Improved.zip
-cd ls-Improved
+unzip v0.0-alpha.zip
+cd ls-Improved-0.0-alpha
 sudo ./install.sh
 ```
 
@@ -47,20 +51,20 @@ sudo ./install.sh
 ```
 sudo ./uninstall.sh
 ```
-もしくは `/usr/local/bin/lsi` と `/usr/local/bin/mkdiri` を削除することで完全にアンインストールできます。
+もしくは `/usr/local/bin/lsi` と `/usr/local/bin/mkdiri` を削除することで完全にアンインストールできます。  
 
 ## Usage
 ### lsi
-`lsi` : カレントディレクトリ内のファイルとディレクトリを表示
-`lsi ディレクトリのパス` : パス内のファイルとディレクトリを表示
-`lsi -a` : 隠れファイル・ディレクトリも表示
+`lsi` : カレントディレクトリ内のファイルとディレクトリを表示  
+`lsi ディレクトリのパス` : パス内のファイルとディレクトリを表示  
+`lsi -a` : 隠れファイル・ディレクトリも表示  
 
 ### mkdiri
-`mkdiri 作成するディレクトリ ディレクトリに付加する説明文` : ディレクトリを作成し，説明文を作成
-`mkdiri 作成するディレクトリ` : ディレクトリを作成し，説明文を初期値で作成
-`mkdiri -a 既存ディレクトリ ディレクトリに付加する説明文` : 既存のディレクトリに説明文を上書き
+`mkdiri 作成するディレクトリ ディレクトリに付加する説明文` : ディレクトリを作成し，説明文を作成  
+`mkdiri 作成するディレクトリ` : ディレクトリを作成し，説明文を初期値で作成  
+`mkdiri -a 既存ディレクトリ ディレクトリに付加する説明文` : 既存のディレクトリに説明文を上書き  
 
 ### 仕組み
-`lsi` ではディレクトリ内の `.description.lsi` というテキストファイルを読み取って表示します。
-`mkdiri` はディレクトリ作成と同時に `.description.lsi` というテキストファイルを作成します。
-`.description.lsi` を直接編集することで説明文を編集することもできます。このとき，複数行の説明文を作成することも可能です。
+`lsi` ではディレクトリ内の `.description.lsi` というテキストファイルを読み取って表示します。  
+`mkdiri` はディレクトリ作成と同時に `.description.lsi` というテキストファイルを作成します。  
+`.description.lsi` を直接編集することで説明文を編集することもできます。このとき，複数行の説明文を作成することも可能です。  
