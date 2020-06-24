@@ -28,16 +28,10 @@ python2.7とpython3.7で動作確認
 
 ## Setup
 ### Install
-```
-pip install https://github.com/ShotaroKataoka/ls-Improved/archive/v0.2.1.beta.zip
-pip install --upgrade ls-Improved
-```
+`pip install https://github.com/ShotaroKataoka/ls-Improved/archive/v0.2.1.beta.zip`
 
 ### Uninstall
 `pip uninstall ls-Improved`
-
-### Upgrade
-`pip install --upgrade ls-Improved`
 
 ## Usage
 ### mkdiri
