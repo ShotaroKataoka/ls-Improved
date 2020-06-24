@@ -32,6 +32,8 @@ python2.7とpython3.7で動作確認
 pip install https://github.com/ShotaroKataoka/ls-Improved/archive/v0.2.1.beta.zip
 pip install --upgrade ls-Improved
 ```
+pip2だとPATHが通らない可能性があります。  
+その場合， `$HOME/.local/bin/` にいたりするので， `export PATH=$PATH:$HOME/.local/bin/` を `.bashrc` に追記するなどしてパスを通してください。  
 
 ### Uninstall
 `pip uninstall ls-Improved`
