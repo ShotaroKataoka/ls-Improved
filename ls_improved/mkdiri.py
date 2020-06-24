@@ -1,6 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
 import os
 import argparse
 
@@ -57,19 +54,22 @@ class Mkdiri():
             if 'No such file or directory' in e:
                 self._raise_path_not_found_error()
 
+def main():
+    # Parser setting
+    parser = argparse.ArgumentParser(description="mkdiri ==mkdirImproved==")
+    parser.add_argument('dir', type=str, default="./", metavar='DirectoryPath', help='directory where you want to look. (default: current directory)')
+    parser.add_argument('description', type=str, nargs='?', default='Dir', help='description message (default:No description.)')
+    parser.add_argument('-a','--add', action='store_true', help='add description if directory already exists. (default:False)')
+    args = parser.parse_args()
 
-# Parser setting
-parser = argparse.ArgumentParser(description="mkdiri ==mkdirImproved==")
-parser.add_argument('dir', type=str, default="./", metavar='DirectoryPath', help='directory where you want to look. (default: current directory)')
-parser.add_argument('description', type=str, nargs='?', default='Dir', help='description message (default:No description.)')
-parser.add_argument('-a','--add', action='store_true', help='add description if directory already exists. (default:False)')
-args = parser.parse_args()
+    # Get parser arguments
+    dir = args.dir
+    dir = dir+'/' if dir[-1] != '/' else dir
+    description = args.description
+    is_add_mode = args.add
 
-# Get parser arguments
-dir = args.dir
-dir = dir+'/' if dir[-1] != '/' else dir
-description = args.description
-is_add_mode = args.add
+    mkdiri = Mkdiri(dir, description, is_add_mode)
+    mkdiri.run()
 
-mkdiri = Mkdiri(dir, description, is_add_mode)
-mkdiri.run()
+if __name__ == '__main__':
+    main()
