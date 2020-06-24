@@ -26,8 +26,18 @@ experiment_05 / score=0.93, lr=1e-6, batch_size=32, with BatchNorm
 ## Requirements
 python2.7とpython3.7で動作確認  
 
-## Install
-`pip install git+https://github.com/ShotaroKataoka/ls-Improved`
+## Setup
+### Install
+```
+pip install https://github.com/ShotaroKataoka/ls-Improved/archive/v0.2.1.beta.zip
+pip install --upgrade ls-Improved
+```
+
+### Uninstall
+`pip uninstall ls-Improved`
+
+### Upgrade
+`pip install --upgrade ls-Improved`
 
 ## Usage
 ### mkdiri
