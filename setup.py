@@ -4,8 +4,8 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="ls-Improved-ShotaroKataoka",
-    version="0.2.1-beta",
+    name="ls-Improved",
+    version="0.2.1.beta",
     author="ShotaroKataoka",
     author_email="shotaro.kata@gmail.com",
     description="show directory description when ls.",
@@ -14,7 +14,7 @@ setuptools.setup(
     url="https://github.com/ShotaroKataoka/ls-Improved",
     packages=setuptools.find_packages(),
     classifiers=[
-        "Programming Language :: Python :: 3",
+        "Programming Language :: Python",
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
         ],
