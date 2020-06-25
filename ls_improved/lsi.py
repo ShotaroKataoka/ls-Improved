@@ -53,6 +53,10 @@ class Lsi():
                 description = f.read().replace('\n', '\n       '+' '*dir_length)
         else:
             description = 'Dir'
+
+        # description is empty
+        if description == '':
+            description = 'Dir'
         return description
     
     def _print_children_d(self, children_d):
