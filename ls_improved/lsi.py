@@ -85,8 +85,8 @@ class Lsi():
     def run(self):
         self._assert_dir_existance(self.dir)
         children_d, children_f = self._get_children_of_dir(self.dir)
-        self._print_children_d(children_d)
-        self._print_children_f(children_f)
+        self._print_children_d(sorted(children_d))
+        self._print_children_f(sorted(children_f))
 
 
 def main():
