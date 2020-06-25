@@ -1,9 +1,14 @@
 import setuptools
+from os import path
+import re
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
-with open(path.join(root_dir, package_name, '__init__.py')) as f:
+package_name = 'ls-Improved'
+main_directory = 'ls_improved'
+root_dir = path.abspath(path.dirname(__file__))
+with open(path.join(root_dir, main_directory, '__init__.py')) as f:
     init_text = f.read()
     version = re.search(r'__version__\s*=\s*[\'\"](.+?)[\'\"]', init_text).group(1)
     license = re.search(r'__license__\s*=\s*[\'\"](.+?)[\'\"]', init_text).group(1)
@@ -18,7 +23,7 @@ assert author_email
 assert url
 
 setuptools.setup(
-    name="ls-Improved",
+    name=package_name,
     version=version,
     author=author,
     author_email=author_email,
