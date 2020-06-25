@@ -20,9 +20,11 @@ class pycolor:
 
 
 class Lsi():
-    def __init__(self, dir, is_all=False):
+    def __init__(self, dir, is_all=False, is_only_directories=False, is_only_files=False):
         self.dir = dir
         self.is_all = is_all
+        self.is_only_files = is_only_files
+        self.is_only_directories = is_only_directories
 
         self.desc_name = '.description.lsi'
         self.c_dir = pycolor.CYAN
@@ -85,8 +87,15 @@ class Lsi():
     def run(self):
         self._assert_dir_existance(self.dir)
         children_d, children_f = self._get_children_of_dir(self.dir)
-        self._print_children_d(sorted(children_d))
-        self._print_children_f(sorted(children_f))
+
+        # -f -d で分岐
+        if self.is_only_directories:
+            self._print_children_d(sorted(children_d))
+        if self.is_only_files:
+            self._print_children_f(sorted(children_f))
+        if not self.is_only_directories and not self.is_only_files:
+            self._print_children_d(sorted(children_d))
+            self._print_children_f(sorted(children_f))
 
 
 def main():
@@ -94,14 +103,18 @@ def main():
     parser = argparse.ArgumentParser(description="lsi ==lsImproved==")
     parser.add_argument('dir', type=str, nargs='?', default="./", metavar='DirectoryPath', help='directory where you want to look. (default: current directory)')
     parser.add_argument('-a','--all', action='store_true', help='show hidden files and directories. (default: Hidden)')
+    parser.add_argument('-d','--only-directories', action='store_true', help='show only directories.')
+    parser.add_argument('-f','--only-files', action='store_true', help='show only files.')
     args = parser.parse_args()
 
     # Get parser arguments
     dir = args.dir
     dir = dir+'/' if dir[-1] != '/' else dir
     is_all = args.all
+    is_only_directories = args.only_directories
+    is_only_files = args.only_files
 
-    lsi = Lsi(dir, is_all=is_all)
+    lsi = Lsi(dir, is_all=is_all, is_only_directories=is_only_directories, is_only_files=is_only_files)
     lsi.run()
 
 if __name__ == '__main__':
