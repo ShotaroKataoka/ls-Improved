@@ -28,12 +28,17 @@ python2.7とpython3.7で動作確認
 
 ## Setup
 ### Install
+#### pip
 ```
-pip install https://github.com/ShotaroKataoka/ls-Improved/archive/v0.2.1.beta.zip
-pip install --upgrade ls-Improved
+pip install ls-Improved
 ```
-pip2だとPATHが通らない可能性があります。  
-その場合， `$HOME/.local/bin/` にいたりするので， `export PATH=$PATH:$HOME/.local/bin/` を `.bashrc` に追記するなどしてパスを通してください。  
+
+#### 手動
+pip installがいやな人とかパスが変になる人は手動インストールをお試しください。  
+`wget https://github.com/ShotaroKataoka/ls-Improved/archive/v0.2.1.beta.manual.zip`  
+(releaseの最新バージョンのmanual versionをダウンロード)  
+ダウンロードしたzipファイルを `unzip` する。  
+解凍されたディレクトリを好きな場所に移動して`~~~/bin/`のパスを通すか，`~~~/bin/`配下の２ファイルを`/usr/local/bin/`に移動するかしてパスを通す。  
 
 ### Uninstall
 `pip uninstall ls-Improved`
