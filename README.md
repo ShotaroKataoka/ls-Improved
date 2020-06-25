@@ -35,7 +35,7 @@ pip install ls-Improved
 
 #### 手動
 pip installがいやな人とかパスが変になる人は手動インストールをお試しください。  
-`wget https://github.com/ShotaroKataoka/ls-Improved/archive/v0.2.1.beta.manual.zip`  
+`wget https://github.com/ShotaroKataoka/ls-Improved/archive/v0.2.2.beta0.manual.zip`  
 (releaseの最新バージョンのmanual versionをダウンロード)  
 ダウンロードしたzipファイルを `unzip` する。  
 解凍されたディレクトリを好きな場所に移動して`~~~/bin/`のパスを通すか，`~~~/bin/`配下の２ファイルを`/usr/local/bin/`に移動するかしてパスを通す。  
