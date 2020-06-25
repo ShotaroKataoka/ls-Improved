@@ -58,7 +58,7 @@ def main():
     # Parser setting
     parser = argparse.ArgumentParser(description="mkdiri ==mkdirImproved==")
     parser.add_argument('dir', type=str, default="./", metavar='DirectoryPath', help='directory where you want to look. (default: current directory)')
-    parser.add_argument('description', type=str, nargs='?', default='Dir', help='description message (default:No description.)')
+    parser.add_argument('description', type=str, nargs='?', default='', help='description message (default:No description.)')
     parser.add_argument('-a','--add', action='store_true', help='add description if directory already exists. (default:False)')
     args = parser.parse_args()
 
