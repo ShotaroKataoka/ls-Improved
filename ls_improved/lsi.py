@@ -84,18 +84,42 @@ class Lsi():
             output = ' -- ' + file_name +' / '+description
             print(output)
 
-    def run(self):
-        self._assert_dir_existance(self.dir)
-        children_d, children_f = self._get_children_of_dir(self.dir)
+    def _print_children(self, children_d, children_f, num_len):
+        # ファイル数がnum_class以上のときに表示するか尋ねる
+        def _confirm():
+            res = input('too many items. show these? [y-n] : ')
+            return res.lower() in ['y', 'yes'] 
 
         # -f -d で分岐
         if self.is_only_directories:
-            self._print_children_d(sorted(children_d))
+            if len(children_d) > num_len:
+                if _confirm():
+                    self._print_children_d(sorted(children_d))
+            else:
+                self._print_children_d(sorted(children_d))
+
         if self.is_only_files:
-            self._print_children_f(sorted(children_f))
+            if len(children_f) > num_len:
+                if _confirm():
+                    self._print_children_f(sorted(children_f))
+            else:
+                self._print_children_f(sorted(children_f))
+
         if not self.is_only_directories and not self.is_only_files:
-            self._print_children_d(sorted(children_d))
-            self._print_children_f(sorted(children_f))
+            if (len(children_f) + len(children_d)) > num_len:
+                if _confirm():
+                    self._print_children_d(sorted(children_d))
+                    self._print_children_f(sorted(children_f))
+            else:
+                self._print_children_d(sorted(children_d))
+                self._print_children_f(sorted(children_f))
+
+
+    def run(self):
+        self._assert_dir_existance(self.dir)
+        children_d, children_f = self._get_children_of_dir(self.dir)
+        self._print_children(children_d, children_f, 50)
+
 
 
 def main():
