@@ -33,6 +33,7 @@ class Lsi():
         self.c_desc = pycolor.yellow
         self.c_end = pycolor.END
         self.c_under = pycolor.UNDERLINE
+        self.c_inv = pycolor.INVISIBLE
         self.normal_indent = ' ── '
 
     # Raise Error
@@ -117,6 +118,31 @@ class Lsi():
                 self._print_children_d(sorted(children_d))
                 self._print_children_f(sorted(children_f))
 
+    def _search_word_from_1sentence(self, sentence, word):
+        """
+        Execute matching a 'word' with a 'sentence'.
+        Then the sentence with 'matched word' the color of which is inversed is returned.
+        If matched word does not exist, return None
+
+        Parameters
+        ----------
+        sentence : string
+            a sentence of 'file / description'.
+        word : string
+            a word of 'something'. -s option's input.
+
+        Returns
+        -------
+        sentence : string or None
+            a modified sentence of 'file / description'. 
+            if 'word' does not match with 'sentence', return None.
+        """
+        if word in sentence:
+            sentence = sentence.replace(word, self.c_inv+word+self.c_end)
+        else:
+            sentence = None
+        return sentence
+
 
     def run(self):
         self._assert_dir_existance(self.dir)
@@ -132,6 +158,7 @@ def main():
     parser.add_argument('-a','--all', action='store_true', help='show hidden files and directories. (default: Hidden)')
     parser.add_argument('-d','--only-directories', action='store_true', help='show only directories.')
     parser.add_argument('-f','--only-files', action='store_true', help='show only files.')
+    parser.add_argument('-s','--search', default=None, help='search word inside of file names and descriptions')
     args = parser.parse_args()
 
     # Get parser arguments
@@ -140,6 +167,7 @@ def main():
     is_all = args.all
     is_only_directories = args.only_directories
     is_only_files = args.only_files
+    search_word = args.search if args.search != '' else None
 
     lsi = Lsi(dir, is_all=is_all, is_only_directories=is_only_directories, is_only_files=is_only_files)
     lsi.run()
