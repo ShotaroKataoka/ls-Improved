@@ -27,10 +27,13 @@ class Lsi():
         self.is_only_directories = is_only_directories
 
         self.desc_name = '.description.lsi'
+
+        # Visual Settings
         self.c_dir = pycolor.CYAN
         self.c_desc = pycolor.yellow
         self.c_end = pycolor.END
         self.c_under = pycolor.UNDERLINE
+        self.normal_indent = '──'
 
     # Raise Error
     def _assert_dir_existance(self, dir):
@@ -73,7 +76,7 @@ class Lsi():
                 description = '\n'.join(description.split('\n')[:-1])
             ## descriptionが指定されているなら色を付ける
             description = self.c_desc + description + self.c_end if description != 'Dir' else description
-            output = ' -- ' + dir_name + ' / ' + description
+            output = self.normal_indent + dir_name + ' / ' + description
             print(output)
 
     def _print_children_f(self, children_f):
@@ -81,7 +84,7 @@ class Lsi():
             file_name = file.split('/')[-1]
             description = 'File'
             description = self.c_desc + description + self.c_end if description != 'File' else description
-            output = ' -- ' + file_name +' / '+description
+            output = self.normal_indent + file_name +' / '+description
             print(output)
 
     def _print_children(self, children_d, children_f, num_len):
