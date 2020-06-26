@@ -128,9 +128,9 @@ class Lsi():
         Parameters
         ----------
         sentence : string
-            a sentence of 'file / description'.
+            echo sentence.   e.g) 'file / description'.
         word : string
-            a word of 'something'. -s option's input.
+            -s option's input.  e.g.) 'something'. 
 
         Returns
         -------
