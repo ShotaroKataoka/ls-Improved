@@ -33,7 +33,7 @@ class Lsi():
         self.c_desc = pycolor.yellow
         self.c_end = pycolor.END
         self.c_under = pycolor.UNDERLINE
-        self.normal_indent = '──'
+        self.normal_indent = ' ── '
 
     # Raise Error
     def _assert_dir_existance(self, dir):
