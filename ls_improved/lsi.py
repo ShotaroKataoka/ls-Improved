@@ -121,8 +121,9 @@ class Lsi():
     def _search_word_from_1sentence(self, sentence, word):
         """
         Execute matching a 'word' with a 'sentence'.
-        Then the sentence with 'matched word' the color of which is inversed is returned.
-        If matched word does not exist, return None
+        Then the sentence with 'matched word' the color of
+        which is inversed is returned.
+        If matched word does not exist, return None.
 
         Parameters
         ----------
