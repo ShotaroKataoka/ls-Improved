@@ -68,6 +68,9 @@ class Lsi():
         if description == '':
             description = 'Dir'
         return description
+
+    def _get_dir_size(self, children_d):
+        return len(os.listdir(children_d))
     
     def _print_children_d(self, children_d):
         for dir in children_d:
@@ -91,7 +94,8 @@ class Lsi():
                 description = '\n'.join(description.split('\n')[:-1])
             ## descriptionが指定されているなら色を付ける
             description = self.c_desc + description + self.c_end if description != 'Dir' else description
-            output = self.normal_indent + dir_name + ' / ' + description
+            dir_size = self._get_dir_size(dir)
+            output = self.normal_indent + dir_name + ' (' + str(dir_size) + ') ' + ' / ' + description
             print(output)
 
     def _print_children_f(self, children_f):
@@ -110,9 +114,9 @@ class Lsi():
             print(output)
 
     def _print_children(self, children_d, children_f, num_len):
-        # ファイル数がnum_class以上のときに表示するか尋ねる
+        # ファイル数がnum_len以上のときに表示するか尋ねる
         def _confirm():
-            res = input('too many items. show these? [y-n] : ')
+            res = input('too many items (over {}). show these? [y-n] : '.format(num_len))
             return res.lower() in ['y', 'yes'] 
 
         # -f -d で分岐
