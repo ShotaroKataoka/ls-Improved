@@ -22,11 +22,23 @@ class pycolor:
 
 
 class Lsi():
-    def __init__(self, dir, is_all=False, is_only_directories=False, is_only_files=False, search_word=None):
+    def __init__(
+            self, 
+            dir, 
+            is_all=False, 
+            is_only_directories=False, 
+            is_only_files=False, 
+            num_len=50,
+            is_length=False,
+            search_word=None
+            ):
+
         self.dir = dir
         self.is_all = is_all
         self.is_only_files = is_only_files
         self.is_only_directories = is_only_directories
+        self.num_len = num_len
+        self.is_length = is_length
         self.search_word = search_word
 
         self.desc_name = '.description.lsi'
@@ -57,10 +69,10 @@ class Lsi():
         return children_d, children_f
 
     # load descriprion
-    def _read_description(self, desc_path, dir_length):
+    def _read_description(self, desc_path, dir_length, dir_size_length):
         if os.path.exists(desc_path):
             with open(desc_path, 'r') as f:
-                description = f.read().replace('\n', '\n       '+' '*dir_length)
+                description = f.read().replace('\n', '\n       '+' '*(dir_length + dir_size_length))
         else:
             description = 'Dir'
 
@@ -68,17 +80,24 @@ class Lsi():
         if description == '':
             description = 'Dir'
         return description
+
+    def _get_dir_size(self, children_d):
+        return len(os.listdir(children_d))
     
-    def _print_children_d(self, children_d):
+    def _print_children_d(self, children_d, is_length):
         for dir in children_d:
             # get directory name
             dir_name = dir.split('/')[-1]
             dir_length = len(dir_name)
             dir_name = self.c_dir + self.c_under + dir_name + self.c_end
 
+            # -lオプションの時はディレクトリのファイル数を返す
+            dir_size = ' (' + str(self._get_dir_size(dir)) + ') ' if is_length else ''
+            dir_size_length = len(dir_size)
+
             # get description
             desc_path = dir +'/' + self.desc_name
-            description = self._read_description(desc_path, dir_length)
+            description = self._read_description(desc_path, dir_length, dir_size_length)
 
             # search (grep)
             if self.search_word is not None:
@@ -91,7 +110,8 @@ class Lsi():
                 description = '\n'.join(description.split('\n')[:-1])
             ## descriptionが指定されているなら色を付ける
             description = self.c_desc + description + self.c_end if description != 'Dir' else description
-            output = self.normal_indent + dir_name + ' / ' + description
+
+            output = self.normal_indent + dir_name + dir_size + ' / ' + description
             print(output)
 
     def _print_children_f(self, children_f):
@@ -109,19 +129,19 @@ class Lsi():
             output = self.normal_indent + file_name +' / '+description
             print(output)
 
-    def _print_children(self, children_d, children_f, num_len):
-        # ファイル数がnum_class以上のときに表示するか尋ねる
+    def _print_children(self, children_d, children_f, num_len, is_length):
+        # ファイル数がnum_len以上のときに表示するか尋ねる
         def _confirm():
-            res = input('too many items. show these? [y-n] : ')
+            res = input('too many items (over {}). show these? [y-n] : '.format(num_len))
             return res.lower() in ['y', 'yes'] 
 
         # -f -d で分岐
         if self.is_only_directories:
             if len(children_d) > num_len:
                 if _confirm():
-                    self._print_children_d(sorted(children_d))
+                    self._print_children_d(sorted(children_d), is_length)
             else:
-                self._print_children_d(sorted(children_d))
+                self._print_children_d(sorted(children_d), is_length)
 
         if self.is_only_files:
             if len(children_f) > num_len:
@@ -133,10 +153,10 @@ class Lsi():
         if not self.is_only_directories and not self.is_only_files:
             if (len(children_f) + len(children_d)) > num_len:
                 if _confirm():
-                    self._print_children_d(sorted(children_d))
+                    self._print_children_d(sorted(children_d), is_length)
                     self._print_children_f(sorted(children_f))
             else:
-                self._print_children_d(sorted(children_d))
+                self._print_children_d(sorted(children_d), is_length)
                 self._print_children_f(sorted(children_f))
 
     def _search_word_from_1sentence(self, item_name, description, search_word):
@@ -179,7 +199,9 @@ class Lsi():
     def run(self):
         self._assert_dir_existance(self.dir)
         children_d, children_f = self._get_children_of_dir(self.dir)
-        self._print_children(children_d, children_f, 50)
+        num_len = self.num_len
+        is_length = self.is_length
+        self._print_children(children_d, children_f, num_len, is_length)
 
 
 
@@ -191,6 +213,8 @@ def main():
     parser.add_argument('-d','--only-directories', action='store_true', help='show only directories.')
     parser.add_argument('-f','--only-files', action='store_true', help='show only files.')
     parser.add_argument('-s','--search', default=None, help='search word inside of file names and descriptions')
+    parser.add_argument('-n', '--num-len', type=int, default=50, help='set threshold for opening directory by many files')
+    parser.add_argument('-l','--is_length', action='store_true', help='show files num of directory')
     args = parser.parse_args()
 
     # Get parser arguments
@@ -199,9 +223,20 @@ def main():
     is_all = args.all
     is_only_directories = args.only_directories
     is_only_files = args.only_files
+    num_len = args.num_len
+    is_length = args.is_length
     search_word = args.search if args.search != '' else None
 
-    lsi = Lsi(dir, is_all=is_all, is_only_directories=is_only_directories, is_only_files=is_only_files, search_word=search_word)
+    lsi = Lsi(
+            dir,
+            is_all=is_all, 
+            is_only_directories=is_only_directories, 
+            is_only_files=is_only_files, 
+            num_len=num_len,
+            is_length=is_length,
+            search_word=search_word
+            )
+
     lsi.run()
 
 if __name__ == '__main__':
