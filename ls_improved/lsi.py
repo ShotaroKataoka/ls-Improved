@@ -69,10 +69,10 @@ class Lsi():
         return children_d, children_f
 
     # load descriprion
-    def _read_description(self, desc_path, dir_length):
+    def _read_description(self, desc_path, dir_length, dir_size_length):
         if os.path.exists(desc_path):
             with open(desc_path, 'r') as f:
-                description = f.read().replace('\n', '\n       '+' '*dir_length)
+                description = f.read().replace('\n', '\n       '+' '*(dir_length + dir_size_length))
         else:
             description = 'Dir'
 
@@ -91,9 +91,13 @@ class Lsi():
             dir_length = len(dir_name)
             dir_name = self.c_dir + self.c_under + dir_name + self.c_end
 
+            # -lオプションの時はディレクトリのファイル数を返す
+            dir_size = ' (' + str(self._get_dir_size(dir)) + ') ' if is_length else ''
+            dir_size_length = len(dir_size)
+
             # get description
             desc_path = dir +'/' + self.desc_name
-            description = self._read_description(desc_path, dir_length)
+            description = self._read_description(desc_path, dir_length, dir_size_length)
 
             # search (grep)
             if self.search_word is not None:
@@ -106,9 +110,6 @@ class Lsi():
                 description = '\n'.join(description.split('\n')[:-1])
             ## descriptionが指定されているなら色を付ける
             description = self.c_desc + description + self.c_end if description != 'Dir' else description
-
-            # -lオプションの時はディレクトリのファイル数を返す
-            dir_size = ' (' + str(self._get_dir_size(dir)) + ') ' if is_length else ''
 
             output = self.normal_indent + dir_name + dir_size + ' / ' + description
             print(output)
