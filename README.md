@@ -1,4 +1,5 @@
 # ls-Improved
+[![Downloads](https://pepy.tech/badge/ls-improved)](https://pepy.tech/project/ls-improved)
 ## Description
 ls-Improved (lsi)は大量のディレクトリ群から目当てのディレクトリを見つけることを補助するためのコマンドです。  
 ```
