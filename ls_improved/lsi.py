@@ -2,23 +2,7 @@ import os
 import argparse
 from glob import glob
 
-
-# Other settings
-class pycolor:
-    RED = '\033[31m'
-    GREEN = '\033[32m'
-    YELLOW = '\033[33m'
-    BLUE = '\033[34m'
-    PURPLE = '\033[35m'
-    CYAN = '\033[36m'
-    WHITE = '\033[37m'
-    END = '\033[0m'
-    BOLD = '\038[1m'
-    UNDERLINE = '\033[4m'
-    INVISIBLE = '\033[08m'
-    REVERCE = '\033[07m'
-    BACK_LIGHT_YELLOW = '\033[230m'
-    BACK_BLACK = '\033[40m'
+from .config import PyColor
 
 
 class Lsi():
@@ -44,12 +28,12 @@ class Lsi():
         self.desc_name = '.description.lsi'
 
         # Visual Settings
-        self.c_dir = pycolor.CYAN
-        self.c_desc = pycolor.YELLOW
-        self.c_end = pycolor.END
-        self.c_under = pycolor.UNDERLINE
-        self.cb_search = pycolor.REVERCE
-        self.cb_black = pycolor.BACK_BLACK
+        self.c_dir = PyColor.CYAN
+        self.c_desc = PyColor.YELLOW
+        self.c_end = PyColor.END
+        self.c_under = PyColor.UNDERLINE
+        self.cb_search = PyColor.REVERCE
+        self.cb_black = PyColor.BACK_BLACK
         self.normal_indent = self.c_end+' ── '
 
     # Raise Error
@@ -202,6 +186,7 @@ class Lsi():
         num_len = self.num_len
         is_length = self.is_length
         self._print_children(children_d, children_f, num_len, is_length)
+        print(A.test)
 
 
 
