@@ -1,4 +1,5 @@
 # ls-Improved
+[![Downloads](https://pepy.tech/badge/ls-improved)](https://pepy.tech/project/ls-improved)
 ## Description
 ls-Improved (lsi)は大量のディレクトリ群から目当てのディレクトリを見つけることを補助するためのコマンドです。  
 ```
@@ -54,8 +55,11 @@ pip installがいやな人とかパスが変になる人は手動インストー
 
 ### lsi
 `lsi` : カレントディレクトリ内のファイルとディレクトリを表示  
-`lsi ディレクトリのパス` : パス内のファイルとディレクトリを表示  
+`lsi path-to-directory` : パス内のファイルとディレクトリを表示  
 `lsi -a` : 隠れファイル・ディレクトリも表示  
+`lsi -f` : ファイルのみを表示
+`lsi -d` : ディレクトリのみを表示
+`lsi -s 'search-word'` : `search_word`でファイル名・説明文内を検索
 
 ### 仕組み
 `mkdiri` はディレクトリ作成と同時に `.description.lsi` というテキストファイルを作成します。  
