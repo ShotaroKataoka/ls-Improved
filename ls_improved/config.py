@@ -33,7 +33,8 @@ class Config():
                 lsirc = f.readlines()
 
         """ Set description_path """
-        self.description_path = '.description.lsi'
+        self.description_name = '.description.lsi'
+        self.indent = ' ── '
 
         """ Set Visual Setting """
         self.c_dir = PyColor.CYAN
