@@ -2,223 +2,144 @@ import os
 import argparse
 from glob import glob
 
-from .config import PyColor
-
+from .config import Config
+from .lsi_itemloader import LsiItemLoader
+from .lsi_content import LsiContentTransforms
+from .lsi_visual import LsiVisualTransforms
 
 class Lsi():
     def __init__(
-            self, 
-            dir, 
-            is_all=False, 
-            is_only_directories=False, 
-            is_only_files=False, 
-            num_len=50,
-            is_length=False,
-            search_word=None
+            self,
+            dir,
+            show_all=False,
+            show_only_directories=False,
+            show_only_files=False,
+            show_file_num=False,
+            limit_file_num=50,
+            search_word=''
             ):
-
-        self.dir = dir
-        self.is_all = is_all
-        self.is_only_files = is_only_files
-        self.is_only_directories = is_only_directories
-        self.num_len = num_len
-        self.is_length = is_length
-        self.search_word = search_word
-
-        self.desc_name = '.description.lsi'
-
-        # Visual Settings
-        self.c_dir = PyColor.CYAN
-        self.c_desc = PyColor.YELLOW
-        self.c_end = PyColor.END
-        self.c_under = PyColor.UNDERLINE
-        self.cb_search = PyColor.REVERCE
-        self.cb_black = PyColor.BACK_BLACK
-        self.normal_indent = self.c_end+' ── '
-
-    # Raise Error
-    def _assert_dir_existance(self, dir):
-        if not os.path.isdir(dir):
-            print('error: ' + dir[:-1] + ' is not a directory.')
-            exit()
-
-    # Get children
-    def _get_children_of_dir(self, dir):
-        pathes = []
-        if self.is_all:
-            pathes = glob(dir+'.*')
-        pathes += glob(dir+'*')
-        children_d = [p for p in pathes if os.path.isdir(p)]
-        children_f = [p for p in pathes if os.path.isfile(p)]
-        return children_d, children_f
-
-    # load descriprion
-    def _read_description(self, desc_path, dir_length, dir_size_length):
-        if os.path.exists(desc_path):
-            with open(desc_path, 'r') as f:
-                description = f.read().replace('\n', '\n       '+' '*(dir_length + dir_size_length))
-        else:
-            description = 'Dir'
-
-        # description is empty
-        if description == '':
-            description = 'Dir'
-        return description
-
-    def _get_dir_size(self, children_d):
-        return len(os.listdir(children_d))
-    
-    def _print_children_d(self, children_d, is_length):
-        for dir in children_d:
-            # get directory name
-            dir_name = dir.split('/')[-1]
-            dir_length = len(dir_name)
-            dir_name = self.c_dir + self.c_under + dir_name + self.c_end
-
-            # -lオプションの時はディレクトリのファイル数を返す
-            dir_size = ' (' + str(self._get_dir_size(dir)) + ') ' if is_length else ''
-            dir_size_length = len(dir_size)
-
-            # get description
-            desc_path = dir +'/' + self.desc_name
-            description = self._read_description(desc_path, dir_length, dir_size_length)
-
-            # search (grep)
-            if self.search_word is not None:
-                dir_name, description, is_matched = self._search_word_from_1sentence(dir_name, description, self.search_word)
-                if not is_matched:
-                    continue
-
-            ## 最終行が空白のみの場合除去
-            if set(description.split('\n')[-1])==set(' '):
-                description = '\n'.join(description.split('\n')[:-1])
-            ## descriptionが指定されているなら色を付ける
-            description = self.c_desc + description + self.c_end if description != 'Dir' else description
-
-            output = self.normal_indent + dir_name + dir_size + ' / ' + description
-            print(output)
-
-    def _print_children_f(self, children_f):
-        for file in children_f:
-            file_name = file.split('/')[-1]
-            description = 'File'
-
-            # search (grep)
-            if self.search_word is not None:
-                file_name, description, is_matched = self._search_word_from_1sentence(file_name, description, self.search_word)
-                if not is_matched:
-                    continue
-
-            description = self.c_desc + description + self.c_end if description != 'File' else description
-            output = self.normal_indent + file_name +' / '+description
-            print(output)
-
-    def _print_children(self, children_d, children_f, num_len, is_length):
-        # ファイル数がnum_len以上のときに表示するか尋ねる
-        def _confirm():
-            res = input('too many items (over {}). show these? [y-n] : '.format(num_len))
-            return res.lower() in ['y', 'yes'] 
-
-        # -f -d で分岐
-        if self.is_only_directories:
-            if len(children_d) > num_len:
-                if _confirm():
-                    self._print_children_d(sorted(children_d), is_length)
-            else:
-                self._print_children_d(sorted(children_d), is_length)
-
-        if self.is_only_files:
-            if len(children_f) > num_len:
-                if _confirm():
-                    self._print_children_f(sorted(children_f))
-            else:
-                self._print_children_f(sorted(children_f))
-
-        if not self.is_only_directories and not self.is_only_files:
-            if (len(children_f) + len(children_d)) > num_len:
-                if _confirm():
-                    self._print_children_d(sorted(children_d), is_length)
-                    self._print_children_f(sorted(children_f))
-            else:
-                self._print_children_d(sorted(children_d), is_length)
-                self._print_children_f(sorted(children_f))
-
-    def _search_word_from_1sentence(self, item_name, description, search_word):
         """
-        Execute matching a 'word' with a 'sentence'.
-        Then the sentence with 'matched word' the color of
-        which is inversed is returned.
-        If matched word does not exist, return None.
-
+        Constructor
+        Set all optional command line arguments here.
+        
         Parameters
         ----------
-        item_name : string
-            directory or file name.
-        description : string
-            description string.
-        search_word : string
-            -s option's input.  e.g.) 'something'. 
-
-        Returns
-        -------
-        item_name : string
-            directory or file name.
-        description : string
-            description string. 'word'
-        is_matched : boolean
-            if word exists in item_name or description, True.
-            else False.
+        dir : String
+            Directory Path
+        show_all : Boolean (Optional)
+            (command) -a, --all
+            True -> Show all files and directories.
+        show_only_directories : Boolean (Optional)
+            (command) -d, --only-directories
+            True -> Do not show files.
+        show_only_files : Boolean (Optional)
+            (command) -f, --only-files
+            True -> Do not show directories.
+        show_file_num : Boolean (Optional)
+            (command) -l, --show-file-num
+            True -> Show number of children files.
+        limit_file_num : Int (Optional)
+            (command) -n, --limit-file-num
+            Set confirm condition (num of children files).
         """
-        is_matched_item = search_word in item_name
-        is_matched_desc = search_word in description
-        is_matched = is_matched_item or is_matched_desc
-        replace_word = self.cb_search + self.search_word + self.c_end
-        if is_matched_item:
-            item_name = item_name.replace(search_word, replace_word+self.c_dir)
-        if is_matched_desc:
-            description = description.replace(search_word, replace_word+self.c_desc)
-        return item_name, description, is_matched
+        
+        # Set CommandLine Arguments
+        self.dir = dir
+        self.show_all = show_all
+        self.show_only_files = show_only_files
+        self.show_only_directories = show_only_directories
+        self.limit_file_num = limit_file_num
+        self.show_file_num = show_file_num
+        
+        # Set Lsi Modules
+        self.config = Config()
+        self.item_loader = LsiItemLoader()
+        self.content_transforms = LsiContentTransforms(
+                search_word=search_word,
+                limit_file_num=limit_file_num
+                )
+        self.visual_transforms = LsiVisualTransforms()
 
+    def print_items(self, children, condition):
+        """
+        Repeat self._visual_tr_manager() along directories and files on this level.
+        Then (or while), Print these.
+        
+        Parameters
+        ----------
+        children : List[children_d, children_f]
+        condition : Dict
+
+        Return
+        ------
+        status : Boolean
+            0 == success
+            1 == failed
+        """
+        children = children[0]+children[1]
+        for item in children:
+            s, output = self.visual_transforms.run(item, condition)
+            print(output)
+        status = 0
+        return status
 
     def run(self):
-        self._assert_dir_existance(self.dir)
-        children_d, children_f = self._get_children_of_dir(self.dir)
-        num_len = self.num_len
-        is_length = self.is_length
-        self._print_children(children_d, children_f, num_len, is_length)
-        print(A.test)
+        """
+        Management all functions.
+        """
+        status, children = self.item_loader.get_items(
+                self.dir, 
+                show_all=self.show_all,
+                show_only_directories=self.show_only_directories,
+                show_only_files=self.show_only_files
+                )
 
+        condition = {
+                'status': 0,
+                }
+        status, children = self.content_transforms.run(
+                children,
+                condition
+                )
 
-
+        condition = {
+                'status': 0
+                }
+        status = self.print_items(
+                children,
+                condition
+                )
+        
+        
 def main():
     # Parser setting
     parser = argparse.ArgumentParser(description="lsi ==lsImproved==")
     parser.add_argument('dir', type=str, nargs='?', default="./", metavar='DirectoryPath', help='directory where you want to look. (default: current directory)')
     parser.add_argument('-a','--all', action='store_true', help='show hidden files and directories. (default: Hidden)')
-    parser.add_argument('-d','--only-directories', action='store_true', help='show only directories.')
-    parser.add_argument('-f','--only-files', action='store_true', help='show only files.')
-    parser.add_argument('-s','--search', default=None, help='search word inside of file names and descriptions')
-    parser.add_argument('-n', '--num-len', type=int, default=50, help='set threshold for opening directory by many files')
-    parser.add_argument('-l','--is_length', action='store_true', help='show files num of directory')
+    parser.add_argument('-D','--only-directories', action='store_true', help='show only directories.')
+    parser.add_argument('-F','--only-files', action='store_true', help='show only files.')
+    parser.add_argument('-s','--search', default='', help='search word inside of file names and descriptions')
+    # parser.add_argument('-f','--show-file-num', action='store_true', help='show files num of directory')
+    parser.add_argument('-n', '--limit-file-num', type=int, default=50, help='set threshold for opening directory by many files')
     args = parser.parse_args()
 
     # Get parser arguments
     dir = args.dir
     dir = dir+'/' if dir[-1] != '/' else dir
-    is_all = args.all
-    is_only_directories = args.only_directories
-    is_only_files = args.only_files
-    num_len = args.num_len
-    is_length = args.is_length
-    search_word = args.search if args.search != '' else None
+    show_all = args.all
+    show_only_directories = args.only_directories
+    show_only_files = args.only_files
+    # show_file_num = args.show_file_num
+    limit_file_num = args.limit_file_num
+    search_word = args.search
 
     lsi = Lsi(
             dir,
-            is_all=is_all, 
-            is_only_directories=is_only_directories, 
-            is_only_files=is_only_files, 
-            num_len=num_len,
-            is_length=is_length,
+            show_all=show_all, 
+            show_only_directories=show_only_directories, 
+            show_only_files=show_only_files, 
+            # show_file_num=show_file_num,
+            limit_file_num=limit_file_num,
             search_word=search_word
             )
 

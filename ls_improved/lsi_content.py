@@ -1,4 +1,4 @@
-from config import Config
+from .config import Config
 
 class LsiContentTransforms():
     def __init__(self, search_word, limit_file_num):
@@ -15,11 +15,11 @@ class LsiContentTransforms():
         tags = list(self.config.color.keys())
         tag_mapper = []
         inv_tag_mapper = []
-        hash = ' ;;;'
+        hash = ' ' + self.config.symbol*21
         for tag in tags:
             tag_mapper += [hash+' ']
             inv_tag_mapper += [tag]
-            hash += ';'
+            hash += self.config.symbol
         output_children = [[], []]
         for item in children[0]+children[1]:
             match_path = search_word in item['path']

@@ -1,7 +1,7 @@
 import os
 from glob import glob
 
-from config import Config
+from .config import Config
 
 class LsiItemLoader():
     def __init__(self):

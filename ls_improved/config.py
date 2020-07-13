@@ -32,28 +32,29 @@ class Config():
             with open('~/.lsirc') as f:
                 lsirc = f.readlines()
 
-        """ Set Visual Setting """
-        self.tag = {
-                'dir': ';dir;',
-                'file': ';file;',
-                'description': ';desc;',
-                'search': ';ss;',
-                'search_end': ';se;',
-                'end': ';end;',
-                'red': ';red;'
-                }
-        self.color = {
-                ';dir;' : PyColor.UNDERLINE+PyColor.CYAN,
-                ';file;' : PyColor.WHITE,
-                ';desc;': PyColor.YELLOW,
-                ';ss;': PyColor.REVERCE,
-                ';se;': PyColor.END,
-                ';end;': PyColor.END,
-                ';red;': PyColor.RED
-                }
-
         """ Set description_path """
         self.description_name = '.description.lsi'
+        self.symbol = ';'
+
+        """ Set Visual Setting """
+        self.tag = {
+                'dir': self.symbol + 'dir' + self.symbol,
+                'file': self.symbol + 'file' + self.symbol,
+                'description': self.symbol + 'desc' + self.symbol,
+                'search': self.symbol + 'ss' + self.symbol,
+                'search_end': self.symbol + 'se' + self.symbol,
+                'end': self.symbol + 'end' + self.symbol,
+                'red': self.symbol + 'red' + self.symbol
+                }
+        self.color = {
+                self.symbol + 'dir' + self.symbol : PyColor.UNDERLINE+PyColor.CYAN,
+                self.symbol + 'file' + self.symbol : PyColor.WHITE,
+                self.symbol + 'desc' + self.symbol: PyColor.YELLOW,
+                self.symbol + 'ss' + self.symbol: PyColor.REVERCE,
+                self.symbol + 'se' + self.symbol: PyColor.END,
+                self.symbol + 'end' + self.symbol: PyColor.END,
+                self.symbol + 'red' + self.symbol: PyColor.RED
+                }
         self.indent = self.get_color('end')+' ── '
 
 
