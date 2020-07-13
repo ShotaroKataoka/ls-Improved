@@ -11,7 +11,6 @@ class LsiContentTransforms():
     def _search(self, children, prev_status):
         search_word = self.search_word
         replace_word = self.config.tag['search'] + search_word + self.config.tag['search_end']
-        #replace_word = self.config.color['search'] + search_word + self.config.color['end']
         output_children = [[], []]
         for item in children[0]+children[1]:
             match_path = search_word in item['path']

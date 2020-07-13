@@ -96,11 +96,13 @@ class LsiItemLoader():
             Dict.keys(default) = ['path', 'type', 'depth']
             Dict.keys(optional) = ['description', 'auth', 'children']
         """
+        base_path = path.split('/')[-1]
         if os.path.isdir(path):
             s, description = self._read_description(path)
             has_desc = True if description is not None else False
             item = {
-                    'path': path.split('/')[-1], 
+                    'path': base_path, 
+                    'path_length': len(base_path), 
                     'type': 'Dir',
                     'depth': 0
                     }
@@ -109,7 +111,8 @@ class LsiItemLoader():
             status = 0
         elif os.path.isfile(path):
             item = {
-                    'path': path.split('/')[-1],
+                    'path': base_path, 
+                    'path_length': len(base_path), 
                     'type': 'File',
                     'depth': 0
                     }

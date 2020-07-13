@@ -26,7 +26,7 @@ class LsiVisualTransforms():
         base_name = item['path']
         description = item['description']
 
-        blank = '\n'+' '*int(indent_length + len(base_name) + 3)
+        blank = '\n'+' '*int(indent_length + item['path_length'] + 3)
         description = description.split('\n')
         if len(description)>=2:
             if set(description[-1])==set(' ') or description[-1]=='':
