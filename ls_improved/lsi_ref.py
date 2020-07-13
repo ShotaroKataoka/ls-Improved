@@ -55,7 +55,8 @@ class Lsi():
         self.config = Config()
         self.item_loader = LsiItemLoader()
         self.content_transforms = LsiContentTransforms(
-                search_word=search_word
+                search_word=search_word,
+                limit_file_num=limit_file_num
                 )
         self.visual_transforms = LsiVisualTransforms()
 
@@ -94,7 +95,7 @@ class Lsi():
                 )
 
         condition = {
-                'status': 0
+                'status': 0,
                 }
         status, children = self.content_transforms.run(
                 children,

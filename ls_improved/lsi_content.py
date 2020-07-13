@@ -1,12 +1,13 @@
 from config import Config
 
 class LsiContentTransforms():
-    def __init__(self, search_word):
+    def __init__(self, search_word, limit_file_num):
         # Set Config
         self.config = Config()
 
         # Set Auguments
         self.search_word = search_word
+        self.limit_file_num = limit_file_num
 
     def _search(self, children, prev_status):
         search_word = self.search_word
@@ -46,6 +47,20 @@ class LsiContentTransforms():
         status = 0
         return status, output_children
 
+    def _limit_file_num(self, children, condition):
+        limit_file_num = self.limit_file_num
+        num = len(children[0]+children[1])
+        if num<=limit_file_num:
+            status = 0
+            return status, children
+        res = input('too many items ({}). show these? [y-n] : '.format(num))
+        if res.lower() in ['y', 'yes']:
+            status = 1
+            return status, children
+        else:
+            status = 2
+            return status, [[], []]
+
     def run(self, children, condition):
         """
         This apply content_transforms to all items.
@@ -67,6 +82,7 @@ class LsiContentTransforms():
         prev_status = condition['status']
         transforms = []
         transforms += [self._search] if self.search_word!='' else []
+        transforms += [self._limit_file_num] if self.limit_file_num!=0 else []
         for tr in transforms:
             prev_status, children = tr(children, prev_status)
         status = 0

@@ -26,6 +26,7 @@ class Mkdiri():
         self.desc_name = '.description.lsi'
 
     def _write_description(self, desc_path, description):
+        description = description.replace('\\n', '\n')
         with open(desc_path, 'w') as f:
             f.write(description)
 
