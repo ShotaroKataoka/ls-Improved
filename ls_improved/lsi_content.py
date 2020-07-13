@@ -11,18 +11,32 @@ class LsiContentTransforms():
     def _search(self, children, prev_status):
         search_word = self.search_word
         replace_word = self.config.tag['search'] + search_word + self.config.tag['search_end']
+        tags = list(self.config.color.keys())
+        tag_mapper = []
+        inv_tag_mapper = []
+        hash = ' ;;;'
+        for tag in tags:
+            tag_mapper += [hash+' ']
+            inv_tag_mapper += [tag]
+            hash += ';'
         output_children = [[], []]
         for item in children[0]+children[1]:
             match_path = search_word in item['path']
             if 'description' in item.keys():
-                match_desc = search_word in item['description']
+                description = item['description']
+                for hash, tag in zip(tag_mapper, inv_tag_mapper):
+                    description = description.replace(tag, hash)
+                match_desc = search_word in description
             else:
                 match_desc = False
             if match_path or match_desc:
                 if match_path:
                     item['path'] = item['path'].replace(search_word, replace_word)
                 if match_desc:
-                    item['description'] = item['description'].replace(search_word, replace_word)
+                    description = description.replace(search_word, replace_word)
+                    for hash, tag in zip(tag_mapper, inv_tag_mapper):
+                        description = description.replace(hash, tag)
+                    item['description'] = description
                 if item['type']=='Dir':
                     output_children[0] += [item]
                 elif item['type']=='File':
