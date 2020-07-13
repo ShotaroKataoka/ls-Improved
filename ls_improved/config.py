@@ -32,16 +32,31 @@ class Config():
             with open('~/.lsirc') as f:
                 lsirc = f.readlines()
 
+        """ Set Visual Setting """
+        self.tag = {
+                'dir': ';dir;',
+                'file': ';file;',
+                'description': ';desc;',
+                'search': ';ss;',
+                'search_end': ';se;',
+                'end': ';end;',
+                'red': ';red;'
+                }
+        self.color = {
+                ';dir;' : PyColor.UNDERLINE+PyColor.CYAN,
+                ';file;' : PyColor.WHITE,
+                ';desc;': PyColor.YELLOW,
+                ';ss;': PyColor.REVERCE,
+                ';se;': PyColor.END,
+                ';end;': PyColor.END,
+                ';red;': PyColor.RED
+                }
+
         """ Set description_path """
         self.description_name = '.description.lsi'
-        self.indent = ' ── '
+        self.indent = self.get_color('end')+' ── '
 
-        """ Set Visual Setting """
-        self.c_dir = PyColor.CYAN
-        self.c_desc = PyColor.YELLOW
-        self.c_under = PyColor.UNDERLINE
-        self.c_search = PyColor.REVERCE
-        self.c_back_black = PyColor.BACK_BLACK
-        self.c_end = PyColor.END
-        self.normal_indent = self.c_end+' ── '
+
+    def get_color(self, color):
+        return self.color[self.tag[color.lower()]]
 
