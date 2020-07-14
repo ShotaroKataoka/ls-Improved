@@ -44,17 +44,37 @@ class Config():
                 'search': self.symbol + 'ss' + self.symbol,
                 'search_end': self.symbol + 'se' + self.symbol,
                 'end': self.symbol + 'end' + self.symbol,
-                'red': self.symbol + 'red' + self.symbol
+                'end_user': self.symbol + 'e' + self.symbol,
+                'underline': self.symbol + '_' + self.symbol,
+                'red': self.symbol + 'r' + self.symbol,
+                'red2': self.symbol + 'red' + self.symbol,
+                'green': self.symbol + 'g' + self.symbol,
+                'green2': self.symbol + 'green' + self.symbol,
+                'blue': self.symbol + 'b' + self.symbol,
+                'blue2': self.symbol + 'blue' + self.symbol,
+                'purple': self.symbol + 'purple' + self.symbol,
+                'white': self.symbol + 'w' + self.symbol,
+                'white2': self.symbol + 'white' + self.symbol
                 }
         self.color = {
-                self.symbol + 'dir' + self.symbol : PyColor.UNDERLINE+PyColor.CYAN,
-                self.symbol + 'file' + self.symbol : PyColor.WHITE,
-                self.symbol + 'desc' + self.symbol: PyColor.YELLOW,
-                self.symbol + 'ss' + self.symbol: PyColor.REVERCE,
-                self.symbol + 'se' + self.symbol: PyColor.END,
-                self.symbol + 'end' + self.symbol: PyColor.END,
-                self.symbol + 'red' + self.symbol: PyColor.RED
+                self.tag['dir'] : PyColor.UNDERLINE+PyColor.CYAN,
+                self.tag['file'] : PyColor.WHITE,
+                self.tag['description'] : PyColor.YELLOW,
+                self.tag['search'] : PyColor.REVERCE,
+                self.tag['search_end'] : PyColor.END,
+                self.tag['end'] : PyColor.END,
+                self.tag['underline'] : PyColor.UNDERLINE,
+                self.tag['red'] : PyColor.RED,
+                self.tag['red2'] : PyColor.RED,
+                self.tag['green'] : PyColor.GREEN,
+                self.tag['green2'] : PyColor.GREEN,
+                self.tag['blue'] : PyColor.BLUE,
+                self.tag['blue2'] : PyColor.BLUE,
+                self.tag['purple'] : PyColor.PURPLE,
+                self.tag['white'] : PyColor.WHITE,
+                self.tag['white2'] : PyColor.WHITE
                 }
+        self.color[self.tag['end_user']] = PyColor.END+self.get_color('description')
         self.indent = self.get_color('end')+' ── '
 
 
