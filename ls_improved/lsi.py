@@ -115,14 +115,14 @@ class Lsi():
         
 def main():
     # Parser setting
-    parser = argparse.ArgumentParser(description="lsi ==lsImproved==")
-    parser.add_argument('dir', type=str, nargs='?', default="./", metavar='DirectoryPath', help='directory where you want to look. (default: current directory)')
-    parser.add_argument('-a','--all', action='store_true', help='show hidden files and directories. (default: Hidden)')
-    parser.add_argument('-D','--only-directories', action='store_true', help='show only directories.')
-    parser.add_argument('-F','--only-files', action='store_true', help='show only files.')
-    parser.add_argument('-s','--search', default='', help='search word inside of file names and descriptions')
+    parser = argparse.ArgumentParser(description="LSI - LS Improved")
+    parser.add_argument('dir', type=str, nargs='?', default="./", metavar='DirectoryPath', help='Directory where you want to look. (default: current directory)')
+    parser.add_argument('-a','--all', action='store_true', help='Show hidden files and directories. (default: Hidden)')
+    parser.add_argument('-D','--only-directories', action='store_true', help='Do not show files.')
+    parser.add_argument('-F','--only-files', action='store_true', help='Do not show directories.')
+    parser.add_argument('-s','--search', default='', metavar='STRING', help='Search word inside of file names and descriptions')
     # parser.add_argument('-f','--show-file-num', action='store_true', help='show files num of directory')
-    parser.add_argument('-n', '--limit-file-num', type=int, default=50, help='set threshold for opening directory by many files')
+    parser.add_argument('-n', '--limit-file-num', type=int, metavar='INT' ,default=0, help='set threshold for opening directory by many files')
     args = parser.parse_args()
 
     # Get parser arguments

@@ -90,10 +90,10 @@ class Mkdiri():
 
 def main():
     # Parser setting
-    parser = argparse.ArgumentParser(description="mkdiri ==mkdirImproved==")
-    parser.add_argument('dir', type=str, default="./", metavar='DirectoryPath', help='directory where you want to look. (default: current directory)')
-    parser.add_argument('description', type=str, nargs='?', default='', help='description message (default:No description.)')
-    parser.add_argument('-a','--add', action='store_true', help='add description if directory already exists. (default:False)')
+    parser = argparse.ArgumentParser(description="MKDIRI - MKDIR Improved")
+    parser.add_argument('dir', type=str, metavar='DirectoryPath', help='Directory which you want to make.')
+    parser.add_argument('description', type=str, metavar='STRING' ,nargs='?', default='', help='Description text (default:No description.)')
+    parser.add_argument('-a', '--add', action='store_true', help='Add description if directory already exists. (default:False)')
     args = parser.parse_args()
 
     # Get parser arguments
