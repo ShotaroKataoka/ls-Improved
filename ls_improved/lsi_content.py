@@ -15,9 +15,9 @@ class LsiContentTransforms():
         tags = list(self.config.color.keys())
         tag_mapper = []
         inv_tag_mapper = []
-        hash = ' ' + self.config.symbol*21
+        hash = '\\' + self.config.symbol*21
         for tag in tags:
-            tag_mapper += [hash+' ']
+            tag_mapper += [hash+'\\']
             inv_tag_mapper += [tag]
             hash += self.config.symbol
         output_children = [[], []]
