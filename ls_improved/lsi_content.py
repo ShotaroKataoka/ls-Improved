@@ -36,6 +36,7 @@ class LsiContentTransforms():
         -------
         status : Boolean
             0 == success
+            1 == failed
         output_children : List[children_d, children_f]
             children_d : List[items]
             children_f : List[items]
@@ -46,6 +47,13 @@ class LsiContentTransforms():
         tag_mapper = []
         inv_tag_mapper = []
         hash = '\\' + self.config.symbol*21
+        if set(hash)==set(search_word) or set(self.config.symbol)==set(search_word) or set('\\')==set(search_word):
+            status = 1
+            output_children = [[], []]
+            invalid_word = str(set(hash))
+            print('sorry, only', invalid_word, 'is invalid search word.')
+            return status, output_children
+
         for tag in tags:
             tag_mapper += [hash+'\\']
             inv_tag_mapper += [tag]
