@@ -19,7 +19,7 @@ class Lsi():
             search_word=''
             ):
         """
-        Constructor
+        lsi Manager.
         Set all optional command line arguments here.
         
         Parameters
@@ -41,6 +41,8 @@ class Lsi():
         limit_file_num : Int (Optional)
             (command) -n, --limit-file-num
             Set confirm condition (num of children files).
+        search_word : String (Optional)
+            (command) -s, --search
         """
         
         # Set CommandLine Arguments

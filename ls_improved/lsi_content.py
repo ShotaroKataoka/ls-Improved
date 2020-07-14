@@ -2,6 +2,17 @@ from .config import Config
 
 class LsiContentTransforms():
     def __init__(self, search_word, limit_file_num):
+        """
+        Content Transforms (for children).
+        e.g. custom sort function, grep function.
+
+        Parameters
+        ----------
+        search_word : String
+            (command) -s, --search
+        limit_file_num : Int
+            (command) -n, --limit-file-num
+        """
         # Set Config
         self.config = Config()
 
@@ -10,6 +21,25 @@ class LsiContentTransforms():
         self.limit_file_num = limit_file_num
 
     def _search(self, children, prev_status):
+        """
+        Search word from path and description.
+        This like grep function.
+
+        Parameters
+        ----------
+        children : List[children_d, children_f]
+            children_d : List[items]
+            children_f : List[items]
+        prev_status : Int
+
+        Returns
+        -------
+        status : Boolean
+            0 == success
+        output_children : List[children_d, children_f]
+            children_d : List[items]
+            children_f : List[items]
+        """
         search_word = self.search_word
         replace_word = self.config.tag['search'] + search_word + self.config.tag['search_end']
         tags = list(self.config.color.keys())
@@ -48,6 +78,26 @@ class LsiContentTransforms():
         return status, output_children
 
     def _limit_file_num(self, children, condition):
+        """
+        Alert number of files if it exceeded limit.
+
+        Parameters
+        ----------
+        children : List[children_d, children_f]
+            children_d : List[items]
+            children_f : List[items]
+        prev_status : Int
+
+        Returns
+        -------
+        status : Boolean
+            0 == number of files <= limit
+            1 == number of files > limit, and 'yes'
+            2 == number of files < limit, and 'no'
+        output_children : List[children_d, children_f]
+            children_d : List[items]
+            children_f : List[items]
+        """
         limit_file_num = self.limit_file_num
         num = len(children[0]+children[1])
         if num<=limit_file_num:

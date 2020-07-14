@@ -5,6 +5,17 @@ from .config import Config
 
 class LsiItemLoader():
     def __init__(self):
+        """
+        Item Loader
+
+        Return 
+        ------
+        children : List[children_d, children_f]  
+            children_d : List[items]
+                item : Dict
+                    dict.keys(default) = ['path', 'type', 'depth']
+                    dict.keys(optional) = ['description', 'auth', 'children']
+        """
         # Set Config
         self.config = Config()
 
@@ -93,8 +104,8 @@ class LsiItemLoader():
             1 == path is file
             2 == error
         item : Dict
-            Dict.keys(default) = ['path', 'type', 'depth']
-            Dict.keys(optional) = ['description', 'auth', 'children']
+            dict.keys(default) = ['path', 'type', 'depth']
+            dict.keys(optional) = ['description', 'auth', 'children']
         """
         base_path = path.split('/')[-1]
         if os.path.isdir(path):

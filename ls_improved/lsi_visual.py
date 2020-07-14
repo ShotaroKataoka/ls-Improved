@@ -2,21 +2,27 @@ from .config import Config
 
 class LsiVisualTransforms():
     def __init__(self):
+        """
+        Visual Transforms (for item).
+        e.g. set color, set indent.
+        """
         # Set Config
         self.config = Config()
 
     def _add_indent_to_new_line(self, item, prev_status):
         """
-        Visual transform of Description.
+        Visual transform for Description.
         Add indent to new line. \n -> \n____
 
         Parameters
         ----------
-        description : String
-        dir_length : Int
-            Length of directory name.
-        depth : Int (Optional)
-            Depth of directory. This control indent depth.
+        item : Dict
+        prev_status : Boolean
+
+        Returns
+        -------
+        status : Boolean
+        item : Dict
         """
         if 'description' not in item.keys():
             item['description'] = item['type']
@@ -37,6 +43,20 @@ class LsiVisualTransforms():
         return status, item
 
     def _add_color_to_path(self, item, prev_status):
+        """
+        Visual transform for Path.
+        Add color to Path text.
+
+        Parameters
+        ----------
+        item : Dict
+        prev_status : Boolean
+
+        Returns
+        -------
+        status : Boolean
+        item : Dict
+        """
         type = item['type']
         config = self.config
         if type=='Dir':
@@ -47,6 +67,20 @@ class LsiVisualTransforms():
         return status, item
 
     def _tag2color(self, item, prev_status):
+        """
+        Visual transform for Description.
+        change tag text to color code.
+
+        Parameters
+        ----------
+        item : Dict
+        prev_status : Boolean
+
+        Returns
+        -------
+        status : Boolean
+        item : Dict
+        """
         config = self.config
         text = item['path']
         text = item['path'].replace(config.tag['search'], config.get_color('search'))
@@ -83,6 +117,22 @@ class LsiVisualTransforms():
         return status, item
 
     def _concat_item(self, item, prev_status):
+        """
+        Concatenate all texts.
+        Output final string like below.
+        'file name / description\n
+                     new line description'
+
+        Parameters
+        ----------
+        item : Dict
+        prev_status : Boolean
+
+        Returns
+        -------
+        status : Boolean
+        output : String
+        """
         indent = ' '*4*item['depth'] + self.config.indent
         output = indent + item['path'] + ' / ' + item['description']
         status = 0
