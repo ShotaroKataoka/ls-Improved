@@ -157,6 +157,12 @@ class LsiItemLoader():
             children_d : List[items of directories]
             children_f : List[items of files]
         """
+        if not os.path.isdir(dir):
+            print('error: cannot open directory \''+dir+'\': No such directory.')
+            exit()
+        if not os.access(dir, os.R_OK):
+            print('error: cannot open directory \''+dir+'\': Permission denied.')
+            exit()
         status, children = self._get_children(dir, show_all=show_all, get_only_directories=show_only_directories, get_only_files=show_only_files)
         children_d, children_f = children
         children_d = [self._create_item(child)[1] for child in children_d]
