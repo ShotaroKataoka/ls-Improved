@@ -74,6 +74,14 @@ class Mkdiri():
         If path not found, raise error.
         """
         print('error: invalid path.')
+        exit()
+
+    def _raise_permission_denied_error(self):
+        """
+        If not have permission, raise error.
+        """
+        print('error: Permission denied.')
+        exit()
 
     def run(self):
         """
@@ -87,6 +95,9 @@ class Mkdiri():
                 self._raise_file_exists_error(self.dir, self.description)
             if 'No such file or directory' in e:
                 self._raise_path_not_found_error()
+            if 'Permission denied' in e:
+                self._raise_permission_denied_error()
+            print(e)
 
 def main():
     # Parser setting
