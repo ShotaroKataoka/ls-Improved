@@ -47,10 +47,9 @@ class LsiContentTransforms():
         tag_mapper = []
         inv_tag_mapper = []
         hash = '\\' + self.config.symbol*21
-        if set(hash)==set(search_word) or \
-           set(self.config.symbol)==set(search_word) or \
-           set('\\')==set(search_word) or \
-           search_word[-1]=='\\' or search_word[0]=='\\':
+        if set(self.config.symbol)==set(search_word) or \
+           search_word[-1]=='\\' or search_word[0]=='\\' or \
+           '\\'+self.config.symbol in search_word or self.config.symbol+'\\' in search_word:
             status = 1
             output_children = [[], []]
             invalid_word = str(set(hash))
