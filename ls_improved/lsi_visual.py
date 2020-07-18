@@ -117,6 +117,21 @@ class LsiVisualTransforms():
         return status, item
 
     def _select_indent_head(self, item, place):
+        """
+        Select indent head ├,└
+
+        Parameters
+        ----------
+        item : Dict
+        place : Int
+            0 if item is not last of children
+            1 if item is last of children
+
+        Returns
+        -------
+        head : String (├ or └)
+        item : Dict
+        """
         if place==0:
             return '├', item
         if place==1:
