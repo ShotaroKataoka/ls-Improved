@@ -153,9 +153,11 @@ class LsiItemLoader():
         status : Int
             0 == success
             1 == error
-        children : List[children_d, children_f]
-            children_d : List[items of directories]
-            children_f : List[items of files]
+        top_item : Dict
+            keys : path, children_d, children_f
+                path : Strin (path of top directory)
+                children_d : List[items]
+                children_f : List[items]
         """
         if not os.path.isdir(dir):
             print('error: cannot open directory \''+dir+'\': No such directory.')
@@ -167,6 +169,10 @@ class LsiItemLoader():
         children_d, children_f = children
         children_d = [self._create_item(child)[1] for child in children_d]
         children_f = [self._create_item(child)[1] for child in children_f]
-        children = [children_d, children_f]
-        return status, children
+        top_item = {
+                'path': dir,
+                'children_d': children_d,
+                'children_f': children_f
+                }
+        return status, top_item
 

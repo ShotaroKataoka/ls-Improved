@@ -54,7 +54,8 @@ class Config():
                 'blue2': self.symbol + 'blue' + self.symbol,
                 'purple': self.symbol + 'purple' + self.symbol,
                 'white': self.symbol + 'w' + self.symbol,
-                'white2': self.symbol + 'white' + self.symbol
+                'white2': self.symbol + 'white' + self.symbol,
+                'description_white': self.symbol + 'dw' + self.symbol
                 }
         self.color = {
                 self.tag['dir'] : PyColor.UNDERLINE+PyColor.CYAN,
@@ -72,10 +73,11 @@ class Config():
                 self.tag['blue2'] : PyColor.BLUE,
                 self.tag['purple'] : PyColor.PURPLE,
                 self.tag['white'] : PyColor.WHITE,
-                self.tag['white2'] : PyColor.WHITE
+                self.tag['white2'] : PyColor.WHITE,
+                self.tag['description_white'] : PyColor.WHITE
                 }
         self.color[self.tag['end_user']] = PyColor.END+self.get_color('description')
-        self.indent = self.get_color('end')+' ── '
+        self.indent = self.get_color('end')+'── '
 
 
     def get_color(self, color):

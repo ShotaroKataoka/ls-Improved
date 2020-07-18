@@ -25,21 +25,20 @@ class LsiVisualTransforms():
         item : Dict
         """
         if 'description' not in item.keys():
-            item['description'] = item['type']
             status = 1
             return status, item
-        indent_length = 4 * (item['depth']+1)
+        indent_length = 3 * (item['depth']+1)
         base_name = item['path']
         description = item['description']
 
-        blank = '\n'+' '*int(indent_length + item['path_length'] + 3)
+        blank = '\n'+';dw;│;se;' + ' '*int(indent_length + item['path_length'] + 3)
         description = description.split('\n')
         if len(description)>=2:
             if set(description[-1])==set(' ') or description[-1]=='':
                 description = description[:-1]
         description = blank.join(description)
         status = 0
-        item['description'] = description
+        item['description'] = description+';end;'
         return status, item
 
     def _add_color_to_path(self, item, prev_status):
@@ -91,7 +90,7 @@ class LsiVisualTransforms():
             return status, item
 
         description = [{'tag':config.tag['description'], 'text':item['description']}]
-        for tag in set(config.tag.values())-set([';ss;', ';se;', ';end;']):
+        for tag in set(config.tag.values())-set([';ss;', ';se;', ';dw;']):
             new_description = [[desc] for desc in description]
             for i, desc in enumerate(description):
                 splited_text = desc['text'].split(tag)
@@ -109,6 +108,7 @@ class LsiVisualTransforms():
         output_description = ''
         for desc in description:
             text = desc['text'].replace(config.tag['search'], config.get_color('search'))
+            text = text.replace(config.tag['description_white'], config.get_color('description_white'))
             text = text.replace(config.tag['search_end'], config.get_color('search_end')+config.color[desc['tag']])
             output_description += config.color[desc['tag']]
             output_description += text
@@ -116,7 +116,16 @@ class LsiVisualTransforms():
         status = 0
         return status, item
 
-    def _concat_item(self, item, prev_status):
+    def _select_indent_head(self, item, place):
+        if place==0:
+            return '├', item
+        if place==1:
+            if 'description' in item.keys():
+                item['description'] = item['description'].replace(self.config.get_color('description_white')+'│'+self.config.get_color('search_end'), self.config.get_color('search_end')+' ')
+            return '└', item
+
+
+    def _concat_item(self, item, place):
         """
         Concatenate all texts.
         Output final string like below.
@@ -133,8 +142,13 @@ class LsiVisualTransforms():
         status : Boolean
         output : String
         """
-        indent = ' '*4*item['depth'] + self.config.indent
-        output = indent + item['path'] + ' / ' + item['description']
+        head, item = self._select_indent_head(item, place)
+        if 'description' in item.keys():
+            description = item['description']
+        else:
+            description = item['type']
+        indent = head+'a'*3*item['depth'] + self.config.indent
+        output = indent + item['path'] + ' / ' + description
         status = 0
         return status, output
 
@@ -158,11 +172,11 @@ class LsiVisualTransforms():
         """
         prev_status = condition['status']
         transforms = []
-        transforms += [self._tag2color]
         transforms += [self._add_indent_to_new_line]
+        transforms += [self._tag2color]
         transforms += [self._add_color_to_path]
         for tr in transforms:
             prev_status, item = tr(item, prev_status)
 
-        status, output = self._concat_item(item, prev_status)
+        status, output = self._concat_item(item, condition['is_last'])
         return status, output

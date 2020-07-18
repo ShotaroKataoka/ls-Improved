@@ -47,7 +47,8 @@ class Mkdiri():
         description : String
             description text
         """
-        os.mkdir(dir_path)
+        if not os.path.exists(dir_path):
+            os.mkdir(dir_path)
         self._write_description(dir_path+self.desc_name, description)
 
     def _raise_file_exists_error(self, dir_path, description):

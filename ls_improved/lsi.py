@@ -62,13 +62,14 @@ class Lsi():
                 )
         self.visual_transforms = LsiVisualTransforms()
 
-    def print_items(self, children, condition):
+    def print_items(self, top_path, children, condition):
         """
         Repeat self._visual_tr_manager() along directories and files on this level.
         Then (or while), Print these.
         
         Parameters
         ----------
+        top_path : String
         children : List[children_d, children_f]
         condition : Dict
 
@@ -79,7 +80,13 @@ class Lsi():
             1 == failed
         """
         children = children[0]+children[1]
-        for item in children:
+        if len(children)>0 and top_path!='./':
+            print(self.config.get_color('underline')+os.path.abspath(top_path)+'/')
+        for i, item in enumerate(children):
+            if i+1==len(children):
+                condition['is_last'] = 1
+            else:
+                condition['is_last'] = 0
             s, output = self.visual_transforms.run(item, condition)
             print(output)
         status = 0
@@ -89,12 +96,14 @@ class Lsi():
         """
         Management all functions.
         """
-        status, children = self.item_loader.get_items(
+        status, top_item = self.item_loader.get_items(
                 self.dir, 
                 show_all=self.show_all,
                 show_only_directories=self.show_only_directories,
                 show_only_files=self.show_only_files
                 )
+        top_path = top_item['path']
+        children = [top_item['children_d'], top_item['children_f']]
 
         condition = {
                 'status': 0,
@@ -108,6 +117,7 @@ class Lsi():
                 'status': 0
                 }
         status = self.print_items(
+                top_path,
                 children,
                 condition
                 )
