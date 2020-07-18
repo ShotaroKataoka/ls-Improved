@@ -17,6 +17,7 @@ class PyColor:
     REVERCE = '\033[07m'
     BACK_LIGHT_YELLOW = '\033[230m'
     BACK_BLACK = '\033[40m'
+    MAGENTA = '\033[95m'
 
 
 class Config():
@@ -38,6 +39,7 @@ class Config():
 
         """ Set Visual Setting """
         self.tag = {
+                'pwd': self.symbol + 'pwd' + self.symbol,
                 'dir': self.symbol + 'dir' + self.symbol,
                 'file': self.symbol + 'file' + self.symbol,
                 'description': self.symbol + 'desc' + self.symbol,
@@ -58,6 +60,7 @@ class Config():
                 'description_white': self.symbol + 'dw' + self.symbol
                 }
         self.color = {
+                self.tag['pwd'] : PyColor.UNDERLINE+PyColor.MAGENTA,
                 self.tag['dir'] : PyColor.UNDERLINE+PyColor.CYAN,
                 self.tag['file'] : PyColor.WHITE,
                 self.tag['description'] : PyColor.YELLOW,

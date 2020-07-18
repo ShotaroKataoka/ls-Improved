@@ -81,7 +81,7 @@ class Lsi():
         """
         children = children[0]+children[1]
         if len(children)>0 and top_path!='./':
-            print(self.config.get_color('underline')+os.path.abspath(top_path)+'/')
+            print(self.config.get_color('pwd')+os.path.abspath(top_path)+'/'+self.config.get_color('end'))
         for i, item in enumerate(children):
             if i+1==len(children):
                 condition['is_last'] = 1
