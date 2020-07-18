@@ -3,7 +3,7 @@ import os
 
 class PyColor:
     """ Standard IO Color Settings. """
-    RED = '\033[31m'
+    RED = '\033[0;31m'
     GREEN = '\033[32m'
     YELLOW = '\033[33m'
     BLUE = '\033[34m'
@@ -17,7 +17,7 @@ class PyColor:
     REVERCE = '\033[07m'
     BACK_LIGHT_YELLOW = '\033[230m'
     BACK_BLACK = '\033[40m'
-    MAGENTA = '\033[95m'
+    LIGHT_CYAN = '\033[1;36m'
 
 
 class Config():
@@ -40,6 +40,7 @@ class Config():
         """ Set Visual Setting """
         self.tag = {
                 'pwd': self.symbol + 'pwd' + self.symbol,
+                'pwd_current': self.symbol + 'pwd_c' + self.symbol,
                 'dir': self.symbol + 'dir' + self.symbol,
                 'file': self.symbol + 'file' + self.symbol,
                 'description': self.symbol + 'desc' + self.symbol,
@@ -60,7 +61,8 @@ class Config():
                 'description_white': self.symbol + 'dw' + self.symbol
                 }
         self.color = {
-                self.tag['pwd'] : PyColor.UNDERLINE+PyColor.MAGENTA,
+                self.tag['pwd'] : PyColor.UNDERLINE+PyColor.CYAN,
+                self.tag['pwd_current'] : PyColor.LIGHT_CYAN,
                 self.tag['dir'] : PyColor.UNDERLINE+PyColor.CYAN,
                 self.tag['file'] : PyColor.WHITE,
                 self.tag['description'] : PyColor.YELLOW,
