@@ -4,10 +4,9 @@
 **ls-Improved (lsi)** prints out a directory structure with its descriptions. 
 I've been using it when tackling some seriese of experiments.(e.g. machine leaning experiments.)  
 
-
+### Example
 ```
 experiment_00 experiment_01 experiment_02 experiment_03 experiment_04 experiment_05
-.......
 ```
 このような機械的なディレクトリ群から必要なディレクトリを見つけることは容易ではありません。  
 従来はテキストファイルや外部ツールを使ってこれらのディレクトリを管理する必要がありましたが，lsiではコマンド１つで下記のように一覧性良くディレクトリの説明文を表示することができます。  
