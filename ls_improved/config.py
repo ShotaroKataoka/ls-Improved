@@ -77,8 +77,8 @@ class Config():
                 self.tag['green2'] : PyColor.GREEN,
                 self.tag['blue'] : PyColor.BLUE,
                 self.tag['blue2'] : PyColor.BLUE,
-                self.tag['p'] : PyColor.PURPLE,
                 self.tag['purple'] : PyColor.PURPLE,
+                self.tag['purple2'] : PyColor.PURPLE,
                 self.tag['white'] : PyColor.WHITE,
                 self.tag['white2'] : PyColor.WHITE,
                 self.tag['description_white'] : PyColor.WHITE
