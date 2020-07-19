@@ -9,7 +9,7 @@ We have some directories like below.
 ```
 experiment_00/ experiment_01/ experiment_02/ experiment_03/ experiment_04/ experiment_05/
 ```
-Sometimes we'd like to access best result of experiment, but it is not easy.  We have to open all of these, or we have to note experiments_summary.txt beforehand and read it.  
+Sometimes we'd like to access best result of experiment, but it is not easy.  If we will do it, we have to open all of directories or we have to note experiments_summary.txt beforehand and read it.  
 Now we have **ls-Improved(lsi)** command here.  If we utilize it, we can see list of directories with its descriptions.  
 ```
 experiment_00 / score=0.85, lr=1e-6, batch_size=16
