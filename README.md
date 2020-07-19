@@ -5,11 +5,12 @@
 I've been using it when tackling some seriese of experiments.(e.g. machine leaning experiments.)  
 
 ### Example
+We have some directories like below.
 ```
-experiment_00 experiment_01 experiment_02 experiment_03 experiment_04 experiment_05
+experiment_00/ experiment_01/ experiment_02/ experiment_03/ experiment_04/ experiment_05/
 ```
-このような機械的なディレクトリ群から必要なディレクトリを見つけることは容易ではありません。  
-従来はテキストファイルや外部ツールを使ってこれらのディレクトリを管理する必要がありましたが，lsiではコマンド１つで下記のように一覧性良くディレクトリの説明文を表示することができます。  
+Sometimes we'd like to access best result of experiment, but it is not easy.  We have to open all of these, or we have to note experiments_summary.txt beforehand and read it.  
+Now we have **ls-Improved(lsi)** command here.  If we utilize it, we can see list of directories with its descriptions.  
 ```
 experiment_00 / score=0.85, lr=1e-6, batch_size=16
 experiment_01 / score=0.90, lr=1e-3, batch_size=16
@@ -18,7 +19,6 @@ experiment_03 / score=0.80, lr=1e-3, batch_size=32
 experiment_04 / score=0.95, lr=1e-6, batch_size=16, with BatchNorm
                 best validation result.
 experiment_05 / score=0.93, lr=1e-6, batch_size=32, with BatchNorm
-......
 ```
 
 ## Requirements
