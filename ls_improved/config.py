@@ -55,7 +55,8 @@ class Config():
                 'green2': self.symbol + 'green' + self.symbol,
                 'blue': self.symbol + 'b' + self.symbol,
                 'blue2': self.symbol + 'blue' + self.symbol,
-                'purple': self.symbol + 'purple' + self.symbol,
+                'purple': self.symbol + 'p' + self.symbol,
+                'purple2': self.symbol + 'purple' + self.symbol,
                 'white': self.symbol + 'w' + self.symbol,
                 'white2': self.symbol + 'white' + self.symbol,
                 'description_white': self.symbol + 'dw' + self.symbol
@@ -76,6 +77,7 @@ class Config():
                 self.tag['green2'] : PyColor.GREEN,
                 self.tag['blue'] : PyColor.BLUE,
                 self.tag['blue2'] : PyColor.BLUE,
+                self.tag['p'] : PyColor.PURPLE,
                 self.tag['purple'] : PyColor.PURPLE,
                 self.tag['white'] : PyColor.WHITE,
                 self.tag['white2'] : PyColor.WHITE,
