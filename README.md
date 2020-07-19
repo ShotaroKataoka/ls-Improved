@@ -1,4 +1,4 @@
-# ls-Improved: descriptive file viewer on Python.
+# ls-Improved: descriptive file list viewer on Python.
 [![Downloads](https://pepy.tech/badge/ls-improved)](https://pepy.tech/project/ls-improved)
 ## What is it?
 **ls-Improved (lsi)** prints out a directory structure with its descriptions. 
