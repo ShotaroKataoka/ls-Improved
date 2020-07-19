@@ -1,14 +1,12 @@
 # ls-Improved: descriptive file viewer on Python.
 [![Downloads](https://pepy.tech/badge/ls-improved)](https://pepy.tech/project/ls-improved)
 ## What is it?
-*****ls-Improved (lsi)**は大量のディレクトリ群から目当てのディレクトリを見つけることを補助するためのコマンドです。  
+**ls-Improved (lsi)** prints out a directory structure with its descriptions. 
+I've been using it when tackling some seriese of experiments.(e.g. machine leaning experiments.)  
+
+
 ```
-experiment_00
-experiment_01
-experiment_02
-experiment_03
-experiment_04
-experiment_05
+experiment_00 experiment_01 experiment_02 experiment_03 experiment_04 experiment_05
 .......
 ```
 このような機械的なディレクトリ群から必要なディレクトリを見つけることは容易ではありません。  
@@ -26,6 +24,7 @@ experiment_05 / score=0.93, lr=1e-6, batch_size=32, with BatchNorm
 
 ## Requirements
 python2.7とpython3.7で動作確認  
+It is working on Python, so this command is not depend on OS.  
 
 ## Setup
 ### Install
