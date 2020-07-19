@@ -6,7 +6,8 @@ I've been using it when tackling some seriese of experiments.(e.g. machine leani
 
 ### Example
 We have some directories like below.  
-Sometimes we'd like to access best result of experiment, but it is not easy.  If we will do it, we will have to open all of directories or note experiments_summary.txt beforehand and read it.  
+Sometimes we'd like to access best result of experiment, but it is not easy.  
+If we will do it, we'll have to open all of directories or note experiments_summary.txt beforehand and read it.  
 ```
 experiment_00/ experiment_01/ experiment_02/ experiment_03/ experiment_04/ experiment_05/
 ```
