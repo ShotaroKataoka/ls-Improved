@@ -1,4 +1,4 @@
-# ls-Improved: descriptive ls-command working on Python.
+# ls-Improved: descriptive ls-like-command working on Python.
 [![Downloads](https://pepy.tech/badge/ls-improved)](https://pepy.tech/project/ls-improved)
 ## What is it?
 **ls-Improved (lsi)** prints out a directory structure with its descriptions. 
@@ -7,20 +7,10 @@ I've been using it when tackling some seriese of experiments.(e.g. machine leani
 ### Example
 We have some directories like below.  
 Sometimes we'd like to access best result of experiment, but it is not easy.  It is necessary to open all of directories or note experiments_summary.txt beforehand in order to do it.  
-```
-experiment_00/ experiment_01/ experiment_02/ experiment_03/ experiment_04/ experiment_05/
-```
+![ls](https://github.com/ShotaroKataoka/ls-Improved/blob/topic/v0.2.7-README/ISSUE54/doc/images/ls_using.png)
 
 Now we have the **ls-Improved(lsi)** command here.  It allow us to see list of directories with its descriptions simultaneously.  
-```
-experiment_00 / score=0.85, lr=1e-6, batch_size=16
-experiment_01 / score=0.90, lr=1e-3, batch_size=16
-experiment_02 / score=0.88, lr=1e-6, batch_size=32
-experiment_03 / score=0.80, lr=1e-3, batch_size=32
-experiment_04 / score=0.95, lr=1e-6, batch_size=16, with BatchNorm
-                best validation result.
-experiment_05 / score=0.93, lr=1e-6, batch_size=32, with BatchNorm
-```
+![lsi](https://github.com/ShotaroKataoka/ls-Improved/blob/topic/v0.2.7-README/ISSUE54/doc/images/lsi_using.png)
 
 ## Requirements
 python2.7とpython3.7で動作確認  
