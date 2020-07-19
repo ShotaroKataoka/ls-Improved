@@ -19,7 +19,7 @@ class Lsi():
             search_word=''
             ):
         """
-        Constructor
+        lsi Manager.
         Set all optional command line arguments here.
         
         Parameters
@@ -41,6 +41,8 @@ class Lsi():
         limit_file_num : Int (Optional)
             (command) -n, --limit-file-num
             Set confirm condition (num of children files).
+        search_word : String (Optional)
+            (command) -s, --search
         """
         
         # Set CommandLine Arguments
@@ -60,13 +62,14 @@ class Lsi():
                 )
         self.visual_transforms = LsiVisualTransforms()
 
-    def print_items(self, children, condition):
+    def print_items(self, top_path, children, condition):
         """
         Repeat self._visual_tr_manager() along directories and files on this level.
         Then (or while), Print these.
         
         Parameters
         ----------
+        top_path : String
         children : List[children_d, children_f]
         condition : Dict
 
@@ -77,7 +80,16 @@ class Lsi():
             1 == failed
         """
         children = children[0]+children[1]
-        for item in children:
+        if len(children)>0 and top_path!='./':
+            top_path = os.path.abspath(top_path)
+            above_path = self.config.get_color('pwd') + '/'.join(top_path.split('/')[:-1])+'/'
+            base_name = self.config.get_color('pwd_current')+top_path.split('/')[-1]+'/'
+            print(above_path+base_name+self.config.get_color('end'))
+        for i, item in enumerate(children):
+            if i+1==len(children):
+                condition['is_last'] = 1
+            else:
+                condition['is_last'] = 0
             s, output = self.visual_transforms.run(item, condition)
             print(output)
         status = 0
@@ -87,12 +99,14 @@ class Lsi():
         """
         Management all functions.
         """
-        status, children = self.item_loader.get_items(
+        status, top_item = self.item_loader.get_items(
                 self.dir, 
                 show_all=self.show_all,
                 show_only_directories=self.show_only_directories,
                 show_only_files=self.show_only_files
                 )
+        top_path = top_item['path']
+        children = [top_item['children_d'], top_item['children_f']]
 
         condition = {
                 'status': 0,
@@ -106,6 +120,7 @@ class Lsi():
                 'status': 0
                 }
         status = self.print_items(
+                top_path,
                 children,
                 condition
                 )
@@ -113,14 +128,14 @@ class Lsi():
         
 def main():
     # Parser setting
-    parser = argparse.ArgumentParser(description="lsi ==lsImproved==")
-    parser.add_argument('dir', type=str, nargs='?', default="./", metavar='DirectoryPath', help='directory where you want to look. (default: current directory)')
-    parser.add_argument('-a','--all', action='store_true', help='show hidden files and directories. (default: Hidden)')
-    parser.add_argument('-D','--only-directories', action='store_true', help='show only directories.')
-    parser.add_argument('-F','--only-files', action='store_true', help='show only files.')
-    parser.add_argument('-s','--search', default='', help='search word inside of file names and descriptions')
+    parser = argparse.ArgumentParser(description="LSI - LS Improved")
+    parser.add_argument('dir', type=str, nargs='?', default="./", metavar='DirectoryPath', help='Directory where you want to look. (default: current directory)')
+    parser.add_argument('-a','--all', action='store_true', help='Show hidden files and directories. (default: Hidden)')
+    parser.add_argument('-D','--only-directories', action='store_true', help='Do not show files.')
+    parser.add_argument('-F','--only-files', action='store_true', help='Do not show directories.')
+    parser.add_argument('-s','--search', default='', metavar='STRING', help='Search word inside of file names and descriptions')
     # parser.add_argument('-f','--show-file-num', action='store_true', help='show files num of directory')
-    parser.add_argument('-n', '--limit-file-num', type=int, default=50, help='set threshold for opening directory by many files')
+    parser.add_argument('-n', '--limit-file-num', type=int, metavar='INT' ,default=0, help='set threshold for opening directory by many files')
     args = parser.parse_args()
 
     # Get parser arguments
