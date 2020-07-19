@@ -14,7 +14,7 @@ Now we have the **ls-Improved(lsi)** command here.  It allows us to see list of 
 
 ## Requirements
 python2.7とpython3.7で動作確認  
-It is working on Python, so this command is not depend on OS.  
+It is working on Python, so this command dose not depend on OS.  
 
 ## Setup
 ### Install
