@@ -9,11 +9,11 @@
 しばしば、「このパラメータで実験したディレクトリはどれかなー。」とか「最良の結果を出した実験はどれだっけ」とかで迷うことがあります。  
 そういうときは全ディレクトリをひとつひとつ確認したり、どこかのテキストファイルにすべての実験結果をメモしておいてそれを確認したりしますが、結構めんどくさいです。  
 
-![ls](https://github.com/ShotaroKataoka/ls-Improved/blob/topic/v0.2.7-README/ISSUE54/doc/images/ls_using.png)
+![ls](https://github.com/ShotaroKataoka/ls-Improved/blob/master/doc/images/ls_using.png)
 
 そういう背景があり**ls-Improved** を開発しました。このコマンドを使えば、下のようにどのディレクトリがどういったものか、ということが一目でわかります。
 
-![lsi](https://github.com/ShotaroKataoka/ls-Improved/blob/topic/v0.2.7-README/ISSUE54/doc/images/lsi_using.png)
+![lsi](https://github.com/ShotaroKataoka/ls-Improved/blob/master/doc/images/lsi_using.png)
 
 
 ## Requirements
@@ -54,7 +54,7 @@ pipする権限がない場合などは以下の手順でインストールし�
 
 **例**  
 
-![lsi](https://github.com/ShotaroKataoka/ls-Improved/blob/topic/v0.2.7-README/ISSUE54/doc/images/mkdiri_decoration.png)
+![lsi](https://github.com/ShotaroKataoka/ls-Improved/blob/master/doc/images/mkdiri_decoration.png)
 
 ### lsi
 - `lsi` : カレントディレクトリ内のファイルとディレクトリを表示  
