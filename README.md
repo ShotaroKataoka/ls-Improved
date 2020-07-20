@@ -13,7 +13,7 @@ Now we have the **ls-Improved(lsi)** command here.  It allows us to see list of 
 ![lsi](https://github.com/ShotaroKataoka/ls-Improved/blob/topic/v0.2.7-README/ISSUE54/doc/images/lsi_using.png)
 
 ## Requirements
-developed on python2.7 and python3.7  
+developed on Python2.7 and Python3.7 (so maybe ≧Python2.7 is ok.)  
 It is working on Python, so this command dose not depend on OS.  
 
 ## Install
