@@ -1,67 +1,65 @@
-# ls-Improved
+# ls-Improved : 説明文つきのlsっぽいコマンド
 [![Downloads](https://pepy.tech/badge/ls-improved)](https://pepy.tech/project/ls-improved)
-## Description
-ls-Improved (lsi)は大量のディレクトリ群から目当てのディレクトリを見つけることを補助するためのコマンドです。  
-```
-experiment_00
-experiment_01
-experiment_02
-experiment_03
-experiment_04
-experiment_05
-.......
-```
-このような機械的なディレクトリ群から必要なディレクトリを見つけることは容易ではありません。  
-従来はテキストファイルや外部ツールを使ってこれらのディレクトリを管理する必要がありましたが，lsiではコマンド１つで下記のように一覧性良くディレクトリの説明文を表示することができます。  
-```
-experiment_00 / score=0.85, lr=1e-6, batch_size=16
-experiment_01 / score=0.90, lr=1e-3, batch_size=16
-experiment_02 / score=0.88, lr=1e-6, batch_size=32
-experiment_03 / score=0.80, lr=1e-3, batch_size=32
-experiment_04 / score=0.95, lr=1e-6, batch_size=16, with BatchNorm
-                best validation result.
-experiment_05 / score=0.93, lr=1e-6, batch_size=32, with BatchNorm
-......
-```
+## なにこれ？
+**ls-Improved(lsi)** はディレクトリやファイルの一覧を表示する`ls`っぽいコマンドです。`ls`との違いはディレクトリの説明文も一緒に表示してくれることです。  
+似たような名前のディレクトリをたくさん生成する場合などに、それらのディレクトリにそれぞれ特徴をメモしておくことで一覧性が良くなります。（機械学習の実験ファイルにパラメータをメモしたりして使っています。コマンドライン上で簡単に確認できるので便利です。）
+
+### 使用例
+下のような機械学習の実験ディレクトリがあったとします。  
+しばしば、「このパラメータで実験したディレクトリはどれかなー。」とか「最良の結果を出した実験はどれだっけ」とかで迷うことがあります。  
+そういうときは全ディレクトリをひとつひとつ確認したり、どこかのテキストファイルにすべての実験結果をメモしておいてそれを確認したりしますが、結構めんどくさいです。  
+
+![ls](https://github.com/ShotaroKataoka/ls-Improved/blob/topic/v0.2.7-README/ISSUE54/doc/images/ls_using.png)
+
+そういう背景があり**ls-Improved** を開発しました。このコマンドを使えば、下のようにどのディレクトリがどういったものか、ということが一目でわかります。
+
+![lsi](https://github.com/ShotaroKataoka/ls-Improved/blob/topic/v0.2.7-README/ISSUE54/doc/images/lsi_using.png)
+
 
 ## Requirements
-python2.7とpython3.7で動作確認  
+Python2.7とPython3.7で開発しました。おそらくPython2.7以上で動作します。それ以下は確認してないです。  
+また、Pythonで動作するのでOSに依存しないはずです。
 
-## Setup
-### Install
-#### pip
+## Install
+### pip install
 ```
+# PyPI
 pip install ls-Improved
 ```
 
-#### 手動
-pip installがいやな人とかパスが変になる人は手動インストールをお試しください。  
-`wget https://github.com/ShotaroKataoka/ls-Improved/archive/v0.2.2.beta0.manual.zip`  
-(releaseの最新バージョンのmanual versionをダウンロード)  
-ダウンロードしたzipファイルを `unzip` する。  
-解凍されたディレクトリを好きな場所に移動して`~~~/bin/`のパスを通すか，`~~~/bin/`配下の２ファイルを`/usr/local/bin/`に移動するかしてパスを通す。  
+### 手動でのインストール
+pipする権限がない場合などは以下の手順でインストールしてください。  
+1. githubのreleaseから最新のmanual install versionをダウンロードしてください。
+`wget https://github.com/ShotaroKataoka/ls-Improved/archive/v0.3.0.beta0.manual.zip`
+2. ダウンロードしたzipファイルを解凍してください。
+3. 解凍したディレクトリの中にある`bin/`にパスを通します。
+解凍した`bin/`を環境変数に追加するか、`bin/lsi`と`bin/mkdiri`をパスが通っている場所（`/usr/local/bin`など）に配置してください。
 
-### Uninstall
-`pip uninstall ls-Improved`
+## 使い方
+### 動作の仕組み
+`lsi`は各ディレクトリにある`.description.lsi`というテキストファイルを読み取って、それをそのディレクトリの説明文として表示しています。
+`.description.lsi`は単純なテキストファイルであり、`mkdiri`というコマンドによって生成されます。（他のプログラムやvimなどで生成しても問題ありません。）
 
-### Upgrade
-`pip install --upgrade ls-Improved`
-
-## Usage
 ### mkdiri
-`mkdiri 作成するディレクトリ ディレクトリに付加する説明文` : ディレクトリを作成し，説明文を作成  
-`mkdiri 作成するディレクトリ` : ディレクトリを作成し，説明文を初期値で作成  
-`mkdiri -a 既存ディレクトリ ディレクトリに付加する説明文` : 既存のディレクトリに説明文を上書き  
+- `mkdiri DIRECTORY 'DESCRIPTION'` : DIRECTORYというディレクトリを作成し，'DESCRIPTION'という説明文を`.description.lsi`に作成  
+- `mkdiri DIRECTORY` : ディレクトリを作成し，空の`.description.lsi`を作成  
+- `mkdiri -a DIRECTORY DESCRIPTION` : 既存のディレクトリに説明文を上書き（`.description.lsi`が存在しない場合、新規作成する）  
+
+**tips:**  
+説明文には装飾をすることができます。  
+- `\n` : コマンドライン上での生成時、改行を追加します。
+- `;r;` `;g;` `;b;` `;w;` `;p;` : テキストの色を変更します。
+- `;_;` : テキストに下線を追加します。
+- ';e;' : 装飾を終了します。
+
+**例**  
+
+![lsi](https://github.com/ShotaroKataoka/ls-Improved/blob/topic/v0.2.7-README/ISSUE54/doc/images/mkdiri_decoration.png)
 
 ### lsi
 `lsi` : カレントディレクトリ内のファイルとディレクトリを表示  
-`lsi path-to-directory` : パス内のファイルとディレクトリを表示  
+`lsi DIRECTORY` : パス内のファイルとディレクトリを表示  
 `lsi -a` : 隠れファイル・ディレクトリも表示  
-`lsi -f` : ファイルのみを表示
-`lsi -d` : ディレクトリのみを表示
-`lsi -s 'search-word'` : `search_word`でファイル名・説明文内を検索
-
-### 仕組み
-`mkdiri` はディレクトリ作成と同時に `.description.lsi` というテキストファイルを作成します。  
-`lsi` はディレクトリ内の `.description.lsi` というテキストファイルを読み取って表示します。  
-`.description.lsi` を直接編集することで説明文を編集することもできます。このとき，複数行の説明文を作成することも可能です。  
+`lsi -F` : ファイルのみを表示
+`lsi -D` : ディレクトリのみを表示
+`lsi -s 'SEARCH_WORD'` : `SEARCH_WORD`でファイル名・説明文内を検索
