@@ -55,7 +55,7 @@ Add decoration to description :
 - `;e;` : end decoration
 **Example**  
 `mkdiri test 'This is ;p;test ;_;directory;e;.\nDecoration is useful!'`  
-[mkdiri_decoration](https://github.com/ShotaroKataoka/ls-Improved/blob/topic/v0.2.7-README/ISSUE54/doc/images/mkdiri_decoration.png)  
+![mkdiri_decoration](https://github.com/ShotaroKataoka/ls-Improved/blob/topic/v0.2.7-README/ISSUE54/doc/images/mkdiri_decoration.png)  
 
 ### lsi
 `lsi` : カレントディレクトリ内のファイルとディレクトリを表示  
