@@ -33,10 +33,29 @@ For person who do not like PyPI, manual install version exists.
 (set PATH to unziped `bin/` directory or place `bin/lsi` and `bin/mkdiri` to `/usr/local/bin/` )  
 
 ## Usage
+### How works
+`lsi` read `.description.lsi` files which are in each directories.  
+`.description.lsi` is simple text file.  It is made by `mkdiri` command.  
+
+**In brief:**
+- `mkdiri` make a directory with the `.description.lsi` text file.
+- `lsi` print out directory structure with `.description.lsi` content.
+
 ### mkdiri
-`mkdiri 作成するディレクトリ ディレクトリに付加する説明文` : ディレクトリを作成し，説明文を作成  
-`mkdiri 作成するディレクトリ` : ディレクトリを作成し，説明文を初期値で作成  
-`mkdiri -a 既存ディレクトリ ディレクトリに付加する説明文` : 既存のディレクトリに説明文を上書き  
+`mkdiri` make a directory with the `.description.lsi`.
+- `mkdiri DIRECTORY 'DESCRIPTION'` : make `DIRECTORY` and write `DESCRIPTION` into `.description.lsi`  
+- `mkdiri DIRECTORY` : make `DIRECTORY` and create empty `.description.lsi`  
+- `mkdiri -a DIRECTORY DESCRIPTION` : overwrite or create `.description.lsi` in existing directory.  
+
+**tips:**  
+Add decoration to description :  
+- `\n` : make new line
+- `;r;` `;g;` `;b;` `;w;` `;p;` : add color to text
+- `;_;` : add underline to text
+- `;e;` : end decoration
+**Example**  
+`mkdiri test 'This is ;p;test ;_;directory;e;.\nDecoration is useful!'`  
+[mkdiri_decoration](https://github.com/ShotaroKataoka/ls-Improved/blob/topic/v0.2.7-README/ISSUE54/doc/images/mkdiri_decoration.png)  
 
 ### lsi
 `lsi` : カレントディレクトリ内のファイルとディレクトリを表示  
