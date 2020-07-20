@@ -1,7 +1,7 @@
 # ls-Improved: descriptive ls-like-command working on Python.
 [![Downloads](https://pepy.tech/badge/ls-improved)](https://pepy.tech/project/ls-improved)  
 
-[日本語README](https://github.com/ShotaroKataoka/ls-Improved/blob/topic/v0.2.7-README/ISSUE54/README.ja.md)
+[日本語README](https://github.com/ShotaroKataoka/ls-Improved/blob/master/README.ja.md)
 
 ## What is it?
 **ls-Improved (lsi)** prints out a directory structure with its descriptions. 
@@ -11,11 +11,11 @@ I've been using it when tackling some seriese of experiments.(e.g. machine leani
 We have some directories like below.  
 Sometimes we'd like to access a best result of experiment, but it is not easy.  It is necessary to open all of directories or note `experiments_summary.txt` beforehand in order to do it.  
 
-![ls](https://github.com/ShotaroKataoka/ls-Improved/blob/topic/v0.2.7-README/ISSUE54/doc/images/ls_using.png)
+![ls](https://github.com/ShotaroKataoka/ls-Improved/blob/master/doc/images/ls_using.png)
 
 Now we have the **ls-Improved(lsi)** command here.  It allows us to see list of directories with its descriptions simultaneously.  
 
-![lsi](https://github.com/ShotaroKataoka/ls-Improved/blob/topic/v0.2.7-README/ISSUE54/doc/images/lsi_using.png)
+![lsi](https://github.com/ShotaroKataoka/ls-Improved/blob/master/doc/images/lsi_using.png)
 
 ## Requirements
 developed on Python2.7 and Python3.7 (maybe ≧Python2.7 is ok.)  
@@ -60,7 +60,7 @@ Add decoration to description :
 - `;e;` : end decoration
 
 **Example**  
-![mkdiri_decoration](https://github.com/ShotaroKataoka/ls-Improved/blob/topic/v0.2.7-README/ISSUE54/doc/images/mkdiri_decoration.png)  
+![mkdiri_decoration](https://github.com/ShotaroKataoka/ls-Improved/blob/master/doc/images/mkdiri_decoration.png)  
 
 ### lsi
 `lsi` print out directory structure with `.description.lsi` content.  
