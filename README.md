@@ -60,14 +60,10 @@ Add decoration to description :
 ![mkdiri_decoration](https://github.com/ShotaroKataoka/ls-Improved/blob/topic/v0.2.7-README/ISSUE54/doc/images/mkdiri_decoration.png)  
 
 ### lsi
-`lsi` : カレントディレクトリ内のファイルとディレクトリを表示  
-`lsi path-to-directory` : パス内のファイルとディレクトリを表示  
-`lsi -a` : 隠れファイル・ディレクトリも表示  
-`lsi -f` : ファイルのみを表示
-`lsi -d` : ディレクトリのみを表示
-`lsi -s 'search-word'` : `search_word`でファイル名・説明文内を検索
-
-### 仕組み
-`mkdiri` はディレクトリ作成と同時に `.description.lsi` というテキストファイルを作成します。  
-`lsi` はディレクトリ内の `.description.lsi` というテキストファイルを読み取って表示します。  
-`.description.lsi` を直接編集することで説明文を編集することもできます。このとき，複数行の説明文を作成することも可能です。  
+`lsi` print out directory structure with `.description.lsi` content.  
+- `lsi` : Show directory structure and these descriptions in the current directory
+- `lsi DIRECTORY` : Show directory structure and these descriptions in the `DIRECTORY`
+- `lsi -a` : Show hidden files and directories
+- `lsi -F` : Show only files
+- `lsi -D` : Show only directories
+- `lsi -s 'SEARCH_WORD'` : search file-name and description with `SEARCH_WORD`
