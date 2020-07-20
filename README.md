@@ -1,5 +1,8 @@
 # ls-Improved: descriptive ls-like-command working on Python.
-[![Downloads](https://pepy.tech/badge/ls-improved)](https://pepy.tech/project/ls-improved)
+[![Downloads](https://pepy.tech/badge/ls-improved)](https://pepy.tech/project/ls-improved)  
+
+[日本語README](https://github.com/ShotaroKataoka/ls-Improved/blob/topic/v0.2.7-README/ISSUE54/README.ja.md)
+
 ## What is it?
 **ls-Improved (lsi)** prints out a directory structure with its descriptions. 
 I've been using it when tackling some seriese of experiments.(e.g. machine leaning experiments.)  
