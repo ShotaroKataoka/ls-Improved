@@ -13,28 +13,24 @@ Now we have the **ls-Improved(lsi)** command here.  It allows us to see list of 
 ![lsi](https://github.com/ShotaroKataoka/ls-Improved/blob/topic/v0.2.7-README/ISSUE54/doc/images/lsi_using.png)
 
 ## Requirements
-python2.7とpython3.7で動作確認  
+developed on python2.7 and python3.7  
 It is working on Python, so this command dose not depend on OS.  
 
-## Setup
-### Install
-#### pip
+## Install
+### pip install
 ```
+# PyPI
 pip install ls-Improved
 ```
 
-#### 手動
-pip installがいやな人とかパスが変になる人は手動インストールをお試しください。  
-`wget https://github.com/ShotaroKataoka/ls-Improved/archive/v0.2.2.beta0.manual.zip`  
-(releaseの最新バージョンのmanual versionをダウンロード)  
-ダウンロードしたzipファイルを `unzip` する。  
-解凍されたディレクトリを好きな場所に移動して`~~~/bin/`のパスを通すか，`~~~/bin/`配下の２ファイルを`/usr/local/bin/`に移動するかしてパスを通す。  
+### manual install
+For person who do not like PyPI, manual install version exists.  
 
-### Uninstall
-`pip uninstall ls-Improved`
-
-### Upgrade
-`pip install --upgrade ls-Improved`
+1. download latest manual version from github release.  
+`wget https://github.com/ShotaroKataoka/ls-Improved/archive/v0.3.0.beta0.manual.zip`  
+2. unzip downloaded zip file.  
+3. set PATH environment to `bin/` directory.  
+(set PATH to unziped `bin/` directory or place `bin/lsi` and `bin/mkdiri` to `/usr/local/bin/` )  
 
 ## Usage
 ### mkdiri
