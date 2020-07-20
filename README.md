@@ -6,7 +6,7 @@ I've been using it when tackling some seriese of experiments.(e.g. machine leani
 
 ### Example
 We have some directories like below.  
-Sometimes we'd like to access best result of experiment, but it is not easy.  It is necessary to open all of directories or note experiments_summary.txt beforehand in order to do it.  
+Sometimes we'd like to access a best result of experiment, but it is not easy.  It is necessary to open all of directories or note `experiments_summary.txt` beforehand in order to do it.  
 ![ls](https://github.com/ShotaroKataoka/ls-Improved/blob/topic/v0.2.7-README/ISSUE54/doc/images/ls_using.png)
 
 Now we have the **ls-Improved(lsi)** command here.  It allows us to see list of directories with its descriptions simultaneously.  
