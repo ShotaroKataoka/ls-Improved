@@ -1,5 +1,6 @@
 # ls-Improved : 説明文つきのlsっぽいコマンド
-[![Downloads](https://pepy.tech/badge/ls-improved)](https://pepy.tech/project/ls-improved)
+[![Downloads](https://pepy.tech/badge/ls-improved)](https://pepy.tech/project/ls-improved)  
+[Qiita記事](https://qiita.com/m_oba/items/828467a0f483e8dab845)  
 ## なにこれ？
 **ls-Improved(lsi)** はディレクトリやファイルの一覧を表示する`ls`っぽいコマンドです。`ls`との違いはディレクトリの説明文も一緒に表示してくれることです。  
 似たような名前のディレクトリをたくさん生成する場合などに、それらのディレクトリにそれぞれ特徴をメモしておくことで一覧性が良くなります。（機械学習の実験ディレクトリにパラメータをメモしたりして使っています。コマンドライン上で簡単に確認できるので便利です。）
