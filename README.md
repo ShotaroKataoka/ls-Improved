@@ -29,6 +29,7 @@ pip install ls-Improved
 ```
 
 ### manual install
+**This way is not supported now.**  
 For person who do not like PyPI, manual install version exists.  
 
 1. download latest manual version from github release.  
