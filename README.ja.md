@@ -64,3 +64,6 @@ pipする権限がない場合などは以下の手順でインストールし�
 - `lsi -F` : ファイルのみを表示
 - `lsi -D` : ディレクトリのみを表示
 - `lsi -s 'SEARCH_WORD'` : `SEARCH_WORD`でファイル名・説明文内を検索
+
+## 関連
+- [Emacs client](https://github.com/conao3/dired-lsi.el) by [conao3](https://github.com/conao3)
