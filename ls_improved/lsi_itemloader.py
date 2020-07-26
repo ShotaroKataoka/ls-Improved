@@ -1,5 +1,6 @@
 import os
 from glob import glob
+import unicodedata
 
 from .config import Config
 
@@ -116,10 +117,20 @@ class LsiItemLoader():
             dict.keys(default) = ['path', 'type', 'depth']
             dict.keys(optional) = ['description', 'auth', 'children']
         """
+
+        def get_east_asian_width_count(text):
+            count = 0
+            for c in text:
+                if unicodedata.east_asian_width(c) in 'FWA':
+                    count += 2
+                else:
+                    count += 1
+            return count
+
         base_path = path.split('/')[-1]
         item = {
                 'path': base_path, 
-                'path_length': len(base_path), 
+                'path_length': get_east_asian_width_count(base_path), 
                 'depth': 0
                 }
         if os.path.isdir(path):
