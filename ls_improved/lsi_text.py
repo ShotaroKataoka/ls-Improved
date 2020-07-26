@@ -1,4 +1,4 @@
-from config import Config
+from .config import Config
 
 config = Config()
 class Text():
@@ -70,4 +70,4 @@ class Text():
             e = tag['end_pos']
             color = config.color[tag['tag']]
             text += color + self.text[s:e]
-        print(text)
+        return text

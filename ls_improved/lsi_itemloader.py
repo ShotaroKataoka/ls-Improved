@@ -2,6 +2,7 @@ import os
 from glob import glob
 
 from .config import Config
+from .lsi_text import Text
 
 class LsiItemLoader():
     def __init__(self):
@@ -118,18 +119,19 @@ class LsiItemLoader():
         """
         base_path = path.split('/')[-1]
         item = {
-                'path': base_path, 
-                'path_length': len(base_path), 
                 'depth': 0
                 }
         if os.path.isdir(path):
             s, description = self._read_description(path)
             has_desc = True if description is not None else False
             if has_desc:
+                description = Text(description, ';desc;')
                 item['description'] = description
+            item['path'] = Text(base_path, ';dir;') 
             item['type'] = 'Dir'
             status = 0
         elif os.path.isfile(path):
+            item['path'] = Text(base_path, ';file;')
             item['type'] = 'File'
             status = 1
         else:
