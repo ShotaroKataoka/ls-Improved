@@ -42,7 +42,6 @@ class LsiContentTransforms():
             children_f : List[items]
         """
         search_word = self.search_word
-        replace_word = self.config.tag['search'] + search_word + self.config.tag['search_end']
 
         output_children = [[], []]
         for item in children[0]+children[1]:
@@ -59,6 +58,7 @@ class LsiContentTransforms():
                         sp_count += len(sp)
                         item['path'].insert_style(';ss;', sp_count)
                         item['path'].insert_style(';se;', sp_count+len(search_word))
+                        sp_count += len(search_word)
                 if match_desc:
                     sp_path = item['description'].text.split(search_word)
                     sp_count = 0
@@ -66,6 +66,7 @@ class LsiContentTransforms():
                         sp_count += len(sp)
                         item['description'].insert_style(';ss;', sp_count)
                         item['description'].insert_style(';se;', sp_count+len(search_word))
+                        sp_count += len(search_word)
                 if item['type']=='Dir':
                     output_children[0] += [item]
                 elif item['type']=='File':

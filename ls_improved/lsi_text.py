@@ -51,23 +51,91 @@ class Text():
                 if self.style[i]['start_pos']>=pos:
                     self.style[i]['start_pos'] += len(text)
                 self.style[i]['end_pos'] += len(text)
+        self._sort_style()
 
     def insert_style(self, color_tag, pos):
-        new_style = []
         for i, style in enumerate(self.style):
-            if pos > style['start_pos'] and style['end_pos'] >= pos:
+            if pos >= style['start_pos'] and style['end_pos'] >= pos:
                 end_pos = style['end_pos']
                 self.style[i]['end_pos'] = pos
                 break
+            else:
+                end_pos = len(self.text)
         self.style += [{'tag': color_tag, 'start_pos': pos, 'end_pos': end_pos}]
+        self._sort_style()
 
+    def _search_end(self, index):
+        color = ''
+        for i, st in enumerate(self.style[:index-1]):
+            if st['tag'] in [';ss;', ';se;', ';nl;', ';nle;']:
+                pass
+            else:
+                color += config.color[st['tag']]
+        return config.get_color('end')+color
+
+    def _new_line_end(self, index):
+        color = ''
+        for i, st in enumerate(self.style[:index-1]):
+            if st['tag'] in [';ss;', ';se;', ';nl;', ';nle;']:
+                pass
+            else:
+                color += config.color[st['tag']]
+        return config.get_color('end')+color
     
-    def render(self):
+    def _sort_style(self):
         self.style.sort(key=lambda x: x['start_pos'])
+        style = []
+        tmp_style = []
+        tmp_first_style = []
+        tmp_last_style = []
+        start_pos = 0
+        end_pos = 0
+        for i, st in enumerate(self.style):
+            if start_pos==st['start_pos']:
+                if st['end_pos']!=st['start_pos']:
+                    end_pos = st['end_pos']
+                    st['end_pos'] = st['start_pos']
+                if st['tag'] in [';end;', ';e;', ';se;']:
+                    tmp_first_style += [st]
+                elif st['tag'] in [';nl;', ';nle;']:
+                    tmp_last_style += [st]
+                else:
+                    tmp_style += [st]
+            else:
+                style += tmp_first_style + tmp_style + tmp_last_style
+                style[-1]['end_pos'] = end_pos 
+                if st['end_pos']!=st['start_pos']:
+                    end_pos = st['end_pos']
+                    st['end_pos'] = st['start_pos']
+                if st['tag'] in [';end;', ';e;', ';se;']:
+                    tmp_first_style = [st]
+                    tmp_last_style = []
+                    tmp_style = []
+                elif st['tag'] in [';nl;', ';nle;']:
+                    tmp_first_style = []
+                    tmp_last_style = [st]
+                    tmp_style = []
+                else:
+                    tmp_first_style = []
+                    tmp_last_style = []
+                    tmp_style = [st]
+                if i == len(self.style)-1:
+                    style += tmp_first_style + tmp_style + tmp_last_style
+                    style[-1]['end_pos'] = end_pos
+                start_pos = st['start_pos']
+        self.style = style
+
+    def render(self):
+        self._sort_style()
         text = ''
-        for tag in self.style:
+        for i, tag in enumerate(self.style):
             s = tag['start_pos']
             e = tag['end_pos']
-            color = config.color[tag['tag']]
+            if tag['tag']==';se;':
+                color = self._search_end(i)
+            elif tag['tag']==';nle;':
+                color = self._new_line_end(i)
+            else:
+                color = config.color[tag['tag']]
             text += color + self.text[s:e]
-        return text
+        return text + config.get_color('end')
