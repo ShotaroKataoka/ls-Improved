@@ -1,4 +1,6 @@
+from __future__ import unicode_literals
 import os
+import sys
 import argparse
 from glob import glob
 
@@ -6,6 +8,11 @@ from .config import Config
 from .lsi_itemloader import LsiItemLoader
 from .lsi_content import LsiContentTransforms
 from .lsi_visual import LsiVisualTransforms
+
+version = sys.version_info
+if version.major<=2 or (version.major==3 and version.minor<3):
+    reload(sys)
+    sys.setdefaultencoding('utf-8')
 
 class Lsi():
     def __init__(
