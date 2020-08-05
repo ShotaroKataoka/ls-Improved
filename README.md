@@ -33,7 +33,7 @@ pip install ls-Improved
 For person who do not like PyPI, manual install version exists.  
 
 1. download latest manual version from github release.  
-`wget https://github.com/ShotaroKataoka/ls-Improved/archive/v0.3.0.beta0.manual.zip`  
+`wget https://github.com/ShotaroKataoka/ls-Improved/archive/v0.3.0.beta1.manual.zip`  
 2. unzip downloaded zip file.  
 3. set PATH environment to `bin/` directory.  
 (set PATH to unziped `bin/` directory or place `bin/lsi` and `bin/mkdiri` to `/usr/local/bin/` )  
