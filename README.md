@@ -71,3 +71,6 @@ Add decoration to description :
 - `lsi -F` : Show only files
 - `lsi -D` : Show only directories
 - `lsi -s 'SEARCH_WORD'` : search file-name and description with `SEARCH_WORD`
+
+## Related projects
+- [Emacs client](https://github.com/conao3/dired-lsi.el) by [conao3](https://github.com/conao3)
