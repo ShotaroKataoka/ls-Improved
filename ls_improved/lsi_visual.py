@@ -1,6 +1,7 @@
 from .config import Config
 from .lsi_text import Text
 
+
 class LsiVisualTransforms():
     def __init__(self):
         """
@@ -32,7 +33,7 @@ class LsiVisualTransforms():
         base_name = item['path']
         description = item['description'].text
 
-        blank = '│' + ' '*int(indent_length + len(item['path'].text) + 3)
+        blank = '│' + ' '*int(indent_length + len(item['path']) + 3)
         description = description.split('\n')
         if len(description)>=2:
             insert_count = 0

@@ -1,4 +1,7 @@
+import unicodedata
+
 from .config import Config
+
 
 config = Config()
 class Text():
@@ -124,6 +127,17 @@ class Text():
                     style[-1]['end_pos'] = end_pos
                 start_pos = st['start_pos']
         self.style = style
+
+    def __len__(self):
+        def get_east_asian_width_count(text):
+            count = 0
+            for c in text:
+                if unicodedata.east_asian_width(c) in 'FWA':
+                    count += 2
+                else:
+                    count += 1
+            return count
+        return get_east_asian_width_count(self.text)
 
     def render(self):
         self._sort_style()
