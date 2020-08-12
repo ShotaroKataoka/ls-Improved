@@ -76,10 +76,10 @@ Add decoration to description :
 Adding following alias to `.bashrc` is useful :  
 ```
 alias clear='clear && lsi ././'
-function cdls (){
+function cdlsi (){
     /cd $@ && lsi ././
 }
-alias cd='cdls'
+alias cd='cdlsi'
 ```
 
 ## Related projects
