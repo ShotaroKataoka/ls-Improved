@@ -9,7 +9,7 @@ I've been using it when tackling some seriese of experiments.(e.g. machine leani
 
 ### Example
 We have some directories like below.  
-Sometimes we'd like to access a best result of experiment, but it is not easy.  It is necessary to open all of directories or note `experiments_summary.txt` beforehand in order to do it.  
+Sometimes we'd like to access the best result of experiments, but it is not easy.  It is necessary to open all of directories or note `experiments_summary.txt` beforehand in order to do it.  
 
 ![ls](https://github.com/ShotaroKataoka/ls-Improved/blob/master/doc/images/ls_using.png)
 
@@ -33,7 +33,7 @@ pip install ls-Improved
 For person who do not like PyPI, manual install version exists.  
 
 1. download latest manual version from github release.  
-`wget https://github.com/ShotaroKataoka/ls-Improved/archive/v0.3.0.beta0.manual.zip`  
+`wget https://github.com/ShotaroKataoka/ls-Improved/archive/v0.3.0.beta1.manual.zip`  
 2. unzip downloaded zip file.  
 3. set PATH environment to `bin/` directory.  
 (set PATH to unziped `bin/` directory or place `bin/lsi` and `bin/mkdiri` to `/usr/local/bin/` )  
@@ -71,3 +71,16 @@ Add decoration to description :
 - `lsi -F` : Show only files
 - `lsi -D` : Show only directories
 - `lsi -s 'SEARCH_WORD'` : search file-name and description with `SEARCH_WORD`
+
+**tips:**  
+Adding following alias to `.bashrc` is useful :  
+```
+alias clear='clear && lsi ././'
+function cdlsi (){
+    /cd $@ && lsi ././
+}
+alias cd='cdlsi'
+```
+
+## Related projects
+- [Emacs client](https://github.com/conao3/dired-lsi.el) by [conao3](https://github.com/conao3)
