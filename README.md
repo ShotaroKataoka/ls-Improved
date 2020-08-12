@@ -72,5 +72,15 @@ Add decoration to description :
 - `lsi -D` : Show only directories
 - `lsi -s 'SEARCH_WORD'` : search file-name and description with `SEARCH_WORD`
 
+**tips:**  
+Adding following alias to `.bashrc` is useful :  
+```
+alias clear='clear && lsi ././'
+function cdls (){
+    /cd $@ && lsi ././
+}
+alias cd='cdls'
+```
+
 ## Related projects
 - [Emacs client](https://github.com/conao3/dired-lsi.el) by [conao3](https://github.com/conao3)
