@@ -65,5 +65,15 @@ pipする権限がない場合などは以下の手順でインストールし�
 - `lsi -D` : ディレクトリのみを表示
 - `lsi -s 'SEARCH_WORD'` : `SEARCH_WORD`でファイル名・説明文内を検索
 
+**tips:**  
+お好みで `.bashrc` に以下のエイリアスを追加すると便利です。  
+```
+alias clear='clear && lsi ././'
+function cdlsi (){
+    /cd $@ && lsi ././
+}
+alias cd='cdlsi'
+```
+
 ## 関連
 - [Emacs client](https://github.com/conao3/dired-lsi.el) by [conao3](https://github.com/conao3)
