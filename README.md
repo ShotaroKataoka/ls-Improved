@@ -9,7 +9,7 @@ I've been using it when tackling some seriese of experiments.(e.g. machine leani
 
 ### Example
 We have some directories like below.  
-Sometimes we'd like to access the best result of experiment, but it is not easy.  It is necessary to open all of directories or note `experiments_summary.txt` beforehand in order to do it.  
+Sometimes we'd like to access the best result of experiments, but it is not easy.  It is necessary to open all of directories or note `experiments_summary.txt` beforehand in order to do it.  
 
 ![ls](https://github.com/ShotaroKataoka/ls-Improved/blob/master/doc/images/ls_using.png)
 
