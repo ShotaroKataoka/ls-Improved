@@ -46,81 +46,6 @@ class LsiVisualTransforms():
         status = 0
         return status, item
 
-    def _add_color_to_path(self, item, prev_status):
-        """
-        Visual transform for Path.
-        Add color to Path text.
-
-        Parameters
-        ----------
-        item : Dict
-        prev_status : Boolean
-
-        Returns
-        -------
-        status : Boolean
-        item : Dict
-        """
-        # type = item['type']
-        # config = self.config
-        # if type=='Dir':
-        #     item['path'].insert_style(config.get_color('dir'), 0)
-        # elif type=='File':
-        #     item['path'].insert_style(config.get_color('file'), 0)
-        # item['path'].insert_style(config.get_color('end'), len(item['path'].text))
-        status = 0
-        return status, item
-
-    def _tag2color(self, item, prev_status):
-        """
-        Visual transform for Description.
-        change tag text to color code.
-
-        Parameters
-        ----------
-        item : Dict
-        prev_status : Boolean
-
-        Returns
-        -------
-        status : Boolean
-        item : Dict
-        """
-        config = self.config
-        text = item['path'].replace(config.tag['search'], config.get_color('search'))
-        text = text.replace(config.tag['search_end'], config.get_color('search_end')+config.get_color(item['type']))
-        item['path'] = text
-        if 'description' not in item.keys():
-            status = 1
-            return status, item
-
-        description = [{'tag':config.tag['description'], 'text':item['description']}]
-        for tag in set(config.tag.values())-set([';ss;', ';se;', ';dw;']):
-            new_description = [[desc] for desc in description]
-            for i, desc in enumerate(description):
-                splited_text = desc['text'].split(tag)
-                if len(splited_text)==1:
-                    new_desc = [desc]
-                elif len(splited_text)>1:
-                    desc['text'] = splited_text[0]
-                    new_desc = [desc]
-                    for text in splited_text[1:]:
-                        new_desc += [{'tag':tag, 'text':text}]
-                new_description[i] = new_desc
-            description = []
-            for desc in new_description:
-                description += desc
-        output_description = ''
-        for desc in description:
-            text = desc['text'].replace(config.tag['search'], config.get_color('search'))
-            text = text.replace(config.tag['description_white'], config.get_color('description_white'))
-            text = text.replace(config.tag['search_end'], config.get_color('search_end')+config.color[desc['tag']])
-            output_description += config.color[desc['tag']]
-            output_description += text
-        item['description'] = output_description
-        status = 0
-        return status, item
-
     def _select_indent_head(self, item, place):
         """
         Select indent head ├,└
@@ -193,8 +118,6 @@ class LsiVisualTransforms():
         prev_status = condition['status']
         transforms = []
         transforms += [self._add_indent_to_new_line]
-        # transforms += [self._tag2color]
-        # transforms += [self._add_color_to_path]
         for tr in transforms:
             prev_status, item = tr(item, prev_status)
 
