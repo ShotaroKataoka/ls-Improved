@@ -35,6 +35,7 @@ class LsiVisualTransforms():
 
         blank = '│' + ' '*int(indent_length + len(item['path']) + 3)
         description = description.split('\n')
+        
         if len(description)>=2:
             insert_count = 0
             for desc in description:
@@ -66,7 +67,7 @@ class LsiVisualTransforms():
             return '├', item
         if place==1:
             if 'description' in item.keys():
-                item['description'].text.replace('│', ' ')
+                item['description'].text = item['description'].text.replace('│', ' ')
             return '└', item
 
 

@@ -54,7 +54,7 @@ class Text():
                 if self.style[i]['start_pos']>=pos:
                     self.style[i]['start_pos'] += len(text)
                 self.style[i]['end_pos'] += len(text)
-        self._sort_style()
+        # self._sort_style()
 
     def insert_style(self, color_tag, pos):
         for i, style in enumerate(self.style):
@@ -122,7 +122,7 @@ class Text():
                     tmp_end_style = []
                     tmp_nl_style = []
                     tmp_style = []
-                if st['tag'] in [';se;']:
+                elif st['tag'] in [';se;']:
                     tmp_nle_style = []
                     tmp_se_style = [st]
                     tmp_end_style = []
@@ -134,7 +134,7 @@ class Text():
                     tmp_end_style = [st]
                     tmp_nl_style = []
                     tmp_style = []
-                elif st['tag'] in [';nl;', ';nle;']:
+                elif st['tag'] in [';nl;']:
                     tmp_nle_style = []
                     tmp_se_style = []
                     tmp_end_style = []
@@ -169,10 +169,10 @@ class Text():
         for i, tag in enumerate(self.style):
             s = tag['start_pos']
             e = tag['end_pos']
-            if tag['tag']==';se;':
-                color = self._search_end(i)
-            elif tag['tag']==';nle;':
+            if tag['tag']==';nle;':
                 color = self._new_line_end(i)
+            elif tag['tag']==';se;':
+                color = self._search_end(i)
             else:
                 color = config.color[tag['tag']]
             text += color + self.text[s:e]
