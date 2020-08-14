@@ -69,7 +69,7 @@ class Text():
 
     def _search_end(self, index):
         color = ''
-        for i, st in enumerate(self.style[:index-1]):
+        for i, st in enumerate(self.style[:index]):
             if st['tag'] in [';ss;', ';se;', ';nl;', ';nle;']:
                 pass
             else:

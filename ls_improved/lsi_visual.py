@@ -35,10 +35,15 @@ class LsiVisualTransforms():
 
         blank = '│' + ' '*int(indent_length + len(item['path']) + 3)
         description = description.split('\n')
+        for i, desc in enumerate(description[::-1]):
+            if not (set(' ') == set(desc) or set('') == set(desc)):
+                break
+        description = description[:len(description) - i]
+        item['description'].text = '\n'.join(description)
         
         if len(description)>=2:
             insert_count = 0
-            for desc in description:
+            for desc in description[:-1]:
                 insert_count += len(desc)+1
                 item['description'].insert_text(blank, insert_count)
                 item['description'].insert_style(';nl;', insert_count)
