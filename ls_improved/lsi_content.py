@@ -42,48 +42,35 @@ class LsiContentTransforms():
             children_f : List[items]
         """
         search_word = self.search_word
-        replace_word = self.config.tag['search'] + search_word + self.config.tag['search_end']
-        tags = list(self.config.color.keys())
-        tag_mapper = []
-        inv_tag_mapper = []
-        hash = '\\' + self.config.symbol*21
-        if set(self.config.symbol)==set(search_word) or \
-           search_word[-1]=='\\' or search_word[0]=='\\' or \
-           '\\'+self.config.symbol in search_word or self.config.symbol+'\\' in search_word:
-            status = 1
-            output_children = [[], []]
-            invalid_word = str(set(hash))
-            print('sorry, only', invalid_word, 'is invalid search word.')
-            return status, output_children
 
-        for tag in tags:
-            tag_mapper += [hash+'\\']
-            inv_tag_mapper += [tag]
-            hash += self.config.symbol
         output_children = [[], []]
         for item in children[0]+children[1]:
-            match_path = search_word in item['path']
+            match_path = search_word in item['path'].text
             if 'description' in item.keys():
-                description = item['description']
-                for hash, tag in zip(tag_mapper, inv_tag_mapper):
-                    description = description.replace(tag, hash)
-                match_desc = search_word in description
+                match_desc = search_word in item['description'].text
             else:
                 match_desc = False
             if match_path or match_desc:
                 if match_path:
-                    item['path'] = item['path'].replace(search_word, replace_word)
+                    sp_path = item['path'].text.split(search_word)
+                    sp_count = 0
+                    for sp in sp_path:
+                        sp_count += len(sp)
+                        item['path'].insert_style(';ss;', sp_count)
+                        item['path'].insert_style(';se;', sp_count+len(search_word))
+                        sp_count += len(search_word)
                 if match_desc:
-                    description = description.replace(search_word, replace_word)
-                    for hash, tag in zip(tag_mapper, inv_tag_mapper):
-                        description = description.replace(hash, tag)
-                    item['description'] = description
+                    sp_path = item['description'].text.split(search_word)
+                    sp_count = 0
+                    for sp in sp_path:
+                        sp_count += len(sp)
+                        item['description'].insert_style(';ss;', sp_count)
+                        item['description'].insert_style(';se;', sp_count+len(search_word))
+                        sp_count += len(search_word)
                 if item['type']=='Dir':
                     output_children[0] += [item]
                 elif item['type']=='File':
                     output_children[1] += [item]
-            else:
-                pass
         status = 0
         return status, output_children
 
