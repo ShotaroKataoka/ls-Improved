@@ -116,35 +116,20 @@ class Text():
                 if st['end_pos']!=st['start_pos']:
                     end_pos = st['end_pos']
                     st['end_pos'] = st['start_pos']
+                tmp_nle_style = []
+                tmp_se_style = []
+                tmp_end_style = []
+                tmp_nl_style = []
+                tmp_style = []
                 if st['tag'] in [';nle;']:
                     tmp_nle_style = [st]
-                    tmp_se_style = []
-                    tmp_end_style = []
-                    tmp_nl_style = []
-                    tmp_style = []
                 elif st['tag'] in [';se;']:
-                    tmp_nle_style = []
                     tmp_se_style = [st]
-                    tmp_end_style = []
-                    tmp_nl_style = []
-                    tmp_style = []
                 elif st['tag'] in [';end;', ';e;']:
-                    tmp_nle_style = []
-                    tmp_se_style = []
                     tmp_end_style = [st]
-                    tmp_nl_style = []
-                    tmp_style = []
                 elif st['tag'] in [';nl;']:
-                    tmp_nle_style = []
-                    tmp_se_style = []
-                    tmp_end_style = []
                     tmp_nl_style = [st]
-                    tmp_style = []
                 else:
-                    tmp_nle_style = []
-                    tmp_se_style = []
-                    tmp_end_style = []
-                    tmp_nl_style = []
                     tmp_style = [st]
                 if i == len(self.style)-1:
                     style += tmp_nle_style + tmp_se_style + tmp_end_style + tmp_style + tmp_nl_style
