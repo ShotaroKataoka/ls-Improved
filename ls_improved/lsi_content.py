@@ -41,18 +41,21 @@ class LsiContentTransforms():
             children_d : List[items]
             children_f : List[items]
         """
-        search_word = self.search_word
+        search_word = self.search_word.lower()
 
         output_children = [[], []]
         for item in children[0]+children[1]:
-            match_path = search_word in item['path'].text
+            path = item['path'].text.lower()
+
+            match_path = search_word in path
             if 'description' in item.keys():
-                match_desc = search_word in item['description'].text
+                description = item['description'].text.lower()
+                match_desc = search_word in description
             else:
                 match_desc = False
             if match_path or match_desc:
                 if match_path:
-                    sp_path = item['path'].text.split(search_word)
+                    sp_path = path.split(search_word)
                     sp_count = 0
                     for sp in sp_path:
                         sp_count += len(sp)
@@ -60,7 +63,7 @@ class LsiContentTransforms():
                         item['path'].insert_style(';se;', sp_count+len(search_word))
                         sp_count += len(search_word)
                 if match_desc:
-                    sp_path = item['description'].text.split(search_word)
+                    sp_path = description.split(search_word)
                     sp_count = 0
                     for sp in sp_path:
                         sp_count += len(sp)

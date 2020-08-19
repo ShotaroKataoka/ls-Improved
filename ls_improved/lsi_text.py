@@ -54,7 +54,7 @@ class Text():
                 if self.style[i]['start_pos']>=pos:
                     self.style[i]['start_pos'] += len(text)
                 self.style[i]['end_pos'] += len(text)
-        self._sort_style()
+        # self._sort_style()
 
     def insert_style(self, color_tag, pos):
         for i, style in enumerate(self.style):
@@ -69,7 +69,7 @@ class Text():
 
     def _search_end(self, index):
         color = ''
-        for i, st in enumerate(self.style[:index-1]):
+        for i, st in enumerate(self.style[:index]):
             if st['tag'] in [';ss;', ';se;', ';nl;', ';nle;']:
                 pass
             else:
@@ -89,8 +89,10 @@ class Text():
         self.style.sort(key=lambda x: x['start_pos'])
         style = []
         tmp_style = []
-        tmp_first_style = []
-        tmp_last_style = []
+        tmp_nle_style = []
+        tmp_se_style = []
+        tmp_end_style = []
+        tmp_nl_style = []
         start_pos = 0
         end_pos = 0
         for i, st in enumerate(self.style):
@@ -98,33 +100,40 @@ class Text():
                 if st['end_pos']!=st['start_pos']:
                     end_pos = st['end_pos']
                     st['end_pos'] = st['start_pos']
-                if st['tag'] in [';end;', ';e;', ';se;']:
-                    tmp_first_style += [st]
-                elif st['tag'] in [';nl;', ';nle;']:
-                    tmp_last_style += [st]
+                if st['tag'] in [';nle;']:
+                    tmp_nle_style += [st]
+                elif st['tag'] in [';se;']:
+                    tmp_se_style += [st]
+                elif st['tag'] in [';end;', ';e;']:
+                    tmp_end_style += [st]
+                elif st['tag'] in [';nl;']:
+                    tmp_nl_style += [st]
                 else:
                     tmp_style += [st]
             else:
-                style += tmp_first_style + tmp_style + tmp_last_style
+                style += tmp_nle_style + tmp_se_style + tmp_end_style + tmp_style + tmp_nl_style
                 style[-1]['end_pos'] = end_pos 
                 if st['end_pos']!=st['start_pos']:
                     end_pos = st['end_pos']
                     st['end_pos'] = st['start_pos']
-                if st['tag'] in [';end;', ';e;', ';se;']:
-                    tmp_first_style = [st]
-                    tmp_last_style = []
-                    tmp_style = []
-                elif st['tag'] in [';nl;', ';nle;']:
-                    tmp_first_style = []
-                    tmp_last_style = [st]
-                    tmp_style = []
+                tmp_nle_style = []
+                tmp_se_style = []
+                tmp_end_style = []
+                tmp_nl_style = []
+                tmp_style = []
+                if st['tag'] in [';nle;']:
+                    tmp_nle_style = [st]
+                elif st['tag'] in [';se;']:
+                    tmp_se_style = [st]
+                elif st['tag'] in [';end;', ';e;']:
+                    tmp_end_style = [st]
+                elif st['tag'] in [';nl;']:
+                    tmp_nl_style = [st]
                 else:
-                    tmp_first_style = []
-                    tmp_last_style = []
                     tmp_style = [st]
                 if i == len(self.style)-1:
-                    style += tmp_first_style + tmp_style + tmp_last_style
-                    style[-1]['end_pos'] = end_pos
+                    style += tmp_nle_style + tmp_se_style + tmp_end_style + tmp_style + tmp_nl_style
+                    #style[-1]['end_pos'] = end_pos
                 start_pos = st['start_pos']
         self.style = style
 
@@ -145,10 +154,10 @@ class Text():
         for i, tag in enumerate(self.style):
             s = tag['start_pos']
             e = tag['end_pos']
-            if tag['tag']==';se;':
-                color = self._search_end(i)
-            elif tag['tag']==';nle;':
+            if tag['tag']==';nle;':
                 color = self._new_line_end(i)
+            elif tag['tag']==';se;':
+                color = self._search_end(i)
             else:
                 color = config.color[tag['tag']]
             text += color + self.text[s:e]
