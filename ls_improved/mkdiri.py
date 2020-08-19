@@ -1,6 +1,9 @@
 import os
 import argparse
 
+from .lsi_text import Text
+
+
 class Mkdiri():
     def __init__(self, dir, description, is_add_mode=False):
         """
@@ -103,15 +106,58 @@ class Mkdiri():
 def main():
     # Parser setting
     parser = argparse.ArgumentParser(description="MKDIRI - MKDIR Improved")
-    parser.add_argument('dir', type=str, metavar='DirectoryPath', help='Directory which you want to make.')
+    parser.add_argument('dir', type=str, metavar='DirectoryPath',nargs='?', default='', help='Directory which you want to make.')
     parser.add_argument('description', type=str, metavar='STRING' ,nargs='?', default='', help='Description text (default:No description.)')
     parser.add_argument('-a', '--add', action='store_true', help='Add description if directory already exists. (default:False)')
+    parser.add_argument('--ANSI-ESCAPE-SEQUENCE-MODE', action='store_true', help='SET ANSI-ESCAPE-MODE.')
+    parser.add_argument('--LSI-ESCAPE-SEQUENCE-MODE', action='store_true', help='SET LSI-ESCAPE-MODE.')
+    parser.add_argument('-e', '--SHOW-ESCAPE-SEQUENCE-MODE', action='store_true', help='SET LSI-ESCAPE-MODE.')
     args = parser.parse_args()
+
+    # ESCAPE SEQUENCE MODE
+    ANSI_ESCAPE_SEQUENCE_MODE = args.ANSI_ESCAPE_SEQUENCE_MODE
+    LSI_ESCAPE_SEQUENCE_MODE = args.LSI_ESCAPE_SEQUENCE_MODE
+    SHOW_ESCAPE_SEQUENCE_MODE = args.SHOW_ESCAPE_SEQUENCE_MODE
+
+    if ANSI_ESCAPE_SEQUENCE_MODE and LSI_ESCAPE_SEQUENCE_MODE:
+        print('error: invalid auguments.')
+        exit()
+    
+    home = os.environ['HOME']
+    lsirc = 'ESCAPE SEQUENCE = LSI'
+    if os.path.exists(home+'/.lsirc'):
+        with open(home+'/.lsirc', 'r') as f:
+            lsirc = f.read()
+    try:
+        escape_sequence = lsirc.split('=')[1].replace(' ', '')
+        if escape_sequence not in ['LSI', 'ANSI']:
+            escape_sequence = 'LSI'
+    except:
+        escape_sequence = 'LSI'
+
+    if ANSI_ESCAPE_SEQUENCE_MODE:
+        escape_sequence = 'ANSI'
+        with open(home+'/.lsirc', 'w') as f:
+            f.write('ESCAPE SEQUENCE = '+ escape_sequence)
+    if LSI_ESCAPE_SEQUENCE_MODE:
+        escape_sequence = 'LSI'
+        with open(home+'/.lsirc', 'w') as f:
+            f.write('ESCAPE SEQUENCE = '+ escape_sequence)
+
+    if SHOW_ESCAPE_SEQUENCE_MODE:
+        print('ESCAPE SEQUENCE MODE = ' + escape_sequence)
+
 
     # Get parser arguments
     dir = args.dir
+    if dir == '':
+        exit()
     dir = dir+'/' if dir[-1] != '/' else dir
     description = args.description
+    if escape_sequence=='ANSI':
+        description = Text(description, ';desc;')
+        description = description.render()
+        description = description[6:-5]
     is_add_mode = args.add
 
     mkdiri = Mkdiri(dir, description, is_add_mode)
