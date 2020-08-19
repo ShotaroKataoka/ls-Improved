@@ -93,7 +93,7 @@ class Text():
             if st['tag'] in [';ss;', ';se;', ';nl;', ';nle;']:
                 pass
             else:
-                color += config.color[st['tag']]
+                color += config.get_color_from_tag(st['tag'])
         return config.get_color('end')+color
 
     def _new_line_end(self, index):
@@ -102,7 +102,7 @@ class Text():
             if st['tag'] in [';ss;', ';se;', ';nl;', ';nle;']:
                 pass
             else:
-                color += config.color[st['tag']]
+                color += config.get_color_from_tag(st['tag'])
         return config.get_color('end')+color
     
     def _sort_style(self):
