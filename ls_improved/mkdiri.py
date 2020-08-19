@@ -110,16 +110,16 @@ def main():
     parser.add_argument('dir', type=str, metavar='DirectoryPath',nargs='?', default='', help='Directory which you want to make.')
     parser.add_argument('description', type=str, metavar='STRING' ,nargs='?', default='', help='Description text (default:No description.)')
     parser.add_argument('-a', '--add', action='store_true', help='Add description if directory already exists. (default:False)')
-    parser.add_argument('--ANSI-ESCAPE-SEQUENCE-MODE', action='store_true', help='SET ANSI-ESCAPE-MODE.')
-    parser.add_argument('--LSI-ESCAPE-SEQUENCE-MODE', action='store_true', help='SET LSI-ESCAPE-MODE.')
-    parser.add_argument('-e', '--SHOW-ESCAPE-SEQUENCE-MODE', action='store_true', help='SET LSI-ESCAPE-MODE.')
+    parser.add_argument('--ANSI-MODE', action='store_true', help='SET ANSI-ESCAPE-SEQUENCE-MODE.')
+    parser.add_argument('--LSI-MODE', action='store_true', help='SET LSI-ESCAPE-SEQUENCE-MODE.')
+    parser.add_argument('-e', '--SHOW-MODE', action='store_true', help='SET LSI-ESCAPE-MODE.')
     args = parser.parse_args()
     config = Config()
 
     # ESCAPE SEQUENCE MODE
-    ANSI_ESCAPE_SEQUENCE_MODE = args.ANSI_ESCAPE_SEQUENCE_MODE
-    LSI_ESCAPE_SEQUENCE_MODE = args.LSI_ESCAPE_SEQUENCE_MODE
-    SHOW_ESCAPE_SEQUENCE_MODE = args.SHOW_ESCAPE_SEQUENCE_MODE
+    ANSI_ESCAPE_SEQUENCE_MODE = args.ANSI_MODE
+    LSI_ESCAPE_SEQUENCE_MODE = args.LSI_MODE
+    SHOW_ESCAPE_SEQUENCE_MODE = args.SHOW_MODE
 
     if ANSI_ESCAPE_SEQUENCE_MODE and LSI_ESCAPE_SEQUENCE_MODE:
         print('error: invalid auguments.')
