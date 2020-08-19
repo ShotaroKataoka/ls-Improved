@@ -1,4 +1,5 @@
 import unicodedata
+import re
 
 from .config import Config
 
@@ -21,7 +22,27 @@ class Text():
                 style : Dict
                     style.keys: [tag, start_pos, end_pos]
         '''
-        text = [{'tag':start_color, 'text':text}]
+
+        # ANSI escape sequence
+        ansi_list = list(re.finditer(config.ANSI_ESCAPE_SEQUENCE_PATTERN, text))
+        if len(ansi_list)>0:
+            past_end = 0
+            texts = []
+            for ansi in ansi_list:
+                span = ansi.span()
+                match = ansi.group()
+                if past_end==0:
+                    texts += [{'tag':start_color, 'text':text[past_end:span[0]]}]
+                else:
+                    texts += [{'tag':past_tag, 'text':text[past_end:span[0]]}]
+                past_tag = match
+                past_end = span[1]
+            texts += [{'tag':past_tag, 'text':text[past_end:]}]
+        else:
+            texts = [{'tag':start_color, 'text':text}]
+        
+        # lsi tag
+        text = texts
         for tag in set(config.tag.values())-set([';ss;', ';se;', ';dw;']):
             new_text_list = [[t] for t in text]
             for i, t in enumerate(text):
@@ -54,7 +75,6 @@ class Text():
                 if self.style[i]['start_pos']>=pos:
                     self.style[i]['start_pos'] += len(text)
                 self.style[i]['end_pos'] += len(text)
-        # self._sort_style()
 
     def insert_style(self, color_tag, pos):
         for i, style in enumerate(self.style):
@@ -159,6 +179,6 @@ class Text():
             elif tag['tag']==';se;':
                 color = self._search_end(i)
             else:
-                color = config.color[tag['tag']]
+                color = config.get_color_from_tag(tag['tag'])
             text += color + self.text[s:e]
         return text + config.get_color('end')
