@@ -2,6 +2,7 @@ import os
 import argparse
 
 from .lsi_text import Text
+from .config import Config
 
 
 class Mkdiri():
@@ -113,6 +114,7 @@ def main():
     parser.add_argument('--LSI-ESCAPE-SEQUENCE-MODE', action='store_true', help='SET LSI-ESCAPE-MODE.')
     parser.add_argument('-e', '--SHOW-ESCAPE-SEQUENCE-MODE', action='store_true', help='SET LSI-ESCAPE-MODE.')
     args = parser.parse_args()
+    config = Config()
 
     # ESCAPE SEQUENCE MODE
     ANSI_ESCAPE_SEQUENCE_MODE = args.ANSI_ESCAPE_SEQUENCE_MODE
@@ -135,14 +137,14 @@ def main():
     except:
         escape_sequence = 'LSI'
 
-    if ANSI_ESCAPE_SEQUENCE_MODE:
-        escape_sequence = 'ANSI'
+    if ANSI_ESCAPE_SEQUENCE_MODE or LSI_ESCAPE_SEQUENCE_MODE:
+        if ANSI_ESCAPE_SEQUENCE_MODE:
+            escape_sequence = 'ANSI'
+        if LSI_ESCAPE_SEQUENCE_MODE:
+            escape_sequence = 'LSI'
         with open(home+'/.lsirc', 'w') as f:
             f.write('ESCAPE SEQUENCE = '+ escape_sequence)
-    if LSI_ESCAPE_SEQUENCE_MODE:
-        escape_sequence = 'LSI'
-        with open(home+'/.lsirc', 'w') as f:
-            f.write('ESCAPE SEQUENCE = '+ escape_sequence)
+        print('success: set', escape_sequence, 'mode and write it to ~/.lsirc')
 
     if SHOW_ESCAPE_SEQUENCE_MODE:
         print('ESCAPE SEQUENCE MODE = ' + escape_sequence)
@@ -157,7 +159,11 @@ def main():
     if escape_sequence=='ANSI':
         description = Text(description, ';desc;')
         description = description.render()
-        description = description[6:-5]
+        description = description[5:].split(config.get_color('end'))
+        while description[-1]=='':
+            description = description[:-1]
+        print(description)
+        description = config.get_color('end').join(description)
     is_add_mode = args.add
 
     mkdiri = Mkdiri(dir, description, is_add_mode)
