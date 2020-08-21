@@ -45,6 +45,13 @@ pipする権限がない場合などは以下の手順でインストールし�
 - `mkdiri DIRECTORY 'DESCRIPTION'` : DIRECTORYというディレクトリを作成し，'DESCRIPTION'という説明文を`.description.lsi`に作成  
 - `mkdiri DIRECTORY` : ディレクトリを作成し，空の`.description.lsi`を作成  
 - `mkdiri -a DIRECTORY DESCRIPTION` : 既存のディレクトリに説明文を上書き（`.description.lsi`が存在しない場合、新規作成する）  
+- mkdiri -h : ヘルプ表示
+
+Advanced feature:
+- `mkdiri -e` : 現在の保存モードを表示. (LSI MODE or ANSI MODE)
+- `mkdiri --ANSI-MODE`  : 保存モードを ANSIエスケープシーケンスにする. (説明文内の装飾コードをANSIエスケープシーケンスに変換してファイルに書き込む)
+- `mkdiri --LSI-MODE`  : 保存モードをLSIエスケープシーケンスにする．（デフォルト）
+**!! これらのコマンドは `~/.lsirc` ファイルを生成するので注意 !!**
 
 **tips:**  
 説明文には装飾をすることができます。  
@@ -64,6 +71,8 @@ pipする権限がない場合などは以下の手順でインストールし�
 - `lsi -F` : ファイルのみを表示
 - `lsi -D` : ディレクトリのみを表示
 - `lsi -s 'SEARCH_WORD'` : `SEARCH_WORD`でファイル名・説明文内を検索
+- `lsi -n NUMBER` : NUMBER以上のファイル数なら警告するようにする
+- `lsi -h` : ヘルプ表示
 
 **tips:**  
 お好みで `.bashrc` に以下のエイリアスを追加すると便利です。  
