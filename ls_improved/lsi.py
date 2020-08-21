@@ -142,7 +142,7 @@ def main():
     parser.add_argument('-F','--only-files', action='store_true', help='Do not show directories.')
     parser.add_argument('-s','--search', default='', metavar='STRING', help='Search word inside of file names and descriptions')
     # parser.add_argument('-f','--show-file-num', action='store_true', help='show files num of directory')
-    parser.add_argument('-n', '--limit-file-num', type=int, metavar='INT' ,default=0, help='set threshold for opening directory by many files')
+    parser.add_argument('-n', '--limit-file-num', type=int, metavar='NUMBER' ,default=0, help='Raise warning if number of files is bigger than NUMBER.')
     args = parser.parse_args()
 
     # Get parser arguments
