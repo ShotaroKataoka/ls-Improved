@@ -1,5 +1,5 @@
 __copyright__    = 'Copyright (C) 2020 Shotaro Kataoka'
-__version__      = '0.3.1'
+__version__      = '0.4.0'
 __license__      = 'MIT'
 __author__       = 'Shotaro Kataoka'
 __author_email__ = 'shotaro.kata@gmail.com'

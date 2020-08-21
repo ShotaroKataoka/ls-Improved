@@ -51,6 +51,14 @@ For person who do not like PyPI, manual install version exists.
 - `mkdiri DIRECTORY 'DESCRIPTION'` : make `DIRECTORY` and write `DESCRIPTION` into `.description.lsi`  
 - `mkdiri DIRECTORY` : make `DIRECTORY` and create empty `.description.lsi`  
 - `mkdiri -a DIRECTORY DESCRIPTION` : overwrite or create `.description.lsi` in existing directory.  
+- mkdiri -h : Show help
+
+Advanced feature:
+- `mkdiri -e` : Show current mkdiri mode. (LSI MODE or ANSI MODE)
+- `mkdiri --ANSI-MODE`  : Set ANSI-ESCAPE-SEQUENCE MODE. (convert decoration to ANSI escape sequence)
+- `mkdiri --LSI-MODE`  : Set LSI-ESCAPE-SEQUENCE MODE. (default)
+
+**!! Above commands create `~/.lsirc` !!**
 
 **tips:**  
 Add decoration to description :  
@@ -70,6 +78,8 @@ Add decoration to description :
 - `lsi -F` : Show only files
 - `lsi -D` : Show only directories
 - `lsi -s 'SEARCH_WORD'` : search file-name and description with `SEARCH_WORD`
+- `lsi -n NUMBER`: Raise warning if number of files is bigger than NUMBER.
+- `lsi -h` : Show help
 
 **tips:**  
 Adding following alias to `.bashrc` is useful :  

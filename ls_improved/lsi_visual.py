@@ -1,4 +1,6 @@
 from .config import Config
+from .lsi_text import Text
+
 
 class LsiVisualTransforms():
     def __init__(self):
@@ -29,90 +31,24 @@ class LsiVisualTransforms():
             return status, item
         indent_length = 3 * (item['depth']+1)
         base_name = item['path']
-        description = item['description']
+        description = item['description'].text
 
-        blank = '\n'+';dw;│;se;' + ' '*int(indent_length + item['path_length'] + 3)
+        blank = '│' + ' '*int(indent_length + len(item['path']) + 3)
         description = description.split('\n')
+        for i, desc in enumerate(description[::-1]):
+            if not (set(' ') == set(desc) or set('') == set(desc)):
+                break
+        description = description[:len(description) - i]
+        item['description'].text = '\n'.join(description)
+        
         if len(description)>=2:
-            if set(description[-1])==set(' ') or description[-1]=='':
-                description = description[:-1]
-        description = blank.join(description)
-        status = 0
-        item['description'] = description+';end;'
-        return status, item
-
-    def _add_color_to_path(self, item, prev_status):
-        """
-        Visual transform for Path.
-        Add color to Path text.
-
-        Parameters
-        ----------
-        item : Dict
-        prev_status : Boolean
-
-        Returns
-        -------
-        status : Boolean
-        item : Dict
-        """
-        type = item['type']
-        config = self.config
-        if type=='Dir':
-            item['path'] = config.get_color('dir') + item['path'] + config.get_color('end')
-        elif type=='File':
-            item['path'] = config.get_color('file') + item['path'] + config.get_color('end')
-        status = 0
-        return status, item
-
-    def _tag2color(self, item, prev_status):
-        """
-        Visual transform for Description.
-        change tag text to color code.
-
-        Parameters
-        ----------
-        item : Dict
-        prev_status : Boolean
-
-        Returns
-        -------
-        status : Boolean
-        item : Dict
-        """
-        config = self.config
-        text = item['path']
-        text = item['path'].replace(config.tag['search'], config.get_color('search'))
-        text = text.replace(config.tag['search_end'], config.get_color('search_end')+config.get_color(item['type']))
-        item['path'] = text
-        if 'description' not in item.keys():
-            status = 1
-            return status, item
-
-        description = [{'tag':config.tag['description'], 'text':item['description']}]
-        for tag in set(config.tag.values())-set([';ss;', ';se;', ';dw;']):
-            new_description = [[desc] for desc in description]
-            for i, desc in enumerate(description):
-                splited_text = desc['text'].split(tag)
-                if len(splited_text)==1:
-                    new_desc = [desc]
-                elif len(splited_text)>1:
-                    desc['text'] = splited_text[0]
-                    new_desc = [desc]
-                    for text in splited_text[1:]:
-                        new_desc += [{'tag':tag, 'text':text}]
-                new_description[i] = new_desc
-            description = []
-            for desc in new_description:
-                description += desc
-        output_description = ''
-        for desc in description:
-            text = desc['text'].replace(config.tag['search'], config.get_color('search'))
-            text = text.replace(config.tag['description_white'], config.get_color('description_white'))
-            text = text.replace(config.tag['search_end'], config.get_color('search_end')+config.color[desc['tag']])
-            output_description += config.color[desc['tag']]
-            output_description += text
-        item['description'] = output_description
+            insert_count = 0
+            for desc in description[:-1]:
+                insert_count += len(desc)+1
+                item['description'].insert_text(blank, insert_count)
+                item['description'].insert_style(';nl;', insert_count)
+                item['description'].insert_style(';nle;', insert_count+len(blank))
+                insert_count += len(blank)
         status = 0
         return status, item
 
@@ -136,7 +72,7 @@ class LsiVisualTransforms():
             return '├', item
         if place==1:
             if 'description' in item.keys():
-                item['description'] = item['description'].replace(self.config.get_color('description_white')+'│'+self.config.get_color('search_end'), self.config.get_color('search_end')+' ')
+                item['description'].text = item['description'].text.replace('│', ' ')
             return '└', item
 
 
@@ -161,9 +97,9 @@ class LsiVisualTransforms():
         if 'description' in item.keys():
             description = item['description']
         else:
-            description = item['type']
-        indent = head+'a'*3*item['depth'] + self.config.indent
-        output = indent + item['path'] + ' / ' + description
+            description = Text(item['type'], ';w;')
+        indent = head+' '*3*item['depth'] + self.config.indent
+        output = indent + item['path'].render() + ' / ' + description.render()
         status = 0
         return status, output
 
@@ -188,8 +124,6 @@ class LsiVisualTransforms():
         prev_status = condition['status']
         transforms = []
         transforms += [self._add_indent_to_new_line]
-        transforms += [self._tag2color]
-        transforms += [self._add_color_to_path]
         for tr in transforms:
             prev_status, item = tr(item, prev_status)
 
