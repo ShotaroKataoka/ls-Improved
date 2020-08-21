@@ -162,7 +162,6 @@ def main():
         description = description[5:].split(config.get_color('end'))
         while description[-1]=='':
             description = description[:-1]
-        print(description)
         description = config.get_color('end').join(description)
     is_add_mode = args.add
 
