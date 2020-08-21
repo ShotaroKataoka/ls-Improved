@@ -51,6 +51,7 @@ Advanced feature:
 - `mkdiri -e` : 現在の保存モードを表示. (LSI MODE or ANSI MODE)
 - `mkdiri --ANSI-MODE`  : 保存モードを ANSIエスケープシーケンスにする. (説明文内の装飾コードをANSIエスケープシーケンスに変換してファイルに書き込む)
 - `mkdiri --LSI-MODE`  : 保存モードをLSIエスケープシーケンスにする．（デフォルト）
+
 **!! これらのコマンドは `~/.lsirc` ファイルを生成するので注意 !!**
 
 **tips:**  

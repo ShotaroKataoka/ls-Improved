@@ -57,6 +57,7 @@ Advanced feature:
 - `mkdiri -e` : Show current mkdiri mode. (LSI MODE or ANSI MODE)
 - `mkdiri --ANSI-MODE`  : Set ANSI-ESCAPE-SEQUENCE MODE. (convert decoration to ANSI escape sequence)
 - `mkdiri --LSI-MODE`  : Set LSI-ESCAPE-SEQUENCE MODE. (default)
+
 **!! Above commands create `~/.lsirc` !!**
 
 **tips:**  
