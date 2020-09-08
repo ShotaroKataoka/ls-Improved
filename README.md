@@ -1,4 +1,4 @@
-# ls-Improved: descriptive ls-like-command working on Python.
+# ls-Improved: descriptive ls-like-command working on Python
 [![Downloads](https://pepy.tech/badge/ls-improved)](https://pepy.tech/project/ls-improved)  
 
 [日本語README](https://github.com/ShotaroKataoka/ls-Improved/blob/master/README.ja.md)
