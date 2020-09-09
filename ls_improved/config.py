@@ -36,6 +36,7 @@ class Config():
 
         """ Set description_path """
         self.description_name = '.description.lsi'
+        self.file_description_name = '.file_description.lsi'
 
         """ Set Visual Setting """
         self.tag = {
