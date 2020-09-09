@@ -95,10 +95,81 @@ class LsiItemLoader():
             else:
                 description = None
                 status = 3
-
         return status, description
 
-    def _create_item(self, path):
+    def read_file_description(self, dir):
+        """
+        read .file_description.lsi
+
+        Parameters
+        ----------
+        dir : String
+            Directory Path
+
+        Returns
+        -------
+        status : Int
+            0 == success
+            1 == description file not exists
+        description : Dict
+            key: file_name
+            value: description String
+        """
+        dir = dir+'/' if dir[-1]!='/' else dir
+        desc_path = dir + self.config.file_description_name
+        try:
+            with open(desc_path, 'r') as f:
+                description = f.read()
+            _, description = self._interpret_file_description(description)
+            status = 0
+        except:
+            description = {}
+            status = 1
+        return status, description
+    
+    def _interpret_file_description(self, description):
+        """
+        interpret .file_description.lsi raw string (string -> dictionary)
+
+        Parameters
+        ----------
+        description : String
+
+        Returns
+        -------
+        status : Int
+            0 == success
+            1 == description file is empty
+            2 == description content is invalid
+        desc_dict : Dict
+            key: file_name
+            value: description String
+        """
+        if description=='':
+            status = 1
+            return status, {}
+        description = description.split('\n')
+        if len(description)<2:
+            status = 2
+            return status, {}
+
+        file_name = '\\/'
+        desc_dict = {}
+        for desc in description:
+            if len(desc)>=2:
+                if desc[:2]=='\\/':
+                    file_name = desc[2:]
+                    continue
+            try:
+                desc_dict[file_name] += '\n'+desc
+            except:
+                desc_dict[file_name] = desc
+        status = 0
+        return status, desc_dict
+        
+
+
+    def _create_item(self, path, file_description={}):
         """
         Create directory or file dictionary.
 
@@ -106,6 +177,8 @@ class LsiItemLoader():
         ----------
         path : String
             directory or file path.
+        file_description : Dict (default: {})
+            output of self.read_file_description
         
         Returns
         -------
@@ -133,6 +206,8 @@ class LsiItemLoader():
             item['type'] = 'Dir'
             status = 0
         elif os.path.isfile(path):
+            if base_path in file_description.keys():
+                item['description'] = Text(file_description[base_path], ';desc;')
             item['path'] = Text(base_path, ';file;')
             item['type'] = 'File'
             status = 1
@@ -170,9 +245,10 @@ class LsiItemLoader():
             print('error: cannot open directory \''+dir+'\': Permission denied.')
             exit()
         status, children = self._get_children(dir, show_all=show_all, get_only_directories=show_only_directories, get_only_files=show_only_files)
+        status, file_description = self.read_file_description(dir)
         children_d, children_f = children
         children_d = [self._create_item(child)[1] for child in children_d]
-        children_f = [self._create_item(child)[1] for child in children_f]
+        children_f = [self._create_item(child, file_description=file_description)[1] for child in children_f]
         top_item = {
                 'path': dir,
                 'children_d': children_d,
