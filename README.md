@@ -50,8 +50,9 @@ For person who do not like PyPI, manual install version exists.
 `mkdiri` make a directory with the `.description.lsi`.
 - `mkdiri DIRECTORY 'DESCRIPTION'` : make `DIRECTORY` and write `DESCRIPTION` into `.description.lsi`  
 - `mkdiri DIRECTORY` : make `DIRECTORY` and create empty `.description.lsi`  
+- `mkdiri -f DIRECTORY 'FILE-DESCRIPTION'` : write `FILE-DESCRIPTION` into `.file_description.lsi`  
 - `mkdiri -a DIRECTORY DESCRIPTION` : overwrite or create `.description.lsi` in existing directory.  
-- mkdiri -h : Show help
+- `mkdiri -h` : Show help
 
 Advanced feature:
 - `mkdiri -e` : Show current mkdiri mode. (LSI MODE or ANSI MODE)
@@ -75,8 +76,8 @@ Add decoration to description :
 - `lsi` : Show directory structure and these descriptions in the current directory
 - `lsi DIRECTORY` : Show directory structure and these descriptions in the `DIRECTORY`
 - `lsi -a` : Show hidden files and directories
-- `lsi -F` : Show only files
-- `lsi -D` : Show only directories
+- `lsi -f` : Show only files
+- `lsi -d` : Show only directories
 - `lsi -s 'SEARCH_WORD'` : search file-name and description with `SEARCH_WORD`
 - `lsi -n NUMBER`: Raise warning if number of files is bigger than NUMBER.
 - `lsi -h` : Show help
