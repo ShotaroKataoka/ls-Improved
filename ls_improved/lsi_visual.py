@@ -77,7 +77,7 @@ class LsiVisualTransforms():
         if place==2:
             if 'description' in item.keys():
                 item['description'].text = item['description'].text.replace('│', ' ')
-            return '🍺', item
+            return '📁', item
 
 
     def _concat_item(self, item, place):
