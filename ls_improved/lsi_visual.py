@@ -75,9 +75,7 @@ class LsiVisualTransforms():
                 item['description'].text = item['description'].text.replace('│', ' ')
             return '└', item
         if place==2:
-            if 'description' in item.keys():
-                item['description'].text = item['description'].text.replace('│', ' ')
-            return '\n🍺 ', item
+            return '', item
 
 
     def _concat_item(self, item, place):
@@ -103,7 +101,10 @@ class LsiVisualTransforms():
         else:
             description = Text(item['type'], ';w;')
         indent = head+' '*3*item['depth'] + self.config.indent
-        output = indent + item['path'].render() + ' / ' + description.render()
+        if place==2:
+            output = description.render()
+        else:
+            output = indent + item['path'].render() + ' / ' + description.render()
         status = 0
         return status, output
 
@@ -127,7 +128,8 @@ class LsiVisualTransforms():
         """
         prev_status = condition['status']
         transforms = []
-        transforms += [self._add_indent_to_new_line]
+        if condition['is_last']!=2:
+            transforms += [self._add_indent_to_new_line]
         for tr in transforms:
             prev_status, item = tr(item, prev_status)
 
