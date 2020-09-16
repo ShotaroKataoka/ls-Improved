@@ -21,6 +21,7 @@ class Lsi():
             show_all=False,
             show_only_directories=False,
             show_only_files=False,
+            show_this=False,
             show_file_num=False,
             limit_file_num=50,
             search_word=''
@@ -53,12 +54,13 @@ class Lsi():
         """
         
         # Set CommandLine Arguments
-        self.dir = dir
+        self.dir = dir+'../' if show_this else dir
         self.show_all = show_all
         self.show_only_files = show_only_files
         self.show_only_directories = show_only_directories
         self.limit_file_num = limit_file_num
         self.show_file_num = show_file_num
+        self.show_this = show_this
         
         # Set Lsi Modules
         self.config = Config()
@@ -88,6 +90,8 @@ class Lsi():
         """
         children = children[0]+children[1]
         if len(children)>0 and top_path!='./':
+            if self.show_this:
+                top_path = '../'.join(top_path.split('../')[:-1])
             top_path = os.path.abspath(top_path)
             above_path = self.config.get_color('pwd') + '/'.join(top_path.split('/')[:-1])+'/'
             base_name = self.config.get_color('pwd_current')+top_path.split('/')[-1]+'/'
@@ -97,6 +101,10 @@ class Lsi():
                 condition['is_last'] = 1
             else:
                 condition['is_last'] = 0
+            if self.show_this:
+                if top_path.split('/')[-1] != item['path'].text:
+                    continue
+                condition['is_last'] = 1
             s, output = self.visual_transforms.run(item, condition)
             print(output)
         status = 0
@@ -140,6 +148,7 @@ def main():
     parser.add_argument('-a','--all', action='store_true', help='Show hidden files and directories. (default: Hidden)')
     parser.add_argument('-d','--only-directories', action='store_true', help='Do not show files.')
     parser.add_argument('-f','--only-files', action='store_true', help='Do not show directories.')
+    parser.add_argument('-t','--show-this', action='store_true', help='show this directory.')
     parser.add_argument('-s','--search', default='', metavar='STRING', help='Search word inside of file names and descriptions')
     # parser.add_argument('-f','--show-file-num', action='store_true', help='show files num of directory')
     parser.add_argument('-n', '--limit-file-num', type=int, metavar='NUMBER' ,default=0, help='Raise warning if number of files is bigger than NUMBER.')
@@ -151,6 +160,7 @@ def main():
     show_all = args.all
     show_only_directories = args.only_directories
     show_only_files = args.only_files
+    show_this = args.show_this
     # show_file_num = args.show_file_num
     limit_file_num = args.limit_file_num
     search_word = args.search
@@ -160,6 +170,7 @@ def main():
             show_all=show_all, 
             show_only_directories=show_only_directories, 
             show_only_files=show_only_files, 
+            show_this=show_this,
             # show_file_num=show_file_num,
             limit_file_num=limit_file_num,
             search_word=search_word
