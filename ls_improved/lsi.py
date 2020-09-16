@@ -104,7 +104,7 @@ class Lsi():
             if self.show_this:
                 if top_path.split('/')[-1] != item['path'].text:
                     continue
-                condition['is_last'] = 1
+                condition['is_last'] = 2
             s, output = self.visual_transforms.run(item, condition)
             print(output)
         status = 0

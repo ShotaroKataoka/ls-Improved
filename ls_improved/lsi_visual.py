@@ -74,6 +74,10 @@ class LsiVisualTransforms():
             if 'description' in item.keys():
                 item['description'].text = item['description'].text.replace('│', ' ')
             return '└', item
+        if place==2:
+            if 'description' in item.keys():
+                item['description'].text = item['description'].text.replace('│', ' ')
+            return '　', item
 
 
     def _concat_item(self, item, place):
