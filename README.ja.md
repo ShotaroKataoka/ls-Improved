@@ -44,8 +44,8 @@ pipする権限がない場合などは以下の手順でインストールし�
 ### mkdiri
 - `mkdiri DIRECTORY 'DESCRIPTION'` : DIRECTORYというディレクトリを作成し，'DESCRIPTION'という説明文を`.description.lsi`に作成  
 - `mkdiri DIRECTORY` : ディレクトリを作成し，空の`.description.lsi`を作成  
-- `mkdiri -a DIRECTORY DESCRIPTION` : 既存のディレクトリに説明文を上書き（`.description.lsi`が存在しない場合、新規作成する）  
-- `mkdiri -f FILE-PATH DESCRIPTION` : ファイルに説明文を付けます。ファイルと同じ階層の `.file_description.lsi` に書き込みされます。
+- `mkdiri -a DIRECTORY 'DESCRIPTION'` : 既存のディレクトリに説明文を上書き（`.description.lsi`が存在しない場合、新規作成する）  
+- `mkdiri -f FILE-PATH 'DESCRIPTION'` : ファイルに説明文を付けます。ファイルと同じ階層の `.file_description.lsi` に書き込みされます。
 - `mkdiri -h` : ヘルプ表示
 
 Advanced feature (!! **これらのコマンドは `~/.lsirc` を生成するので注意** !!:)
