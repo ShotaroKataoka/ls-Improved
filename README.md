@@ -54,12 +54,10 @@ For person who do not like PyPI, manual install version exists.
 - `mkdiri -a DIRECTORY DESCRIPTION` : overwrite or create `.description.lsi` in existing directory.  
 - `mkdiri -h` : Show help
 
-Advanced feature:
+Advanced feature ( **!! these commands create `~/.lsirc` !!** ):
 - `mkdiri -e` : Show current mkdiri mode. (LSI MODE or ANSI MODE)
 - `mkdiri --ANSI-MODE`  : Set ANSI-ESCAPE-SEQUENCE MODE. (convert decoration to ANSI escape sequence)
 - `mkdiri --LSI-MODE`  : Set LSI-ESCAPE-SEQUENCE MODE. (default)
-
-**!! Above commands create `~/.lsirc` !!**
 
 **tips:**  
 Add decoration to description :  
