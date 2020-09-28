@@ -51,7 +51,7 @@ For person who do not like PyPI, manual install version exists.
 - `mkdiri DIRECTORY 'DESCRIPTION'` : make `DIRECTORY` and write `DESCRIPTION` into `.description.lsi`  
 - `mkdiri DIRECTORY` : make `DIRECTORY` and create empty `.description.lsi`  
 - `mkdiri -f FILE-PATH 'DESCRIPTION'` : write `FILE-PATH`'s `DESCRIPTION` into `.file_description.lsi`  
-- `mkdiri -a DIRECTORY DESCRIPTION` : overwrite or create `.description.lsi` in existing directory.  
+- `mkdiri -a DIRECTORY 'DESCRIPTION'` : overwrite or create `.description.lsi` in existing directory.  
 - `mkdiri -h` : Show help
 
 Advanced feature ( **!! these commands create `~/.lsirc` !!** ):
