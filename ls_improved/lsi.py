@@ -95,7 +95,8 @@ class Lsi():
             top_path = os.path.abspath(top_path)
             above_path = self.config.get_color('pwd') + '/'.join(top_path.split('/')[:-1])+'/'
             base_name = self.config.get_color('pwd_current')+top_path.split('/')[-1]+'/'
-            print(above_path+base_name+self.config.get_color('end'))
+            if not self.show_this:
+                print(above_path+base_name+self.config.get_color('end'))
         for i, item in enumerate(children):
             if i+1==len(children):
                 condition['is_last'] = 1
