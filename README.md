@@ -1,4 +1,6 @@
 # ls-Improved: descriptive ls-like-command working on Python
+![ls](https://github.com/ShotaroKataoka/ls-Improved/blob/master/doc/images/lsi.png)
+
 [![Downloads](https://pepy.tech/badge/ls-improved)](https://pepy.tech/project/ls-improved)  
 
 [日本語README](https://github.com/ShotaroKataoka/ls-Improved/blob/master/README.ja.md)
