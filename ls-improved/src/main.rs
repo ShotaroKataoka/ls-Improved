@@ -1,6 +1,6 @@
-mod view;
-mod models;
 mod controller;
+mod models;
+mod view;
 extern crate exitcode;
 
 use argh::FromArgs;
@@ -32,4 +32,3 @@ struct Args {
     #[argh(positional)]
     path: String,
 }
-

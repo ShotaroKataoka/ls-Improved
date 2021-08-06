@@ -1,7 +1,7 @@
 pub mod errors;
 
-use std::path::PathBuf;
 use std::cmp::Ordering;
+use std::path::PathBuf;
 
 #[derive(Eq)]
 pub struct LsiPath {
@@ -15,29 +15,31 @@ pub enum PathType {
 
 impl LsiPath {
     pub fn new(path: PathBuf) -> LsiPath {
-        LsiPath {
-            path: path
-        }
+        LsiPath { path }
     }
 
     pub fn is_hidden(&self) -> bool {
-        match self.file_name().chars().take(1).collect::<String>().as_ref() {
-            "." => true,
-            _ => false,
-        }
+        matches!(
+            self.file_name()
+                .chars()
+                .take(1)
+                .collect::<String>()
+                .as_ref(),
+            "."
+        )
     }
 
     pub fn ptype(&self) -> PathType {
         if self.path.is_file() {
             PathType::File
-        }else if self.path.is_dir() {
+        } else if self.path.is_dir() {
             PathType::Dir
-        }else {
+        } else {
             PathType::File
         }
     }
 
-    pub fn file_name(&self) -> &str{
+    pub fn file_name(&self) -> &str {
         self.path.file_name().unwrap().to_str().unwrap()
     }
 }
@@ -59,4 +61,3 @@ impl PartialEq for LsiPath {
         self.file_name() == other.file_name()
     }
 }
-

@@ -1,7 +1,7 @@
-use std::fs;
 use crate::models;
+use std::fs;
 
-pub fn get_pathes(path: &String) -> Result<(Vec<models::LsiPath>, Vec<models::LsiPath>), String>{
+pub fn get_pathes(path: &str) -> Result<(Vec<models::LsiPath>, Vec<models::LsiPath>), String> {
     let pathes = fs::read_dir(path);
     let pathes = match pathes {
         Ok(_success) => _success,
