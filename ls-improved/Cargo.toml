@@ -6,6 +6,10 @@ edition = "2018"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
+[[bin]]
+name = "lsi"
+path = "src/lsi.rs"
+
 [dependencies]
 argh = "0.1.4"
 colored = "2"
