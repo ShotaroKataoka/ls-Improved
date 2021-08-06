@@ -1,3 +1,5 @@
+pub mod errors;
+
 use std::path::PathBuf;
 use std::cmp::Ordering;
 
@@ -57,3 +59,4 @@ impl PartialEq for LsiPath {
         self.file_name() == other.file_name()
     }
 }
+

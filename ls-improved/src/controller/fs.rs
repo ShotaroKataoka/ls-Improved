@@ -1,7 +1,7 @@
 use std::fs;
-use crate::lsi;
+use crate::models;
 
-pub fn get_pathes(path: &String) -> Result<(Vec<lsi::path::LsiPath>, Vec<lsi::path::LsiPath>), String>{
+pub fn get_pathes(path: &String) -> Result<(Vec<models::LsiPath>, Vec<models::LsiPath>), String>{
     let pathes = fs::read_dir(path);
     let pathes = match pathes {
         Ok(_success) => _success,
@@ -10,10 +10,10 @@ pub fn get_pathes(path: &String) -> Result<(Vec<lsi::path::LsiPath>, Vec<lsi::pa
     let mut dirs = Vec::new();
     let mut files = Vec::new();
     for path in pathes {
-        let p = lsi::path::LsiPath::new(path.unwrap().path());
+        let p = models::LsiPath::new(path.unwrap().path());
         match p.ptype() {
-            lsi::path::PathType::Dir => dirs.push(p),
-            lsi::path::PathType::File => files.push(p),
+            models::PathType::Dir => dirs.push(p),
+            models::PathType::File => files.push(p),
         }
     }
     dirs.sort();

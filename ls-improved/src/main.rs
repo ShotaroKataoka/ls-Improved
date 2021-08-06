@@ -1,4 +1,6 @@
-mod lsi;
+mod view;
+mod models;
+mod controller;
 extern crate exitcode;
 
 use argh::FromArgs;
@@ -6,7 +8,7 @@ use argh::FromArgs;
 fn main() {
     let args: Args = argh::from_env();
 
-    let (dirs, files) = match lsi::fs::get_pathes(&args.path) {
+    let (dirs, files) = match controller::fs::get_pathes(&args.path) {
         Ok(_success) => (_success.0, _success.1),
         Err(_error) => {
             eprintln!("{}", _error);
@@ -14,7 +16,7 @@ fn main() {
         }
     };
 
-    match lsi::view::display(dirs, files) {
+    match view::display(dirs, files) {
         Ok(()) => (),
         Err(_error) => {
             eprintln!("{}", _error);
