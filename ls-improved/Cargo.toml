@@ -11,6 +11,6 @@ name = "lsi"
 path = "src/lsi.rs"
 
 [dependencies]
-argh = "0.1.4"
 colored = "2"
 exitcode = "1.1.2"
+clap = "2.33.3"
