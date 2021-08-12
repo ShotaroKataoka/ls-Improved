@@ -3,32 +3,32 @@ mod models;
 mod view;
 extern crate exitcode;
 
-use argh::FromArgs;
+#[macro_use]
+extern crate clap;
+use clap::App;
 
 fn main() {
-    let args: Args = argh::from_env();
+    let yaml = load_yaml!("cli.yml");
+    let args = App::from_yaml(yaml).get_matches();
+    let path = args.value_of("PATH").unwrap();
+    let is_all = args.is_present("show_all");
+    let is_only_files = args.is_present("only_files");
+    let is_only_dirs = args.is_present("only_directories");
 
-    let (dirs, files) = match controller::fs::get_pathes(&args.path) {
-        Ok(_success) => (_success.0, _success.1),
-        Err(_error) => {
-            eprintln!("{}", _error);
-            std::process::exit(exitcode::OSFILE);
-        }
+    let args = LsiArgs {
+        path: path,
+        is_all: is_all,
+        is_only: if is_only_files { "files" } else if is_only_dirs { "dirs" } else { "all" },
     };
 
-    match view::display(dirs, files) {
-        Ok(()) => (),
-        Err(_error) => {
-            eprintln!("{}", _error);
-            std::process::exit(exitcode::OSFILE);
-        }
-    };
-    std::process::exit(exitcode::OK);
+    match controller::run_lsi(&args) {
+        Ok(()) => {std::process::exit(exitcode::OK);},
+        Err(_error) => { eprintln!("{}", _error); }
+    }
 }
 
-#[derive(FromArgs)]
-#[argh(description = "...")]
-struct Args {
-    #[argh(positional)]
-    path: String,
+pub struct LsiArgs<'a> {
+    path: &'a str,
+    is_all: bool,
+    is_only: &'a str,
 }

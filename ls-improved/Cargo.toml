@@ -13,4 +13,4 @@ path = "src/lsi.rs"
 [dependencies]
 colored = "2"
 exitcode = "1.1.2"
-clap = "2.33.3"
+clap = {version = "2.33.3", features = ["yaml"]}

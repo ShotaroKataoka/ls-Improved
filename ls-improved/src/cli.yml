@@ -1,0 +1,25 @@
+name: ls-Improved
+version: "1.0.0-alpha0"
+author: Shotaro Kataoka <@ShotaroKataoka>
+about: Show directory strusture with their descriptions.
+args:
+    - PATH:
+        help: PATH to show
+        required: false
+        index: 1
+        default_value: "./"
+    - show_all:
+        short: a
+        long: all
+        help: Show hidden files.
+        takes_value: false
+    - only_files:
+        short: f
+        long: only-files
+        help: Show only files.
+        takes_value: false
+    - only_directories:
+        short: d
+        long: only-dirs
+        help: Show only directories.
+        takes_value: false
