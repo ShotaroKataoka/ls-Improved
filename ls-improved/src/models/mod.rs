@@ -4,18 +4,17 @@ use std::cmp::Ordering;
 use std::path::PathBuf;
 
 #[derive(Eq)]
-pub struct LsiPath {
-    path: PathBuf,
-}
-
-pub enum PathType {
-    Dir,
-    File,
+pub enum LsiPath {
+    Dir { path: PathBuf },
+    File { path: PathBuf },
 }
 
 impl LsiPath {
     pub fn new(path: PathBuf) -> LsiPath {
-        LsiPath { path }
+        match path.is_dir() {
+            true => LsiPath::Dir { path },
+            false => LsiPath::File { path },
+        }
     }
 
     pub fn is_hidden(&self) -> bool {
@@ -29,18 +28,11 @@ impl LsiPath {
         )
     }
 
-    pub fn ptype(&self) -> PathType {
-        if self.path.is_file() {
-            PathType::File
-        } else if self.path.is_dir() {
-            PathType::Dir
-        } else {
-            PathType::File
-        }
-    }
-
     pub fn file_name(&self) -> &str {
-        self.path.file_name().unwrap().to_str().unwrap()
+        match self {
+            LsiPath::Dir{path} => path.file_name().unwrap().to_str().unwrap(),
+            LsiPath::File{path} => path.file_name().unwrap().to_str().unwrap(),
+        }
     }
 }
 
