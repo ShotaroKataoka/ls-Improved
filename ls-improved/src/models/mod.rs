@@ -29,9 +29,15 @@ impl LsiPath {
     }
 
     pub fn file_name(&self) -> &str {
+        self.get_path()
+            .file_name().unwrap()
+            .to_str().unwrap()
+    }
+
+    fn get_path(&self) -> &PathBuf {
         match self {
-            LsiPath::Dir{path} => path.file_name().unwrap().to_str().unwrap(),
-            LsiPath::File{path} => path.file_name().unwrap().to_str().unwrap(),
+            LsiPath::Dir{path} => path,
+            LsiPath::File{path} => path,
         }
     }
 }
