@@ -3,11 +3,12 @@ mod models;
 mod view;
 extern crate exitcode;
 
+use anyhow::Result;
 #[macro_use]
 extern crate clap;
 use clap::App;
 
-fn main() {
+fn main() -> Result<()> {
     let yaml = load_yaml!("cli.yml");
     let args = App::from_yaml(yaml).get_matches();
     let path = args.value_of("PATH").unwrap();
@@ -21,10 +22,11 @@ fn main() {
         is_only: if is_only_files { "files" } else if is_only_dirs { "dirs" } else { "all" },
     };
 
-    match controller::run_lsi(&args) {
-        Ok(()) => {std::process::exit(exitcode::OK);},
-        Err(_error) => { eprintln!("{}", _error); }
-    }
+    controller::run_lsi(&args)
+    // match controller::run_lsi(&args) {
+    //     Ok(()) => {std::process::exit(exitcode::OK);},
+    //     Err(_error) => { eprintln!("{}", _error); }
+    // }
 }
 
 pub struct LsiArgs<'a> {

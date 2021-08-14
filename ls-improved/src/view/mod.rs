@@ -5,8 +5,9 @@ extern crate colored;
 use crate::models;
 use crate::LsiArgs;
 use colored::*;
+use anyhow::Result;
 
-pub fn display(dirs: Vec<models::LsiPath>, files: Vec<models::LsiPath>, args: &LsiArgs) -> Result<(), String> {
+pub fn display(dirs: Vec<models::LsiPath>, files: Vec<models::LsiPath>, args: &LsiArgs) -> Result<()> {
     if args.is_only == "dirs" || args.is_only == "all" {
         for path in dirs {
             if path.is_hidden() {

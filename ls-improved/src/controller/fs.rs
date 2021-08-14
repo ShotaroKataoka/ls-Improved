@@ -1,11 +1,13 @@
-use crate::models;
 use std::fs;
+use anyhow::Result;
+use crate::models;
+use crate::models::errors::LsiError;
 
-pub fn get_pathes(path: &str) -> Result<(Vec<models::LsiPath>, Vec<models::LsiPath>), String> {
-    let pathes = fs::read_dir(path);
-    let pathes = match pathes {
+
+pub fn get_pathes(path: &str) -> Result<(Vec<models::LsiPath>, Vec<models::LsiPath>)> {
+    let pathes = match fs::read_dir(path) {
         Ok(_success) => _success,
-        Err(_error) => return Err(_error.to_string()),
+        Err(_error) => return Err(LsiError::TestError.into()),
     };
     let mut dirs = Vec::new();
     let mut files = Vec::new();
