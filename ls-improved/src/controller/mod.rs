@@ -6,12 +6,12 @@ use crate::{LsiArgs, controller, view};
 use crate::models::errors::LsiError;
 
 pub fn run_lsi(args: &LsiArgs) -> Result<()>{
-    let (dirs, files) = match controller::fs::get_pathes(&args.path) {
-        Ok(_success) => (_success.0, _success.1),
+    let pathes = match controller::fs::get_pathes(&args.path) {
+        Ok(_success) => _success,
         Err(_error) => return Err(LsiError::TestError.into()),
     };
 
-    match view::display(dirs, files, &args) {
+    match view::display(pathes, &args.is_only, &args.show_hidden) {
         Ok(()) => (),
         Err(_error) => return Err(LsiError::TestError.into()),
     };
