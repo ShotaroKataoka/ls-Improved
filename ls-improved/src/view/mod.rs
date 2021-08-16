@@ -1,8 +1,10 @@
+/// view/mod.rs
+/// Define how to display lines.
 pub mod decoration;
 
 extern crate colored;
 
-use crate::models::LsiPath;
+use crate::models::{LsiPath, LsiPathKind};
 use crate::models::errors::LsiError;
 use colored::*;
 use anyhow::Result;
@@ -18,9 +20,14 @@ pub fn display(pathes: Vec<LsiPath>,
 }
 
 fn display_a_line(path: &LsiPath) -> Result<()> {
-    match path {
-        LsiPath::Dir{..} => println!("{}", path.file_name().cyan()),
-        LsiPath::File{..} => println!("{}", path.file_name()),
+    match path.kind {
+        LsiPathKind::Dir => {
+            match &path.get_description() {
+                Some(_description) => { println!("{}\t/ {}", path.file_name().cyan(), _description.yellow()); },
+                None => { println!("{}\t/ Dir", path.file_name().cyan()); },
+            };
+        },
+        LsiPathKind::File => println!("{}\t/ File", path.file_name()),
     };
     Ok(())
 }
@@ -28,15 +35,15 @@ fn display_a_line(path: &LsiPath) -> Result<()> {
 fn filter(path: &LsiPath, is_only: &str, show_hidden: &bool) -> Result<bool> {
     match is_only {
         "dirs" => {
-            let show_flag = match path {
-                LsiPath::Dir{..} => true,
+            let show_flag = match path.kind {
+                LsiPathKind::Dir => true,
                 _ => false,
             };
             Ok(show_flag || *show_hidden)
         },
         "files" => {
-            let show_flag = match path {
-                LsiPath::File{..} => true,
+            let show_flag = match path.kind {
+                LsiPathKind::File => true,
                 _ => false,
             };
             Ok(show_flag || *show_hidden)

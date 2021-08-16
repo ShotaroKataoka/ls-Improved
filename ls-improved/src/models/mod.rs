@@ -1,19 +1,37 @@
+/// models/mod.rs
+/// Define LsiPath, LsiPathKind models.
 pub mod errors;
 
 use std::cmp::Ordering;
 use std::path::PathBuf;
 
+
 #[derive(Eq)]
-pub enum LsiPath {
-    Dir { path: PathBuf },
-    File { path: PathBuf },
+pub enum LsiPathKind {
+    Dir,
+    File,
+}
+
+#[derive(Eq)]
+pub struct LsiPath {
+    path: PathBuf,
+    description: Option<String>,
+    pub kind: LsiPathKind,
 }
 
 impl LsiPath {
     pub fn new(path: PathBuf) -> LsiPath {
         match path.is_dir() {
-            true => LsiPath::Dir { path },
-            false => LsiPath::File { path },
+            true => LsiPath {
+                path: path,
+                description: None,
+                kind: LsiPathKind::Dir,
+            },
+            false => LsiPath {
+                path: path,
+                description: None,
+                kind: LsiPathKind::File,
+            },
         }
     }
 
@@ -34,11 +52,22 @@ impl LsiPath {
             .to_str().unwrap()
     }
 
+    pub fn absolute_path(&self) -> String {
+        self.get_path()
+            .canonicalize().unwrap()
+            .to_str().unwrap().to_string()
+    }
+
+    pub fn set_description(&mut self, _description: String) {
+        self.description = Some(_description);
+    }
+
+    pub fn get_description(&self) -> &Option<String> {
+        &self.description
+    }
+    
     fn get_path(&self) -> &PathBuf {
-        match self {
-            LsiPath::Dir{path} => path,
-            LsiPath::File{path} => path,
-        }
+        &self.path
     }
 }
 
@@ -63,14 +92,20 @@ impl PartialEq for LsiPath {
     }
 }
 
-fn add_prefix_number_to_name_for_ordering(name1: &LsiPath, name2: &LsiPath) -> (String, String) {
-        let name1 = match name1 {
-            LsiPath::Dir{..} => "0".to_string() + name1.file_name(),
-            LsiPath::File{..} => "1".to_string() + name1.file_name(),
+impl PartialEq<LsiPathKind> for LsiPathKind {
+    fn eq(&self, other: &Self) -> bool {
+        self == other
+    }
+}
+
+fn add_prefix_number_to_name_for_ordering(path1: &LsiPath, path2: &LsiPath) -> (String, String) {
+        let name1 = match path1.kind {
+            LsiPathKind::Dir => "0_".to_string() + path1.file_name(),
+            LsiPathKind::File => "1_".to_string() + path1.file_name(),
         };
-        let name2 = match name2 {
-            LsiPath::Dir{..} => "0".to_string() + name2.file_name(),
-            LsiPath::File{..} => "1".to_string() + name2.file_name(),
+        let name2 = match path2.kind {
+            LsiPathKind::Dir => "0_".to_string() + path2.file_name(),
+            LsiPathKind::File => "1_".to_string() + path2.file_name(),
         };
         (name1, name2)
 }
