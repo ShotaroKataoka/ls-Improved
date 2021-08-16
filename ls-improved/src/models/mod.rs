@@ -4,6 +4,7 @@ pub mod errors;
 
 use std::cmp::Ordering;
 use std::path::PathBuf;
+use anyhow::Result;
 
 
 #[derive(Eq)]
@@ -53,10 +54,10 @@ impl LsiPath {
             .to_str().unwrap()
     }
 
-    pub fn absolute_path(&self) -> String {
-        self.get_path()
-            .canonicalize().unwrap()
-            .to_str().unwrap().to_string()
+    pub fn absolute_path(&self) -> Result<String> {
+        Ok(self.get_path()
+            .canonicalize()?
+            .to_str().unwrap().to_string())
     }
 
     pub fn set_description(&mut self, _description: String) {
