@@ -9,14 +9,14 @@ use crate::models::errors::LsiError;
 use crate::models::LsiPath;
 
 pub fn run_lsi(args: &LsiArgs) -> Result<()>{
-    let mut pathes = match controller::fs::get_pathes(&args.path) {
+    let mut pathes = match controller::fs::get_pathes(&args.path, &args.is_only, &args.show_hidden) {
         Ok(_success) => _success,
         Err(_error) => return Err(LsiError::TestError.into()),
     };
 
     get_and_set_descriptions(&mut pathes)?;
 
-    match view::display(pathes, &args.is_only, &args.show_hidden) {
+    match view::display(pathes) {
         Ok(()) => (),
         Err(_error) => return Err(LsiError::TestError.into()),
     };

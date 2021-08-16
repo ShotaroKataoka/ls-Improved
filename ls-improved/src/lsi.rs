@@ -7,6 +7,7 @@ use anyhow::Result;
 #[macro_use]
 extern crate clap;
 use clap::App;
+use models::LsiPathKind;
 
 fn main() -> Result<()> {
     let yaml = load_yaml!("cli.yml");
@@ -19,7 +20,7 @@ fn main() -> Result<()> {
     let args = LsiArgs {
         path: path,
         show_hidden: show_hidden,
-        is_only: if is_only_files { "files" } else if is_only_dirs { "dirs" } else { "all" },
+        is_only: if is_only_files { Some(LsiPathKind::File) } else if is_only_dirs { Some(LsiPathKind::Dir) } else { None },
     };
 
     controller::run_lsi(&args)
@@ -28,5 +29,5 @@ fn main() -> Result<()> {
 pub struct LsiArgs<'a> {
     path: &'a str,
     show_hidden: bool,
-    is_only: &'a str,
+    is_only: Option<LsiPathKind>,
 }

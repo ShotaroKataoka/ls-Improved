@@ -35,9 +35,10 @@ impl LsiPath {
         }
     }
 
-    pub fn is_hidden(&self) -> bool {
+    pub fn is_hidden(path: &PathBuf) -> bool {
         matches!(
-            self.file_name()
+            path.file_name().unwrap()
+                .to_str().unwrap()
                 .chars()
                 .take(1)
                 .collect::<String>()

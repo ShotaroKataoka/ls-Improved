@@ -3,24 +3,47 @@
 use std::fs;
 use std::fs::File;
 use std::io::Read;
-use std::path::Path;
+use std::path::{Path, PathBuf};
 use anyhow::Result;
-use crate::models::LsiPath;
+use crate::models::{LsiPath, LsiPathKind};
 use crate::models::errors::LsiError;
 
 
-pub fn get_pathes(path: &str) -> Result<Vec<LsiPath>> {
+pub fn get_pathes(path: &str, is_only: &Option<LsiPathKind>, show_hidden: &bool) -> Result<Vec<LsiPath>> {
     let pathes = match fs::read_dir(path) {
         Ok(_success) => _success,
         Err(_error) => return Err(LsiError::TestError.into()),
     };
     let mut p = Vec::new();
     for path in pathes {
-        let mut lsi_path = LsiPath::new(path.unwrap().path());
-        p.push(lsi_path);
+        let path = path.unwrap().path();
+        if path_filter(&path, is_only, show_hidden) {
+            let mut lsi_path = LsiPath::new(path);
+            p.push(lsi_path);
+        }
     }
     p.sort();
     Ok(p)
+}
+
+fn path_filter(path: &PathBuf, is_only: &Option<LsiPathKind>, show_hidden: &bool) -> bool {
+    match is_only {
+        Some(kind) => {
+            match kind {
+                LsiPathKind::Dir => {
+                    let is_target = if path.is_dir() { true } else { false };
+                    let is_hidden = LsiPath::is_hidden(path);
+                    is_target && (!is_hidden || *show_hidden)
+                },
+                LsiPathKind::File => {
+                    let is_target = if path.is_file() { true } else { false };
+                    let is_hidden = LsiPath::is_hidden(path);
+                    is_target && (!is_hidden || *show_hidden)
+                },
+            }
+        },
+        None => !LsiPath::is_hidden(path) || *show_hidden,
+    }
 }
 
 pub fn read_description(path: &LsiPath) -> Result<String>{
