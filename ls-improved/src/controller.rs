@@ -7,24 +7,24 @@ use crate::errors::LsiError;
 use crate::models::{LsiPath, LsiPathKind};
 
 pub fn run_lsi(args: &LsiArgs) -> Result<()>{
-    /// ---------------------------------- ///
-    /// Glob target files and directories! ///
-    /// ---------------------------------- ///
+    // ---------------------------------- //
+    // Glob target files and directories! //
+    // ---------------------------------- //
     let mut pathes = match fs::get_pathes(&args.path, &args.is_only, &args.show_hidden) {
         Ok(_success) => _success,
         Err(_error) => return Err(LsiError::TestError.into()),
     };
 
-    /// -------------------------- ///
-    /// Read and set descriptions! ///
-    /// -------------------------- ///
+    // -------------------------- //
+    // Read and set descriptions! //
+    // -------------------------- //
     let file_descriptions = fs::read_file_descriptions(&args.path);
     get_and_set_descriptions(&mut pathes)?;
     decoration::replace_color_codes(&mut pathes);
 
-    /// -------------------- ///
-    /// Display LSI results! ///
-    /// -------------------- ///
+    // -------------------- //
+    // Display LSI results! //
+    // -------------------- //
     match view::display(pathes) {
         Ok(()) => (),
         Err(_error) => return Err(LsiError::TestError.into()),
