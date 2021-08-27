@@ -1,16 +1,16 @@
 extern crate regex;
 use regex::Regex;
 use anyhow::Result;
-use crate::models::{LsiPath, LsiPathKind};
+use crate::models::LsiPath;
 use crate::errors::LsiError;
 
 
 pub fn replace_color_codes(pathes: &mut Vec<LsiPath>) -> Result<()> {
     for path in pathes {
-        replace_lsi_color_code(&mut *path);
-        replace_ansi_color_code(&mut *path);
-        put_start_code(&mut *path);
-        put_end_code(&mut *path);
+        let _ = replace_lsi_color_code(&mut *path);
+        let _ = replace_ansi_color_code(&mut *path);
+        let _ = put_start_code(&mut *path);
+        let _ = put_end_code(&mut *path);
     }
     Ok(())
 }

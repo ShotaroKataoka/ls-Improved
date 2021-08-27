@@ -13,7 +13,7 @@ use clap::App;
 use models::LsiPathKind;
 
 fn main() -> Result<()> {
-    let yaml = load_yaml!("cli.yml");
+    let yaml = load_yaml!("args.yml");
     let args = App::from_yaml(yaml).get_matches();
     let path = args.value_of("PATH").unwrap();
     let show_hidden = args.is_present("show_all");

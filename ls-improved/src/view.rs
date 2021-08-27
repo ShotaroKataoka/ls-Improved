@@ -1,7 +1,6 @@
 /// Define how to display lines.
 
 use crate::models::{LsiPath, LsiPathKind};
-use crate::errors::LsiError;
 use anyhow::Result;
 
 pub fn display(pathes: Vec<LsiPath>) -> Result<()> {

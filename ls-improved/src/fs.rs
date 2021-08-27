@@ -18,7 +18,7 @@ pub fn get_pathes(path: &str, is_only: &Option<LsiPathKind>, show_hidden: &bool)
     for path in pathes {
         let path = path.unwrap().path();
         if path_filter(&path, is_only, show_hidden) {
-            let mut lsi_path = LsiPath::new(path);
+            let lsi_path = LsiPath::new(path);
             p.push(lsi_path);
         }
     }

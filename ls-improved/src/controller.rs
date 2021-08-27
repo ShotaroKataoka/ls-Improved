@@ -18,9 +18,9 @@ pub fn run_lsi(args: &LsiArgs) -> Result<()>{
     // -------------------------- //
     // Read and set descriptions! //
     // -------------------------- //
-    let file_descriptions = fs::read_file_descriptions(&args.path);
+    let _file_descriptions = fs::read_file_descriptions(&args.path);
     get_and_set_descriptions(&mut pathes)?;
-    decoration::replace_color_codes(&mut pathes);
+    decoration::replace_color_codes(&mut pathes)?;
 
     // -------------------- //
     // Display LSI results! //
@@ -49,7 +49,7 @@ fn get_and_set_description(path: &mut LsiPath) -> Result<()> {
 
 fn get_and_set_descriptions(pathes: &mut Vec<LsiPath>) -> Result<()> {
     for path in pathes {
-        get_and_set_description(&mut *path);
+        let _ = get_and_set_description(&mut *path);
     }
     Ok(())
 }
