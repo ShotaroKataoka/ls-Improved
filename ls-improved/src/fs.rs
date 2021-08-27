@@ -6,7 +6,7 @@ use std::io::Read;
 use std::path::{Path, PathBuf};
 use anyhow::Result;
 use crate::models::{LsiPath, LsiPathKind};
-use crate::models::errors::LsiError;
+use crate::errors::LsiError;
 
 
 pub fn get_pathes(path: &str, is_only: &Option<LsiPathKind>, show_hidden: &bool) -> Result<Vec<LsiPath>> {

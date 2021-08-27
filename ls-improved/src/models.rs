@@ -1,6 +1,4 @@
-/// models/mod.rs
 /// Define LsiPath, LsiPathKind models.
-pub mod errors;
 
 use std::cmp::Ordering;
 use std::path::PathBuf;

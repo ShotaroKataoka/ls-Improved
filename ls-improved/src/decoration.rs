@@ -2,7 +2,7 @@ extern crate regex;
 use regex::Regex;
 use anyhow::Result;
 use crate::models::{LsiPath, LsiPathKind};
-use crate::models::errors::LsiError;
+use crate::errors::LsiError;
 
 
 pub fn replace_color_codes(pathes: &mut Vec<LsiPath>) -> Result<()> {

@@ -1,9 +1,7 @@
-/// view/mod.rs
 /// Define how to display lines.
-pub mod decoration;
 
 use crate::models::{LsiPath, LsiPathKind};
-use crate::models::errors::LsiError;
+use crate::errors::LsiError;
 use anyhow::Result;
 
 pub fn display(pathes: Vec<LsiPath>) -> Result<()> {

@@ -1,6 +1,9 @@
 mod controller;
 mod models;
 mod view;
+mod fs;
+mod decoration;
+mod errors;
 extern crate exitcode;
 
 use anyhow::Result;
