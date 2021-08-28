@@ -5,6 +5,7 @@ use anyhow::Result;
 use crate::{LsiArgs, fs, view, decoration};
 use crate::errors::LsiError;
 use crate::models::{LsiPath, LsiPathKind};
+use crate::colors::Colors;
 
 pub fn run_lsi(args: &LsiArgs) -> Result<()>{
     // ---------------------------------- //
@@ -14,18 +15,23 @@ pub fn run_lsi(args: &LsiArgs) -> Result<()>{
         Ok(_success) => _success,
         Err(_error) => return Err(LsiError::TestError.into()),
     };
+    
+    // ------------  //
+    // Read Configs  //
+    // ------------  //
+    let colors = Colors::new(None);
 
     // -------------------------- //
     // Read and set descriptions! //
     // -------------------------- //
     let _file_descriptions = fs::read_file_descriptions(&args.path);
     get_and_set_descriptions(&mut pathes)?;
-    decoration::replace_color_codes(&mut pathes)?;
+    decoration::replace_color_codes(&mut pathes, &colors)?;
 
     // -------------------- //
     // Display LSI results! //
     // -------------------- //
-    match view::display(pathes) {
+    match view::display(pathes, &colors) {
         Ok(()) => (),
         Err(_error) => return Err(LsiError::TestError.into()),
     };

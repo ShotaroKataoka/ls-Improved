@@ -4,6 +4,7 @@ mod view;
 mod fs;
 mod decoration;
 mod errors;
+mod colors;
 extern crate exitcode;
 
 use anyhow::Result;
