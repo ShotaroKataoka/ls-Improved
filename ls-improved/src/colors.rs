@@ -1,22 +1,22 @@
 use std::collections::HashMap;
 
-pub struct Colors<'a> {
-    pub red: &'a str,
-    pub blue: &'a str,
-    pub green: &'a str,
-    pub white: &'a str,
-    pub purple: &'a str,
-    pub yellow: &'a str,
-    pub cyan: &'a str,
-    pub underline: &'a str,
-    pub end: &'a str,
-    pub dir: &'a str,
-    pub current_dir: &'a str,
-    pub file: &'a str,
-    pub description: &'a str,
+pub struct Colors {
+    pub red: String,
+    pub blue: String,
+    pub green: String,
+    pub white: String,
+    pub purple: String,
+    pub yellow: String,
+    pub cyan: String,
+    pub underline: String,
+    pub end: String,
+    pub dir: String,
+    pub current_dir: String,
+    pub file: String,
+    pub description: String,
 }
 
-impl Colors<'_> {
+impl Colors {
     pub fn new(path: Option<&str>) -> Colors {
         match path {
             Some(p) => Colors::from_cfg(p),
@@ -28,7 +28,7 @@ impl Colors<'_> {
         Colors::default()
     }
 
-    fn default() -> Colors<'static> {
+    fn default() -> Colors {
         let terms = ["red", "blue", "green", "white", "purple", "yellow", "cyan", "underline", "end", "dir", "current_dir", "file", "description"];
         let mut ansi = HashMap::new();
         for term in terms.iter() {
@@ -50,27 +50,27 @@ impl Colors<'_> {
             "end" => "\x1b[0m",
             "dir" => "\x1b[36m\x1b[4m",
             "current_dir" => "",
-            "file" => "",
+            "file" => "\x1b[37m",
             "description" => "\x1b[33m",
             _ => "",
         }
     }
 
-    fn create<'a>(ansi: HashMap<&str, &'a str>) -> Colors<'a> {
+    fn create(ansi: HashMap<&str, &str>) -> Colors {
         Colors {
-            red: ansi["red"],
-            blue: ansi["blue"],
-            green: ansi["green"],
-            white: ansi["white"],
-            purple: ansi["purple"],
-            yellow: ansi["yellow"],
-            cyan: ansi["cyan"],
-            underline: ansi["underline"],
-            end: ansi["end"],
-            dir: ansi["dir"],
-            current_dir: ansi["current_dir"],
-            file: ansi["file"],
-            description: ansi["description"],
+            red: ansi["red"].to_string(),
+            blue: ansi["blue"].to_string(),
+            green: ansi["green"].to_string(),
+            white: ansi["white"].to_string(),
+            purple: ansi["purple"].to_string(),
+            yellow: ansi["yellow"].to_string(),
+            cyan: ansi["cyan"].to_string(),
+            underline: ansi["underline"].to_string(),
+            end: ansi["end"].to_string(),
+            dir: ansi["dir"].to_string(),
+            current_dir: ansi["current_dir"].to_string(),
+            file: ansi["file"].to_string(),
+            description: ansi["description"].to_string(),
         }
     }
 }
