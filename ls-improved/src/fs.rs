@@ -5,7 +5,7 @@ use std::fs::File;
 use std::io::Read;
 use std::path::{Path, PathBuf};
 use anyhow::Result;
-use crate::models::{LsiPath, LsiPathKind};
+use crate::models::path::{LsiPath, LsiPathKind};
 use crate::errors::LsiError;
 
 

@@ -4,8 +4,9 @@ extern crate exitcode;
 use anyhow::Result;
 use crate::{LsiArgs, fs, view, decoration};
 use crate::errors::LsiError;
-use crate::models::{LsiPath, LsiPathKind};
+use crate::models::path::{LsiPath, LsiPathKind};
 use crate::colors::Colors;
+use crate::config::read_config;
 
 pub fn run_lsi(args: &LsiArgs) -> Result<()>{
     // ---------------------------------- //
@@ -19,6 +20,7 @@ pub fn run_lsi(args: &LsiArgs) -> Result<()>{
     // ------------  //
     // Read Configs  //
     // ------------  //
+    read_config("../test/config.toml".to_string());
     let colors = Colors::new(None);
 
     // -------------------------- //

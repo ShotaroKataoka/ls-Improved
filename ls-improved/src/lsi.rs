@@ -5,13 +5,18 @@ mod fs;
 mod decoration;
 mod errors;
 mod colors;
+mod config;
 extern crate exitcode;
 
-use anyhow::Result;
 #[macro_use]
 extern crate clap;
+extern crate serde_derive;
+extern crate toml;
+
+use anyhow::Result;
 use clap::App;
-use models::LsiPathKind;
+use models::path::LsiPathKind;
+
 
 fn main() -> Result<()> {
     let yaml = load_yaml!("args.yml");

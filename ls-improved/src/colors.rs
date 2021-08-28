@@ -17,14 +17,14 @@ pub struct Colors<'a> {
 }
 
 impl Colors<'_> {
-    pub fn new(cfg: Option<&str>) -> Colors {
-        match cfg {
-            Some(file) => Colors::from_cfg(file),
+    pub fn new(path: Option<&str>) -> Colors {
+        match path {
+            Some(p) => Colors::from_cfg(p),
             None => Colors::default()
         }
     }
 
-    fn from_cfg(cfg: &str) -> Colors {
+    fn from_cfg(path: &str) -> Colors {
         Colors::default()
     }
 

@@ -16,3 +16,6 @@ clap = {version = "2.33.3", features = ["yaml"]}
 thiserror = "1.0.26"
 anyhow = "1.0.42"
 regex = "1.5.4"
+toml = "0.5.8"
+serde = { version = "1.0.129", features = ["derive"] }
+serde_derive = "1.0.129"
