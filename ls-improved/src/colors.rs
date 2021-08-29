@@ -30,8 +30,11 @@ impl Colors {
         let mut ansi = HashMap::new();
         for term in terms.iter() {
             match  color_conf.get(*term).as_ref() {
-                Some(c) => {
-                    let term_ansi = "\x1b".to_string()+c.as_ref();
+                Some(cs) => {
+                    let mut term_ansi = "".to_string();
+                    for c in cs {
+                        term_ansi = format!("{}\x1b{}", term_ansi, c);
+                    }
                     ansi.insert(*term, term_ansi)
                 },
                 None => ansi.insert(*term, Colors::default_one(term).to_string()),

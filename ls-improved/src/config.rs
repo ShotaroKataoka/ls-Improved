@@ -9,19 +9,19 @@ pub struct Config {
 
 #[derive(Debug, Deserialize)]
 pub struct ColorConf {
-    pub red: Option<String>,
-    pub blue: Option<String>,
-    pub green: Option<String>,
-    pub white: Option<String>,
-    pub purple: Option<String>,
-    pub yellow: Option<String>,
-    pub cyan: Option<String>,
-    pub underline: Option<String>,
-    pub end: Option<String>,
-    pub dir: Option<String>,
-    pub current_dir: Option<String>,
-    pub file: Option<String>,
-    pub description: Option<String>,
+    pub red: Option<Vec<String>>,
+    pub blue: Option<Vec<String>>,
+    pub green: Option<Vec<String>>,
+    pub white: Option<Vec<String>>,
+    pub purple: Option<Vec<String>>,
+    pub yellow: Option<Vec<String>>,
+    pub cyan: Option<Vec<String>>,
+    pub underline: Option<Vec<String>>,
+    pub end: Option<Vec<String>>,
+    pub dir: Option<Vec<String>>,
+    pub current_dir: Option<Vec<String>>,
+    pub file: Option<Vec<String>>,
+    pub description: Option<Vec<String>>,
 }
 
 fn read_file(path: String) -> Result<String, String> {
@@ -40,7 +40,7 @@ fn read_file(path: String) -> Result<String, String> {
 pub fn read_config(path: String) -> Option<Config>{
     let s = match read_file(path) {
         Ok(s) => s,
-        Err(e) => "".to_string(),
+        Err(_) => "".to_string(),
     };
 
     let config: Result<Config, toml::de::Error> = toml::from_str(&s);
@@ -51,7 +51,7 @@ pub fn read_config(path: String) -> Option<Config>{
 }
 
 impl ColorConf {
-    pub fn get(&self, key: &str) -> &Option<String>{
+    pub fn get(&self, key: &str) -> &Option<Vec<String>>{
         match key {
             "red" => &self.red,
             "blue" => &self.blue,
