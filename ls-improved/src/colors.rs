@@ -1,4 +1,5 @@
 use std::collections::HashMap;
+use crate::config::ColorConf;
 
 pub struct Colors {
     pub red: String,
@@ -17,22 +18,33 @@ pub struct Colors {
 }
 
 impl Colors {
-    pub fn new(path: Option<&str>) -> Colors {
-        match path {
-            Some(p) => Colors::from_cfg(p),
+    pub fn new(conf: Option<&ColorConf>) -> Colors {
+        match conf {
+            Some(c) => Colors::from_cfg(c),
             None => Colors::default()
         }
     }
 
-    fn from_cfg(path: &str) -> Colors {
-        Colors::default()
+    fn from_cfg(color_conf: &ColorConf) -> Colors {
+        let terms = ["red", "blue", "green", "white", "purple", "yellow", "cyan", "underline", "end", "dir", "current_dir", "file", "description"];
+        let mut ansi = HashMap::new();
+        for term in terms.iter() {
+            match  color_conf.get(*term).as_ref() {
+                Some(c) => {
+                    let term_ansi = "\x1b".to_string()+c.as_ref();
+                    ansi.insert(*term, term_ansi)
+                },
+                None => ansi.insert(*term, Colors::default_one(term).to_string()),
+            };
+        }
+        Colors::create(ansi)
     }
 
     fn default() -> Colors {
         let terms = ["red", "blue", "green", "white", "purple", "yellow", "cyan", "underline", "end", "dir", "current_dir", "file", "description"];
         let mut ansi = HashMap::new();
         for term in terms.iter() {
-            ansi.insert(*term, Colors::default_one(term));
+            ansi.insert(*term, Colors::default_one(term).to_string());
         }
         Colors::create(ansi)
     }
@@ -56,21 +68,21 @@ impl Colors {
         }
     }
 
-    fn create(ansi: HashMap<&str, &str>) -> Colors {
+    fn create(ansi: HashMap<&str, String>) -> Colors {
         Colors {
-            red: ansi["red"].to_string(),
-            blue: ansi["blue"].to_string(),
-            green: ansi["green"].to_string(),
-            white: ansi["white"].to_string(),
-            purple: ansi["purple"].to_string(),
-            yellow: ansi["yellow"].to_string(),
-            cyan: ansi["cyan"].to_string(),
-            underline: ansi["underline"].to_string(),
-            end: ansi["end"].to_string(),
-            dir: ansi["dir"].to_string(),
-            current_dir: ansi["current_dir"].to_string(),
-            file: ansi["file"].to_string(),
-            description: ansi["description"].to_string(),
+            red: ansi["red"].clone(),
+            blue: ansi["blue"].clone(),
+            green: ansi["green"].clone(),
+            white: ansi["white"].clone(),
+            purple: ansi["purple"].clone(),
+            yellow: ansi["yellow"].clone(),
+            cyan: ansi["cyan"].clone(),
+            underline: ansi["underline"].clone(),
+            end: ansi["end"].clone(),
+            dir: ansi["dir"].clone(),
+            current_dir: ansi["current_dir"].clone(),
+            file: ansi["file"].clone(),
+            description: ansi["description"].clone(),
         }
     }
 }

@@ -4,11 +4,11 @@ use serde::Deserialize;
 
 #[derive(Debug, Deserialize)]
 pub struct Config {
-    colors: Option<ColorConf>
+    pub colors: Option<ColorConf>
 }
 
 #[derive(Debug, Deserialize)]
-struct ColorConf {
+pub struct ColorConf {
     pub red: Option<String>,
     pub blue: Option<String>,
     pub green: Option<String>,
@@ -24,7 +24,6 @@ struct ColorConf {
     pub description: Option<String>,
 }
 
-
 fn read_file(path: String) -> Result<String, String> {
     let mut file_content = String::new();
 
@@ -38,17 +37,36 @@ fn read_file(path: String) -> Result<String, String> {
     Ok(file_content)
 }
 
-pub fn read_config(path: String) {
+pub fn read_config(path: String) -> Option<Config>{
     let s = match read_file(path) {
         Ok(s) => s,
-        Err(e) => panic!("fail to read file: {}", e),
+        Err(e) => "".to_string(),
     };
 
     let config: Result<Config, toml::de::Error> = toml::from_str(&s);
     match config {
-        Ok(c) => println!("{:#?}", c),
-        Err(e) => panic!("fail to parse toml: {}", e),
-    };
+        Ok(c) => Some(c),
+        Err(_) => None,
+    }
 }
 
-
+impl ColorConf {
+    pub fn get(&self, key: &str) -> &Option<String>{
+        match key {
+            "red" => &self.red,
+            "blue" => &self.blue,
+            "green" => &self.green,
+            "white" => &self.white,
+            "purple" => &self.purple,
+            "yellow" => &self.yellow,
+            "cyan" => &self.cyan,
+            "underline" => &self.underline,
+            "end" => &self.end,
+            "dir" => &self.dir,
+            "current_dir" => &self.current_dir,
+            "file" => &self.file,
+            "description" => &self.description,
+            _ => &None,
+        }
+    }
+}

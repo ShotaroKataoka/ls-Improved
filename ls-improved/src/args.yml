@@ -23,3 +23,8 @@ args:
         long: only-dirs
         help: Show only directories.
         takes_value: false
+    - config_path:
+        short: c
+        long: config-path
+        help: Set config.
+        takes_value: true

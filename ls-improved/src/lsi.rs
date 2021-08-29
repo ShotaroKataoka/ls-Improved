@@ -25,11 +25,13 @@ fn main() -> Result<()> {
     let show_hidden = args.is_present("show_all");
     let is_only_files = args.is_present("only_files");
     let is_only_dirs = args.is_present("only_directories");
+    let config_path = args.value_of("config_path");
 
     let args = LsiArgs {
         path: path,
         show_hidden: show_hidden,
         is_only: if is_only_files { Some(LsiPathKind::File) } else if is_only_dirs { Some(LsiPathKind::Dir) } else { None },
+        config_path: config_path,
     };
 
     controller::run_lsi(&args)
@@ -39,4 +41,5 @@ pub struct LsiArgs<'a> {
     path: &'a str,
     show_hidden: bool,
     is_only: Option<LsiPathKind>,
+    config_path: Option<&'a str>,
 }

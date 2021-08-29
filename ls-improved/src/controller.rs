@@ -20,8 +20,15 @@ pub fn run_lsi(args: &LsiArgs) -> Result<()>{
     // ------------  //
     // Read Configs  //
     // ------------  //
-    read_config("../test/config.toml".to_string());
-    let colors = Colors::new(None);
+    let config = match &args.config_path {
+        Some(path) => read_config(path.to_string()),
+        None => None,
+    };
+    let colors_config = match config {
+        Some(ref c) => c.colors.as_ref(),
+        None => None,
+    };
+    let colors = Colors::new(colors_config);
 
     // -------------------------- //
     // Read and set descriptions! //
