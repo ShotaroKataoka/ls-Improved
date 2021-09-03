@@ -8,7 +8,7 @@ edition = "2018"
 
 [[bin]]
 name = "lsi"
-path = "src/lsi.rs"
+path = "src/main.rs"
 
 [dependencies]
 exitcode = "1.1.2"
