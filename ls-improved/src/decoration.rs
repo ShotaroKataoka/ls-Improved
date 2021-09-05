@@ -45,7 +45,7 @@ fn replace_ansi_color_code(path: &mut LsiPath) -> Result<()> {
 }
 
 fn encolor_description(description: &str, colors: &Colors) -> String {
-    format!("{}{}{}", colors.yellow, description, colors.end)
+    format!("{}{}{}", colors.description, description, colors.end)
 }
 
 fn format_multiline(path: &mut LsiPath, colors: &Colors, line_num: Option<usize>) -> Result<()> {
