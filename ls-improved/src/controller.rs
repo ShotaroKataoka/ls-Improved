@@ -35,7 +35,7 @@ pub fn run_lsi(args: &LsiArgs) -> Result<()>{
     // -------------------------- //
     let _file_descriptions = fs::read_file_descriptions(&args.path);
     get_and_set_descriptions(&mut pathes)?;
-    decoration::replace_color_codes(&mut pathes, &colors)?;
+    decoration::run(&mut pathes, &colors, args.desc_num)?;
 
     // -------------------- //
     // Display LSI results! //
