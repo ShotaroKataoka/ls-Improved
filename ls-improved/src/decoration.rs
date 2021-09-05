@@ -9,7 +9,7 @@ pub fn replace_color_codes(pathes: &mut Vec<LsiPath>, colors: &Colors) -> Result
     for path in pathes {
         let _ = replace_lsi_color_code(&mut *path, colors);
         let _ = replace_ansi_color_code(&mut *path);
-        let _ = format_multiline(&mut *path, colors, 2);
+        let _ = format_multiline(&mut *path, colors, None);
     }
     Ok(())
 }
@@ -48,12 +48,15 @@ fn encolor_description(description: &str, colors: &Colors) -> String {
     format!("{}{}{}", colors.yellow, description, colors.end)
 }
 
-fn format_multiline(path: &mut LsiPath, colors: &Colors, line_num: usize) -> Result<()> {
+fn format_multiline(path: &mut LsiPath, colors: &Colors, line_num: Option<usize>) -> Result<()> {
     let len = path.len();
     match path.get_description() {
         Some(content) => {
             let desc: Vec<&str> = content.split("\n").collect();
-            let num = if line_num > desc.len() { desc.len() } else { line_num };
+            let num = match line_num {
+                Some(n) => if n > desc.len() { desc.len() } else { n },
+                None => desc.len(),
+            };
             if num == 1 {
                 path.set_description(encolor_description(desc[0], colors));
             } else {
