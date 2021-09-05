@@ -9,8 +9,7 @@ pub fn replace_color_codes(pathes: &mut Vec<LsiPath>, colors: &Colors) -> Result
     for path in pathes {
         let _ = replace_lsi_color_code(&mut *path, colors);
         let _ = replace_ansi_color_code(&mut *path);
-        let _ = put_start_code(&mut *path, colors);
-        let _ = put_end_code(&mut *path, colors);
+        let _ = format_multiline(&mut *path, colors, 2);
     }
     Ok(())
 }
@@ -45,19 +44,27 @@ fn replace_ansi_color_code(path: &mut LsiPath) -> Result<()> {
     Ok(())
 }
 
-fn put_start_code(path: &mut LsiPath, colors: &Colors) -> Result<()> {
+fn encolor_description(description: &str, colors: &Colors) -> String {
+    format!("{}{}{}", colors.yellow, description, colors.end)
+}
+
+fn format_multiline(path: &mut LsiPath, colors: &Colors, line_num: usize) -> Result<()> {
+    let len = path.len();
     match path.get_description() {
-        Some(content) => { path.set_description(format!("{}{}", colors.yellow, content)); },
+        Some(content) => {
+            let desc: Vec<&str> = content.split("\n").collect();
+            let num = if line_num > desc.len() { desc.len() } else { line_num };
+            if num == 1 {
+                path.set_description(encolor_description(desc[0], colors));
+            } else {
+                let mut description: String = encolor_description(desc[0], colors);
+                for i in 1..num {
+                    description = format!("{}\n│   {}\t  {}", description, " ".repeat(len), encolor_description(desc[i], colors));
+                }
+                path.set_description(description)
+            }
+        },
         None => { return Err(LsiError::TestError.into()) },
     };
     Ok(())
 }
-
-fn put_end_code(path: &mut LsiPath, colors: &Colors) -> Result<()> {
-    match path.get_description() {
-        Some(content) => { path.set_description(format!("{}{}", content.to_string(), colors.end)); },
-        None => { return Err(LsiError::TestError.into()) },
-    };
-    Ok(())
-}
-

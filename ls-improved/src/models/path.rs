@@ -69,6 +69,10 @@ impl LsiPath {
     fn get_path(&self) -> &PathBuf {
         &self.path
     }
+
+    pub fn len(&self) -> usize {
+        self.file_name().chars().count()
+    }
 }
 
 impl Ord for LsiPath {
