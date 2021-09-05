@@ -1,5 +1,5 @@
 mod controller;
-mod models;
+mod path;
 mod view;
 mod fs;
 mod decoration;
@@ -16,7 +16,7 @@ extern crate toml;
 
 use anyhow::Result;
 use clap::App;
-use models::path::LsiPathKind;
+use path::LsiPathKind;
 
 
 fn main() -> Result<()> {

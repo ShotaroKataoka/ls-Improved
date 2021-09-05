@@ -1,7 +1,7 @@
 extern crate regex;
 use regex::Regex;
 use anyhow::Result;
-use crate::models::path::LsiPath;
+use crate::path::LsiPath;
 use crate::errors::LsiError;
 use crate::colors::Colors;
 

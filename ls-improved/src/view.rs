@@ -1,6 +1,6 @@
 /// Define how to display lines.
 
-use crate::models::path::{LsiPath, LsiPathKind};
+use crate::path::{LsiPath, LsiPathKind};
 use crate::colors::Colors;
 use anyhow::Result;
 

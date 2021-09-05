@@ -4,7 +4,7 @@ extern crate exitcode;
 use anyhow::Result;
 use crate::{LsiArgs, fs, view, decoration};
 use crate::errors::LsiError;
-use crate::models::path::{LsiPath, LsiPathKind};
+use crate::path::{LsiPath, LsiPathKind};
 use crate::colors::Colors;
 use crate::config::read_config;
 
