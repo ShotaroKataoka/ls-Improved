@@ -25,7 +25,7 @@ fn replace_lsi_color_code(path: &mut LsiPath, colors: &Colors) -> Result<()> {
             let content = Regex::new(r";c;").unwrap().replace_all(&content, &colors.cyan).to_string();
             let content = Regex::new(r";w;").unwrap().replace_all(&content, &colors.white).to_string();
             let content = Regex::new(r";_;").unwrap().replace_all(&content, &colors.underline).to_string();
-            let content = Regex::new(r";e;").unwrap().replace_all(&content, &colors.end).to_string();
+            let content = Regex::new(r";e;").unwrap().replace_all(&content, &colors.desc_end).to_string();
             path.set_description(content);
         },
         None => { return Err(LsiError::TestError.into()) },
