@@ -92,6 +92,7 @@ dependencies = [
  "serde_derive",
  "thiserror",
  "toml",
+ "unicode-width",
 ]
 
 [[package]]

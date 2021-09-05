@@ -3,7 +3,7 @@
 use std::cmp::Ordering;
 use std::path::PathBuf;
 use anyhow::Result;
-
+use unicode_width::UnicodeWidthStr;
 
 #[derive(Eq)]
 pub enum LsiPathKind {
@@ -71,7 +71,7 @@ impl LsiPath {
     }
 
     pub fn len(&self) -> usize {
-        self.file_name().chars().count()
+        UnicodeWidthStr::width(self.file_name())
     }
 }
 

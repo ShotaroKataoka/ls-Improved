@@ -7,6 +7,7 @@ mod errors;
 mod colors;
 mod config;
 extern crate exitcode;
+extern crate unicode_width;
 
 #[macro_use]
 extern crate clap;
