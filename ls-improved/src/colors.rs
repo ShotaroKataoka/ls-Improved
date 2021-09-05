@@ -11,7 +11,6 @@ pub struct Colors {
     pub cyan: String,
     pub underline: String,
     pub end: String,
-    pub desc_end: String,
     pub dir: String,
     pub current_dir: String,
     pub file: String,
@@ -27,7 +26,7 @@ impl Colors {
     }
 
     fn from_cfg(color_conf: &ColorConf) -> Colors {
-        let terms = ["red", "blue", "green", "white", "purple", "yellow", "cyan", "underline", "end", "desc_end", "dir", "current_dir", "file", "description"];
+        let terms = ["red", "blue", "green", "white", "purple", "yellow", "cyan", "underline", "end", "dir", "current_dir", "file", "description"];
         let mut ansi = HashMap::new();
         for term in terms.iter() {
             match  color_conf.get(*term).as_ref() {
@@ -45,7 +44,7 @@ impl Colors {
     }
 
     fn default() -> Colors {
-        let terms = ["red", "blue", "green", "white", "purple", "yellow", "cyan", "underline", "end", "desc_end", "dir", "current_dir", "file", "description"];
+        let terms = ["red", "blue", "green", "white", "purple", "yellow", "cyan", "underline", "end", "dir", "current_dir", "file", "description"];
         let mut ansi = HashMap::new();
         for term in terms.iter() {
             ansi.insert(*term, Colors::default_one(term).to_string());
@@ -64,7 +63,6 @@ impl Colors {
             "white" => "\x1b[37m",
             "underline" => "\x1b[4m",
             "end" => "\x1b[0m",
-            "desc_end" => "\x1b[0m\x1b[33m",
             "dir" => "\x1b[36m\x1b[4m",
             "current_dir" => "",
             "file" => "\x1b[37m",
@@ -84,7 +82,6 @@ impl Colors {
             cyan: ansi["cyan"].clone(),
             underline: ansi["underline"].clone(),
             end: ansi["end"].clone(),
-            desc_end: ansi["desc_end"].clone(),
             dir: ansi["dir"].clone(),
             current_dir: ansi["current_dir"].clone(),
             file: ansi["file"].clone(),
