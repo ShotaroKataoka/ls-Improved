@@ -64,7 +64,7 @@ impl Colors {
             "underline" => "\x1b[4m",
             "end" => "\x1b[0m",
             "dir" => "\x1b[36m\x1b[4m",
-            "current_dir" => "",
+            "current_dir" => "\x1b[1;36m\x1b[4m",
             "file" => "\x1b[37m",
             "description" => "\x1b[33m",
             _ => "",

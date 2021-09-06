@@ -40,7 +40,7 @@ pub fn run_lsi(args: &LsiArgs) -> Result<()>{
     // -------------------- //
     // Display LSI results! //
     // -------------------- //
-    match view::display(pathes, &colors) {
+    match view::display(pathes, &colors, &args.path) {
         Ok(()) => (),
         Err(_error) => return Err(LsiError::TestError.into()),
     };
