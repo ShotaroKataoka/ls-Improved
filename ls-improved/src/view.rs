@@ -6,7 +6,7 @@ use anyhow::Result;
 use std::path::PathBuf;
 
 pub fn display(pathes: Vec<LsiPath>, colors:&Colors, cwd: &str) -> Result<()> {
-    display_cwd(cwd, &colors);
+    display_cwd(cwd, &colors)?;
     let length = pathes.len();
     for (i, path) in pathes.iter().enumerate() {
         let is_last = i+1 == length;
