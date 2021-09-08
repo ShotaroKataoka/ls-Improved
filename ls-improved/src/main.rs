@@ -1,33 +1,53 @@
-mod lsi;
+mod controller;
+mod path;
+mod view;
+mod fs;
+mod decoration;
+mod errors;
+mod colors;
+mod config;
+mod file_description;
 extern crate exitcode;
+extern crate unicode_width;
 
-use argh::FromArgs;
+#[macro_use]
+extern crate clap;
+extern crate serde_derive;
+extern crate toml;
 
-fn main() {
-    let args: Args = argh::from_env();
+use anyhow::Result;
+use clap::App;
+use path::LsiPathKind;
 
-    let (dirs, files) = match lsi::fs::get_pathes(&args.path) {
-        Ok(_success) => (_success.0, _success.1),
-        Err(_error) => {
-            eprintln!("{}", _error);
-            std::process::exit(exitcode::OSFILE);
-        }
+
+fn main() -> Result<()> {
+    let yaml = load_yaml!("args.yml");
+    let args = App::from_yaml(yaml).get_matches();
+    let path = args.value_of("PATH").unwrap();
+    let show_hidden = args.is_present("show_all");
+    let is_only_files = args.is_present("only_files");
+    let is_only_dirs = args.is_present("only_directories");
+    let config_path = args.value_of("config_path");
+    let desc_num = match value_t!(args.value_of("desc_num"), usize) {
+        Ok(n) => Some(n),
+        Err(_) => None,
     };
 
-    match lsi::view::display(dirs, files) {
-        Ok(()) => (),
-        Err(_error) => {
-            eprintln!("{}", _error);
-            std::process::exit(exitcode::OSFILE);
-        }
+    let args = LsiArgs {
+        path: path,
+        show_hidden: show_hidden,
+        is_only: if is_only_files { Some(LsiPathKind::File) } else if is_only_dirs { Some(LsiPathKind::Dir) } else { None },
+        config_path: config_path,
+        desc_num: desc_num,
     };
-    std::process::exit(exitcode::OK);
+
+    controller::run_lsi(&args)
 }
 
-#[derive(FromArgs)]
-#[argh(description = "...")]
-struct Args {
-    #[argh(positional)]
-    path: String,
+pub struct LsiArgs<'a> {
+    path: &'a str,
+    show_hidden: bool,
+    is_only: Option<LsiPathKind>,
+    config_path: Option<&'a str>,
+    desc_num: Option<usize>,
 }
-
