@@ -6,6 +6,7 @@ mod decoration;
 mod errors;
 mod colors;
 mod config;
+mod file_description;
 extern crate exitcode;
 extern crate unicode_width;
 

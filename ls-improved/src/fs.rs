@@ -55,12 +55,12 @@ pub fn read_dir_description(path: &LsiPath) -> Result<String> {
     Ok(content.trim().to_string())
 }
 
-pub fn read_file_descriptions(path: &str) -> Result<String> {
-    let path = LsiPath::new(PathBuf::from(path));
-    let desc_path = path.absolute_path()? + "/.file_description.lsi";
-    let desc_path = Path::new(&desc_path);
-    let mut f = File::open(desc_path)?;
-    let mut content = String::new();
-    f.read_to_string(&mut content)?;
-    Ok(content.trim().to_string())
-}
+// pub fn read_file_descriptions(path: &str) -> Result<String> {
+//     let path = LsiPath::new(PathBuf::from(path));
+//     let desc_path = path.absolute_path()? + "/.file_description.lsi";
+//     let desc_path = Path::new(&desc_path);
+//     let mut f = File::open(desc_path)?;
+//     let mut content = String::new();
+//     f.read_to_string(&mut content)?;
+//     Ok(content.trim().to_string())
+// }

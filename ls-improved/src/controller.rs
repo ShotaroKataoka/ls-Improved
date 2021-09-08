@@ -1,12 +1,14 @@
 /// Define all code stream.
 
 extern crate exitcode;
+use std::path::PathBuf;
 use anyhow::Result;
 use crate::{LsiArgs, fs, view, decoration};
 use crate::errors::LsiError;
 use crate::path::{LsiPath, LsiPathKind};
 use crate::colors::Colors;
 use crate::config::read_config;
+use crate::file_description::{FileDescriptions, read_file_description};
 
 pub fn run_lsi(args: &LsiArgs) -> Result<()>{
     // ---------------------------------- //
@@ -33,8 +35,10 @@ pub fn run_lsi(args: &LsiArgs) -> Result<()>{
     // -------------------------- //
     // Read and set descriptions! //
     // -------------------------- //
-    let _file_descriptions = fs::read_file_descriptions(&args.path);
-    get_and_set_descriptions(&mut pathes)?;
+    let abs = PathBuf::from(&args.path).canonicalize()?;
+    let _file_descriptions = read_file_description(format!("{}/.file_description.lsi", abs.to_str().unwrap()));
+
+    get_and_set_descriptions(&mut pathes, _file_descriptions)?;
     decoration::run(&mut pathes, &colors, args.desc_num)?;
 
     // -------------------- //
@@ -47,7 +51,7 @@ pub fn run_lsi(args: &LsiArgs) -> Result<()>{
     Ok(())
 }
 
-fn get_and_set_description(path: &mut LsiPath) -> Result<()> {
+fn get_and_set_description(path: &mut LsiPath, file_descriptions: &Option<FileDescriptions>) -> Result<()> {
     match path.kind {
         LsiPathKind::Dir => {
             let _description = fs::read_dir_description(&path);
@@ -57,14 +61,28 @@ fn get_and_set_description(path: &mut LsiPath) -> Result<()> {
             }
         },
         LsiPathKind::File => {
+            match file_descriptions {
+                Some(fd) => {
+                    match &fd.files.as_ref() {
+                        Some(files) => {
+                            match files.get(path.file_name()) {
+                                Some(d) => { path.set_description(d.to_string()); },
+                                None => {},
+                            };
+                        },
+                        None => {},
+                    };
+                },
+                None => {}
+            };
         }
     }
     Ok(())
 }
 
-fn get_and_set_descriptions(pathes: &mut Vec<LsiPath>) -> Result<()> {
+fn get_and_set_descriptions(pathes: &mut Vec<LsiPath>, file_descriptions: Option<FileDescriptions>) -> Result<()> {
     for path in pathes {
-        let _ = get_and_set_description(&mut *path);
+        let _ = get_and_set_description(&mut *path, &file_descriptions);
     }
     Ok(())
 }

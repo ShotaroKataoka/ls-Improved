@@ -43,7 +43,12 @@ fn display_a_line(path: &LsiPath, is_last: bool, colors: &Colors) -> Result<()> 
                 None => { println!("{} {}{}{}\t/ Dir", prefix_char, colors.dir, path.file_name(), colors.end); },
             };
         },
-        LsiPathKind::File => println!("{} {}{}{}\t/ File", prefix_char, colors.file, path.file_name(), colors.end),
+        LsiPathKind::File => {
+            match &path.get_description() {
+                Some(_description) => { println!("{} {}{}{}\t/ {}", prefix_char, colors.file, path.file_name(), colors.end, _description); },
+                None => { println!("{} {}{}{}\t/ File", prefix_char, colors.file, path.file_name(), colors.end); },
+            };
+        }
     };
     Ok(())
 }
