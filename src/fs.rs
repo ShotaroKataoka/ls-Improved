@@ -1,15 +1,18 @@
+use crate::errors::LsiError;
+use crate::path::{LsiPath, LsiPathKind};
+use anyhow::Result;
 /// controller/fs.rs
 /// Define file/dir io.
 use std::fs;
 use std::fs::File;
 use std::io::Read;
 use std::path::{Path, PathBuf};
-use anyhow::Result;
-use crate::path::{LsiPath, LsiPathKind};
-use crate::errors::LsiError;
 
-
-pub fn get_pathes(path: &str, is_only: &Option<LsiPathKind>, show_hidden: &bool) -> Result<Vec<LsiPath>> {
+pub fn get_pathes(
+    path: &str,
+    is_only: &Option<LsiPathKind>,
+    show_hidden: &bool,
+) -> Result<Vec<LsiPath>> {
     let pathes = match fs::read_dir(path) {
         Ok(_success) => _success,
         Err(_error) => return Err(LsiError::TestError.into()),
@@ -28,18 +31,16 @@ pub fn get_pathes(path: &str, is_only: &Option<LsiPathKind>, show_hidden: &bool)
 
 fn path_filter(path: &PathBuf, is_only: &Option<LsiPathKind>, show_hidden: &bool) -> bool {
     match is_only {
-        Some(kind) => {
-            match kind {
-                LsiPathKind::Dir => {
-                    let is_target = if path.is_dir() { true } else { false };
-                    let is_hidden = LsiPath::is_hidden(path);
-                    is_target && (!is_hidden || *show_hidden)
-                },
-                LsiPathKind::File => {
-                    let is_target = if path.is_file() { true } else { false };
-                    let is_hidden = LsiPath::is_hidden(path);
-                    is_target && (!is_hidden || *show_hidden)
-                },
+        Some(kind) => match kind {
+            LsiPathKind::Dir => {
+                let is_target = if path.is_dir() { true } else { false };
+                let is_hidden = LsiPath::is_hidden(path);
+                is_target && (!is_hidden || *show_hidden)
+            }
+            LsiPathKind::File => {
+                let is_target = if path.is_file() { true } else { false };
+                let is_hidden = LsiPath::is_hidden(path);
+                is_target && (!is_hidden || *show_hidden)
             }
         },
         None => !LsiPath::is_hidden(path) || *show_hidden,

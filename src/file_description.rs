@@ -1,13 +1,12 @@
+use serde::Deserialize;
+use std::collections::HashMap;
 use std::fs;
 use std::io::{BufReader, Read};
-use std::collections::HashMap;
-use serde::Deserialize;
 
 #[derive(Debug, Deserialize)]
 pub struct FileDescriptions {
-    pub files: Option<HashMap<String, String>>
+    pub files: Option<HashMap<String, String>>,
 }
-
 
 fn read_file(path: String) -> Result<String, String> {
     let mut file_content = String::new();
@@ -22,7 +21,7 @@ fn read_file(path: String) -> Result<String, String> {
     Ok(file_content)
 }
 
-pub fn read_file_description(path: String) -> Option<FileDescriptions>{
+pub fn read_file_description(path: String) -> Option<FileDescriptions> {
     let s = match read_file(path) {
         Ok(s) => s,
         Err(_) => "".to_string(),

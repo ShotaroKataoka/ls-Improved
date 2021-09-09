@@ -1,10 +1,10 @@
+use serde::Deserialize;
 use std::fs;
 use std::io::{BufReader, Read};
-use serde::Deserialize;
 
 #[derive(Debug, Deserialize)]
 pub struct Config {
-    pub colors: Option<ColorConf>
+    pub colors: Option<ColorConf>,
 }
 
 #[derive(Debug, Deserialize)]
@@ -37,7 +37,7 @@ fn read_file(path: String) -> Result<String, String> {
     Ok(file_content)
 }
 
-pub fn read_config(path: String) -> Option<Config>{
+pub fn read_config(path: String) -> Option<Config> {
     let s = match read_file(path) {
         Ok(s) => s,
         Err(_) => "".to_string(),
@@ -51,7 +51,7 @@ pub fn read_config(path: String) -> Option<Config>{
 }
 
 impl ColorConf {
-    pub fn get(&self, key: &str) -> &Option<Vec<String>>{
+    pub fn get(&self, key: &str) -> &Option<Vec<String>> {
         match key {
             "red" => &self.red,
             "blue" => &self.blue,

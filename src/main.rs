@@ -1,12 +1,12 @@
-mod controller;
-mod path;
-mod view;
-mod fs;
-mod decoration;
-mod errors;
 mod colors;
 mod config;
+mod controller;
+mod decoration;
+mod errors;
 mod file_description;
+mod fs;
+mod path;
+mod view;
 extern crate exitcode;
 extern crate unicode_width;
 
@@ -18,7 +18,6 @@ extern crate toml;
 use anyhow::Result;
 use clap::App;
 use path::LsiPathKind;
-
 
 fn main() -> Result<()> {
     let yaml = load_yaml!("args.yml");
@@ -36,7 +35,13 @@ fn main() -> Result<()> {
     let args = LsiArgs {
         path: path,
         show_hidden: show_hidden,
-        is_only: if is_only_files { Some(LsiPathKind::File) } else if is_only_dirs { Some(LsiPathKind::Dir) } else { None },
+        is_only: if is_only_files {
+            Some(LsiPathKind::File)
+        } else if is_only_dirs {
+            Some(LsiPathKind::Dir)
+        } else {
+            None
+        },
         config_path: config_path,
         desc_num: desc_num,
     };

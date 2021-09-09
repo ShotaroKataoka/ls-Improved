@@ -1,5 +1,5 @@
-use std::collections::HashMap;
 use crate::config::ColorConf;
+use std::collections::HashMap;
 
 pub struct Colors {
     pub red: String,
@@ -21,22 +21,36 @@ impl Colors {
     pub fn new(conf: Option<&ColorConf>) -> Colors {
         match conf {
             Some(c) => Colors::from_cfg(c),
-            None => Colors::default()
+            None => Colors::default(),
         }
     }
 
     fn from_cfg(color_conf: &ColorConf) -> Colors {
-        let terms = ["red", "blue", "green", "white", "purple", "yellow", "cyan", "underline", "end", "dir", "current_dir", "file", "description"];
+        let terms = [
+            "red",
+            "blue",
+            "green",
+            "white",
+            "purple",
+            "yellow",
+            "cyan",
+            "underline",
+            "end",
+            "dir",
+            "current_dir",
+            "file",
+            "description",
+        ];
         let mut ansi = HashMap::new();
         for term in terms.iter() {
-            match  color_conf.get(*term).as_ref() {
+            match color_conf.get(*term).as_ref() {
                 Some(cs) => {
                     let mut term_ansi = "".to_string();
                     for c in cs {
                         term_ansi = format!("{}\x1b{}", term_ansi, c);
                     }
                     ansi.insert(*term, term_ansi)
-                },
+                }
                 None => ansi.insert(*term, Colors::default_one(term).to_string()),
             };
         }
@@ -44,7 +58,21 @@ impl Colors {
     }
 
     fn default() -> Colors {
-        let terms = ["red", "blue", "green", "white", "purple", "yellow", "cyan", "underline", "end", "dir", "current_dir", "file", "description"];
+        let terms = [
+            "red",
+            "blue",
+            "green",
+            "white",
+            "purple",
+            "yellow",
+            "cyan",
+            "underline",
+            "end",
+            "dir",
+            "current_dir",
+            "file",
+            "description",
+        ];
         let mut ansi = HashMap::new();
         for term in terms.iter() {
             ansi.insert(*term, Colors::default_one(term).to_string());
