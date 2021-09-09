@@ -10,3 +10,5 @@
 ⚡ :zap: - Performance (パフォーマンス改善)
 🚧 :construction: - WIP (作業中)
 🚀 :rocket: - Release (リリース)
+💚 :green_heart: - CI / Test (CI / テストの追加・改善)
+🌏 :earth_asia: - Developing environment (開発環境に関する変更)
