@@ -1,6 +1,6 @@
 [package]
 name = "ls-improved"
-version = "0.1.0-alpha2"
+version = "1.0.0-alpha2"
 authors = ["ShotaroKataoka <s183347@stn.nagaokaut.ac.jp>"]
 edition = "2018"
 
