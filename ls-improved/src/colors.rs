@@ -58,7 +58,7 @@ impl Colors {
             "green" => "\x1b[1;32m",
             "yellow" => "\x1b[33m",
             "blue" => "\x1b[1;34m",
-            "purple" => "\x1b[35m",
+            "purple" => "\x1b[1;35m",
             "cyan" => "\x1b[36m",
             "white" => "\x1b[37m",
             "underline" => "\x1b[4m",
