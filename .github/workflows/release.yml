@@ -56,10 +56,6 @@ jobs:
           args: --release --target=${{ matrix.target }}
           use-cross: true
 
-      - uses: actions/upload-artifact@v1
-        with:
-          name: artifact-deb
-          path: target/x86_64-unknown-linux-musl/debian/*
       - run: |
           zip --junk-paths ls-Improved-${{ matrix.target }} target/${{ matrix.target }}/release/lsi{,.exe}
       - uses: actions/upload-artifact@v1
@@ -76,10 +72,11 @@ jobs:
       uses: ebbflow-io/cargo-deb-amd64-ubuntu@1.0
 
     - run: ls target/x86_64-unknown-linux-musl/debian/*
+
     - uses: actions/upload-artifact@v1
       with:
         name: build-deb
-        path: target/x86_64-unknown-linux-musl/debian/*.deb
+        path: target/x86_64-unknown-linux-musl/debian/*
 
   create-release:
     needs: [build, build-deb]
