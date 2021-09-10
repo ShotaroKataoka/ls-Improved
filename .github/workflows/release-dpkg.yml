@@ -1,0 +1,15 @@
+name: Deb Static Build
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Rust Cargo Deb Package Build (amd64, Ubuntu)
+        uses: ebbflow-io/cargo-deb-amd64-ubuntu@1.0
