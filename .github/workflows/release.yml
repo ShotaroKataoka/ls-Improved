@@ -143,8 +143,8 @@ jobs:
         with:
           name: build-deb
       - run: |
-        echo "debfile=$(ls ./build-deb/)" >> $GITHUB_ENV
-        echo "./build-deb/${{ env.debfile }}"
+          echo "debfile=$(ls ./build-deb/)" >> $GITHUB_ENV
+          echo "./build-deb/${{ env.debfile }}"
       - uses: actions/upload-release-asset@v1.0.1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
