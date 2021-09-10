@@ -9,7 +9,7 @@ use crate::{decoration, fs, view, LsiArgs};
 use anyhow::Result;
 use std::path::PathBuf;
 
-pub fn run_lsi(args: &LsiArgs) -> Result<()> {
+pub fn run(args: &LsiArgs) -> Result<()> {
     // ---------------------------------- //
     // Glob target files and directories! //
     // ---------------------------------- //

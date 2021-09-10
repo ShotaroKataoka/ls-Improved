@@ -1,12 +1,13 @@
 mod colors;
 mod config;
-mod controller;
+mod lsi;
 mod decoration;
 mod errors;
 mod file_description;
 mod fs;
 mod path;
 mod view;
+mod mkdiri;
 extern crate exitcode;
 extern crate unicode_width;
 
@@ -31,6 +32,7 @@ fn main() -> Result<()> {
         Ok(n) => Some(n),
         Err(_) => None,
     };
+    let edit_description = args.value_of("edit_description");
 
     let args = LsiArgs {
         path: path,
@@ -44,9 +46,16 @@ fn main() -> Result<()> {
         },
         config_path: config_path,
         desc_num: desc_num,
+        is_edit_mode: if edit_description.is_some() { true } else { false },
+        edit_description: edit_description,
     };
 
-    controller::run_lsi(&args)
+
+    match &args.is_edit_mode {
+        true => { mkdiri::run(&args); },
+        false => { lsi::run(&args); },
+    }
+    Ok(())
 }
 
 pub struct LsiArgs<'a> {
@@ -55,4 +64,6 @@ pub struct LsiArgs<'a> {
     is_only: Option<LsiPathKind>,
     config_path: Option<&'a str>,
     desc_num: Option<usize>,
+    is_edit_mode: bool,
+    edit_description: Option<&'a str>,
 }
