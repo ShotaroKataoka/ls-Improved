@@ -56,6 +56,10 @@ jobs:
           args: --release --target=${{ matrix.target }}
           use-cross: true
 
+      - uses: actions/upload-artifact@v1
+        with:
+          name: artifact-deb
+          path: target/x86_64-unknown-linux-musl/debian/*
       - run: |
           zip --junk-paths ls-Improved-${{ matrix.target }} target/${{ matrix.target }}/release/lsi{,.exe}
       - uses: actions/upload-artifact@v1
@@ -63,8 +67,22 @@ jobs:
           name: build-${{ matrix.target }}
           path: ls-Improved-${{ matrix.target }}.zip
 
+  build-deb:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+
+    - name: Rust Cargo Deb Package Build (amd64, Ubuntu)
+      uses: ebbflow-io/cargo-deb-amd64-ubuntu@1.0
+
+    - run: ls target/x86_64-unknown-linux-musl/debian/*
+    - uses: actions/upload-artifact@v1
+      with:
+        name: build-deb
+        path: target/x86_64-unknown-linux-musl/debian/*.deb
+
   create-release:
-    needs: [build]
+    needs: [build, build-deb]
     runs-on: ubuntu-latest
     steps:
       - id: create-release
@@ -111,3 +129,25 @@ jobs:
           asset_path: ./build-${{ matrix.target }}/ls-Improved-${{ matrix.target }}.zip
           asset_name: ls-Improved-${{ matrix.target }}.zip
           asset_content_type: application/zip
+
+  upload-release-deb:
+    needs: [create-release]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v1
+        with:
+          name: create-release
+      - id: upload-url
+        run: |
+          echo "::set-output name=url::$(cat create-release/release_upload_url.txt)"
+      - uses: actions/download-artifact@v1
+        with:
+          name: build-deb
+      - uses: actions/upload-release-asset@v1.0.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.upload-url.outputs.url }}
+          asset_path: ./build-deb/ls-Improved-*.deb
+          asset_name: ls-Improved-x86_64-unknown-linux-musl.deb
+          asset_content_type: application/vnd.debian.binary-package
