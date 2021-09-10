@@ -142,11 +142,14 @@ jobs:
       - uses: actions/download-artifact@v1
         with:
           name: build-deb
+      - run: |
+        echo "debfile=$(ls ./build-deb/)" >> $GITHUB_ENV
+        echo "./build-deb/${{ env.debfile }}"
       - uses: actions/upload-release-asset@v1.0.1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.upload-url.outputs.url }}
-          asset_path: ./build-deb/ls-Improved-*.deb
+          asset_path: ./build-deb/${{ env.debfile }}
           asset_name: ls-Improved-x86_64-unknown-linux-musl.deb
           asset_content_type: application/vnd.debian.binary-package
