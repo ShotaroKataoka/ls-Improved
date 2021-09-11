@@ -7,6 +7,8 @@ use std::fs;
 use std::fs::File;
 use std::io::Read;
 use std::path::{Path, PathBuf};
+use std::io::Write;
+use regex::Regex;
 
 pub fn get_pathes(
     path: &str,
@@ -56,12 +58,26 @@ pub fn read_dir_description(path: &LsiPath) -> Result<String> {
     Ok(content.trim().to_string())
 }
 
-// pub fn read_file_descriptions(path: &str) -> Result<String> {
-//     let path = LsiPath::new(PathBuf::from(path));
-//     let desc_path = path.absolute_path()? + "/.file_description.lsi";
-//     let desc_path = Path::new(&desc_path);
-//     let mut f = File::open(desc_path)?;
-//     let mut content = String::new();
-//     f.read_to_string(&mut content)?;
-//     Ok(content.trim().to_string())
-// }
+pub fn write_dir_description(path: &PathBuf, content: String) -> Result<()> {
+    let content = Regex::new(r"\\n")
+        .unwrap()
+        .replace_all(&content, "\n")
+        .to_string();
+
+    let filename = path
+        .canonicalize()?
+        .to_str()
+        .unwrap()
+        .to_string() + "/.description.lsi";
+
+    let mut file = match File::create(&filename) {
+        Err(why) => panic!("Couldn't create {}: {}", &filename, why),
+        Ok(file) => file,
+    };
+
+    match file.write_all(content.as_bytes()) {
+        Err(why) => panic!("Couldn't write \"{}\" to {}: {}", content, &filename, why),
+        Ok(_) => println!("finished"),
+    }
+    Ok(())
+}
