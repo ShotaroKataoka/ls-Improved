@@ -3,13 +3,20 @@ use crate::colors::Colors;
 use crate::path::{LsiPath, LsiPathKind};
 use anyhow::Result;
 use std::path::PathBuf;
+use crate::decoration;
 
-pub fn display(pathes: Vec<LsiPath>, colors: &Colors, cwd: &str) -> Result<()> {
+pub fn display(pathes: &mut Vec<LsiPath>, colors: &Colors, cwd: &str, desc_num: &Option<usize>) -> Result<()> {
     display_cwd(cwd, &colors)?;
     let length = pathes.len();
-    for (i, path) in pathes.iter().enumerate() {
-        let is_last = i + 1 == length;
-        display_a_line(&path, is_last, &colors)?
+    // for (i, &mut path) in pathes.iter().enumerate() {
+    //     let is_last = i + 1 == length;
+    //     display_a_line(&mut *path, is_last, &colors, desc_num)?
+    // }
+    let mut i = 0;
+    for path in pathes {
+        i += 1;
+        let is_last = i==length;
+        display_a_line(&mut *path, is_last, &colors, desc_num)?;
     }
     Ok(())
 }
@@ -39,7 +46,8 @@ fn display_cwd(cwd: &str, colors: &Colors) -> Result<()> {
     Ok(())
 }
 
-fn display_a_line(path: &LsiPath, is_last: bool, colors: &Colors) -> Result<()> {
+fn display_a_line(path: &mut LsiPath, is_last: bool, colors: &Colors, desc_num: &Option<usize>) -> Result<()> {
+    decoration::run(&mut *path, &colors, &desc_num, &is_last)?;
     let prefix_char = match is_last {
         true => "└──",
         false => "├──",

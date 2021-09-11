@@ -5,12 +5,10 @@ use crate::path::LsiPath;
 use anyhow::Result;
 use regex::Regex;
 
-pub fn run(pathes: &mut Vec<LsiPath>, colors: &Colors, desc_num: Option<usize>) -> Result<()> {
-    for path in pathes {
-        let _ = replace_lsi_color_code(&mut *path, colors);
-        let _ = replace_ansi_color_code(&mut *path);
-        let _ = format_multiline(&mut *path, colors, desc_num);
-    }
+pub fn run(path: &mut LsiPath, colors: &Colors, desc_num: &Option<usize>, is_last: &bool) -> Result<()> {
+    let _ = replace_lsi_color_code(path, colors);
+    let _ = replace_ansi_color_code(path);
+    let _ = format_multiline(path, colors, desc_num, is_last);
     Ok(())
 }
 
@@ -78,17 +76,17 @@ fn encolor_description(description: &str, colors: &Colors) -> String {
     format!("{}{}{}", colors.description, description, colors.end)
 }
 
-fn format_multiline(path: &mut LsiPath, colors: &Colors, line_num: Option<usize>) -> Result<()> {
+fn format_multiline(path: &mut LsiPath, colors: &Colors, line_num: &Option<usize>, is_last: &bool) -> Result<()> {
     let len = path.len();
     match path.get_description() {
         Some(content) => {
             let desc: Vec<&str> = content.split("\n").collect();
             let num = match line_num {
                 Some(n) => {
-                    if n > desc.len() {
+                    if n > &desc.len() {
                         desc.len()
                     } else {
-                        n
+                        *n
                     }
                 }
                 None => desc.len(),
@@ -97,10 +95,12 @@ fn format_multiline(path: &mut LsiPath, colors: &Colors, line_num: Option<usize>
                 path.set_description(encolor_description(desc[0], colors));
             } else {
                 let mut description: String = encolor_description(desc[0], colors);
+                let tree_prefix = if *is_last { " " } else { "│" };
                 for i in 1..num {
                     description = format!(
-                        "{}\n│   {}\t  {}",
+                        "{}\n{}   {}\t  {}",
                         description,
+                        tree_prefix,
                         " ".repeat(len),
                         encolor_description(desc[i], colors)
                     );

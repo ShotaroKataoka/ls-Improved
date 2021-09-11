@@ -3,9 +3,9 @@ extern crate exitcode;
 use crate::colors::Colors;
 use crate::config::read_config;
 use crate::errors::LsiError;
-use crate::file_description::{read_file_description, FileDescriptions};
+// use crate::file_description::{read_file_description, FileDescriptions};
 use crate::path::{LsiPath, LsiPathKind};
-use crate::{decoration, fs, view, LsiArgs};
+use crate::{fs, view, LsiArgs};
 use anyhow::Result;
 use std::path::PathBuf;
 
@@ -34,67 +34,34 @@ pub fn run(args: &LsiArgs) -> Result<()> {
     // -------------------------- //
     // Read and set descriptions! //
     // -------------------------- //
-    let abs = PathBuf::from(&args.path).canonicalize()?;
-    let _file_descriptions =
-        read_file_description(format!("{}/.file_description.lsi", abs.to_str().unwrap()));
 
-    get_and_set_descriptions(&mut pathes, _file_descriptions)?;
-    decoration::run(&mut pathes, &colors, args.desc_num)?;
+    get_and_set_descriptions(&mut pathes)?;
 
     // -------------------- //
     // Display LSI results! //
     // -------------------- //
-    match view::display(pathes, &colors, &args.path) {
+    match view::display(&mut pathes, &colors, &args.path, &args.desc_num) {
         Ok(()) => (),
         Err(_error) => return Err(LsiError::TestError.into()),
     };
     Ok(())
 }
 
-fn get_and_set_description(
-    path: &mut LsiPath,
-    file_descriptions: &Option<FileDescriptions>,
-) -> Result<()> {
-    match path.kind {
-        LsiPathKind::Dir => {
-            let _description = fs::read_dir_description(&path);
-            match _description {
-                Ok(content) => {
-                    path.set_description(content);
-                }
-                Err(_error) => {
-                    return Err(LsiError::TestError.into());
-                }
-            }
-        }
-        LsiPathKind::File => {
-            match file_descriptions {
-                Some(fd) => {
-                    match &fd.files.as_ref() {
-                        Some(files) => {
-                            match files.get(path.file_name()) {
-                                Some(d) => {
-                                    path.set_description(d.to_string());
-                                }
-                                None => {}
-                            };
-                        }
-                        None => {}
-                    };
-                }
-                None => {}
-            };
-        }
+fn get_and_set_description(path: &mut LsiPath) -> Result<()> {
+    let _description = match path.kind {
+        LsiPathKind::Dir => fs::read_dir_description(&path),
+        LsiPathKind::File => fs::read_file_description(&path),
+    };
+    match _description {
+        Ok(content) => { path.set_description(content); }
+        Err(_error) => { return Err(LsiError::TestError.into()); }
     }
     Ok(())
 }
 
-fn get_and_set_descriptions(
-    pathes: &mut Vec<LsiPath>,
-    file_descriptions: Option<FileDescriptions>,
-) -> Result<()> {
+fn get_and_set_descriptions(pathes: &mut Vec<LsiPath>) -> Result<()> {
     for path in pathes {
-        let _ = get_and_set_description(&mut *path, &file_descriptions);
+        let _ = get_and_set_description(&mut *path);
     }
     Ok(())
 }

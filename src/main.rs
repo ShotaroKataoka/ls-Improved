@@ -3,7 +3,6 @@ mod config;
 mod lsi;
 mod decoration;
 mod errors;
-mod file_description;
 mod fs;
 mod path;
 mod view;

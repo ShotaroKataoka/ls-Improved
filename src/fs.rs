@@ -58,6 +58,21 @@ pub fn read_dir_description(path: &LsiPath) -> Result<String> {
     Ok(content.trim().to_string())
 }
 
+pub fn read_file_description(path: &LsiPath) -> Result<String> {
+    let mut path = PathBuf::from(path.absolute_path()?);
+    let filename = path.file_name().unwrap().to_str().unwrap().to_string();
+    path.pop();
+    let path = path.to_str().unwrap();
+    let desc_path = format!("{}/.file_description_lsi/.{}.lsi", path, filename);
+    println!("{}", &desc_path);
+
+    let desc_path = Path::new(&desc_path);
+    let mut f = File::open(desc_path)?;
+    let mut content = String::new();
+    f.read_to_string(&mut content)?;
+    Ok(content.trim().to_string())
+}
+
 pub fn write_dir_description(path: &PathBuf, content: String) -> Result<()> {
     let content = Regex::new(r"\\n")
         .unwrap()
