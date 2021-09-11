@@ -12,41 +12,51 @@ pub fn run(args: &LsiArgs) -> Result<()> {
     if path.is_dir() {
         dir_description(&path, args.set_description, args.edit_description)
     } else if path.is_file() {
-        file_description(&path)
+        file_description(&path, args.set_description, args.edit_description)
     } else {
         Err(LsiError::TestError.into())
     }
 }
 
 fn dir_description(path: &PathBuf, description: Option<&str>, editor: Option<&str>) -> Result<()> {
-    let content: Option<String> = match description {
+    match description {
         Some(d) => {
-            Some(d.to_string())
+            write_dir_description(path, d.to_string())
         },
         None => {
             match editor {
-                Some(e) => from_editor(e),
-                None => None
+                Some(e) => from_editor(path, e),
+                None => Err(LsiError::TestError.into())
             }
         },
-    };
-    match content {
-        Some(c) => write_dir_description(path, c),
-        None => Ok(()),
     }
 }
 
-fn from_editor(editor: &str) -> Option<String> {
-    // Unix Only
-    let filename = "./lsi-editor-test.txt";
+fn from_editor(path: &PathBuf, editor: &str) -> Result<()> {
+    let mut path = path.canonicalize()?;
+    let filepath = match path.is_dir() {
+        true => format!("{}/.description.lsi", path.to_str().unwrap()),
+        false => {
+            path.pop();
+            format!("{}/.file_description.lsi", path.to_str().unwrap())
+        },
+    };
+    println!("Edit {} with {}", &filepath, &editor);
 
-    let _ = Command::new(editor)
-            .arg(filename)
-            .exec();
-    println!("done.");
-    None
+    Command::new(editor).arg(filepath).exec();
+    Ok(())
 }
 
-fn file_description(path: &PathBuf) -> Result<()> {
-    Ok(())
+fn file_description(path: &PathBuf, description: Option<&str>, editor: Option<&str>) -> Result<()> {
+    match description {
+        Some(d) => {
+            write_dir_description(path, d.to_string())
+        },
+        None => {
+            match editor {
+                Some(e) => from_editor(path, e),
+                None => Err(LsiError::TestError.into())
+            }
+        },
+    }
 }
