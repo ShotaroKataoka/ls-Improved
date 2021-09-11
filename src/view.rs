@@ -29,7 +29,7 @@ fn display_cwd(cwd: &str, colors: &Colors) -> Result<()> {
         let parent = format!(
             "{}{}/{}",
             colors.dir,
-            abs.to_str().unwrap().to_string(),
+            if abs.to_str().unwrap()=="/" {""} else { abs.to_str().unwrap() },
             colors.end
         );
         println!("{}{}", parent, cwd);
