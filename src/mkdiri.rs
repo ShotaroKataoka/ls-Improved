@@ -31,8 +31,13 @@ fn launch_editor(path: &PathBuf, editor: &str) -> Result<()> {
     let filepath = match path.is_dir() {
         true => format!("{}/.description.lsi", path.to_str().unwrap()),
         false => {
+            let filename = path.file_name().unwrap().to_str().unwrap().to_string();
             path.pop();
-            format!("{}/.file_description.lsi", path.to_str().unwrap())
+            path.push(".file_description_lsi");
+            if !path.is_dir() {
+                std::fs::create_dir(path.to_str().unwrap())?;
+            }
+            format!("{}/.{}.lsi", path.to_str().unwrap(), filename)
         },
     };
     println!("Edit {} by {}", &filepath, &editor);
