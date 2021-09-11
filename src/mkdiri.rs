@@ -7,7 +7,7 @@ use crate::fs::write_dir_description;
 pub fn run(args: &LsiArgs) -> Result<()> {
     let path = PathBuf::from(&args.path);
     if path.is_dir() {
-        dir_description(&path, args.edit_description)
+        dir_description(&path, args.set_description)
     } else if path.is_file() {
         file_description(&path)
     } else {

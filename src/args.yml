@@ -33,6 +33,11 @@ args:
         long: desc-num
         help: Sets the number of lines in the description to display.
         takes_value: true
+    - set_description:
+        short: s
+        long: set-description
+        help: Sets a description.
+        takes_value: true
     - edit_description:
         short: e
         long: edit-desc
