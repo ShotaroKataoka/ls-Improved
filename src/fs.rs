@@ -77,7 +77,7 @@ pub fn write_dir_description(path: &PathBuf, content: String) -> Result<()> {
 
     match file.write_all(content.as_bytes()) {
         Err(why) => panic!("Couldn't write \"{}\" to {}: {}", content, &filename, why),
-        Ok(_) => println!("finished"),
+        Ok(_) => println!("Success: Write description to {}", &filename),
     }
     Ok(())
 }
