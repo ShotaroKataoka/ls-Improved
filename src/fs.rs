@@ -72,17 +72,24 @@ pub fn read_file_description(path: &LsiPath) -> Result<String> {
     Ok(content.trim().to_string())
 }
 
-pub fn write_dir_description(path: &PathBuf, content: String) -> Result<()> {
+pub fn write_description(path: &PathBuf, content: String) -> Result<()> {
     let content = Regex::new(r"\\n")
         .unwrap()
         .replace_all(&content, "\n")
         .to_string();
 
-    let filename = path
-        .canonicalize()?
-        .to_str()
-        .unwrap()
-        .to_string() + "/.description.lsi";
+    let filename = if path.is_dir() {
+        format!("{}/.description.lsi", path.canonicalize()?.to_str().unwrap())
+    } else {
+        let mut path = PathBuf::from(path.canonicalize()?.to_str().unwrap());
+        let filename = path.file_name().unwrap().to_str().unwrap().to_string();
+        path.pop();
+        path.push(".file_description_lsi");
+        if !path.is_dir() {
+            fs::create_dir(path.to_str().unwrap())?;
+        }
+        format!("{}/.{}.lsi", path.to_str().unwrap(), filename)
+    };
 
     let mut file = match File::create(&filename) {
         Err(why) => panic!("Couldn't create {}: {}", &filename, why),
