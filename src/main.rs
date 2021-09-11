@@ -35,7 +35,6 @@ fn main() -> Result<()> {
     let set_description = args.value_of("set_description");
     let edit_description = args.value_of("edit_description");
     let is_edit_description = if args.occurrences_of("edit_description")==0 { false } else { true };
-    println!("{}", is_edit_description);
 
     let args = LsiArgs {
         path: path,
