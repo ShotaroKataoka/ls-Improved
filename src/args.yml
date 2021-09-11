@@ -36,10 +36,12 @@ args:
     - set_description:
         short: s
         long: set-description
+        value_name: Description
         help: Sets a description.
         takes_value: true
     - edit_description:
         short: e
-        long: edit-desc
-        help: Sets a description.
+        long: edit-description
+        value_name: EditorName
+        help: Edits a description with editor.
         takes_value: true

@@ -33,6 +33,7 @@ fn main() -> Result<()> {
         Err(_) => None,
     };
     let set_description = args.value_of("set_description");
+    let edit_description = args.value_of("edit_description");
 
     let args = LsiArgs {
         path: path,
@@ -46,8 +47,9 @@ fn main() -> Result<()> {
         },
         config_path: config_path,
         desc_num: desc_num,
-        is_mkdiri_mode: if set_description.is_some() { true } else { false },
+        is_mkdiri_mode: if set_description.is_some() || edit_description.is_some() { true } else { false },
         set_description: set_description,
+        edit_description: edit_description,
     };
 
 
@@ -66,4 +68,5 @@ pub struct LsiArgs<'a> {
     desc_num: Option<usize>,
     is_mkdiri_mode: bool,
     set_description: Option<&'a str>,
+    edit_description: Option<&'a str>,
 }
