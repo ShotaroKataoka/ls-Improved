@@ -34,6 +34,8 @@ fn main() -> Result<()> {
     };
     let set_description = args.value_of("set_description");
     let edit_description = args.value_of("edit_description");
+    let is_edit_description = if args.occurrences_of("edit_description")==0 { false } else { true };
+    println!("{}", is_edit_description);
 
     let args = LsiArgs {
         path: path,
@@ -47,7 +49,7 @@ fn main() -> Result<()> {
         },
         config_path: config_path,
         desc_num: desc_num,
-        is_mkdiri_mode: if set_description.is_some() || edit_description.is_some() { true } else { false },
+        is_mkdiri_mode: set_description.is_some() || is_edit_description,
         set_description: set_description,
         edit_description: edit_description,
     };

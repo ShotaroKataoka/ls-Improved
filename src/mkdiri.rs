@@ -41,7 +41,7 @@ fn from_editor(path: &PathBuf, editor: &str) -> Result<()> {
             format!("{}/.file_description.lsi", path.to_str().unwrap())
         },
     };
-    println!("Edit {} with {}", &filepath, &editor);
+    println!("Edit {} by {}", &filepath, &editor);
 
     Command::new(editor).arg(filepath).exec();
     Ok(())
@@ -50,7 +50,8 @@ fn from_editor(path: &PathBuf, editor: &str) -> Result<()> {
 fn file_description(path: &PathBuf, description: Option<&str>, editor: Option<&str>) -> Result<()> {
     match description {
         Some(d) => {
-            write_dir_description(path, d.to_string())
+            // write_dir_description(path, d.to_string())
+            Ok(())
         },
         None => {
             match editor {

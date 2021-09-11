@@ -44,4 +44,6 @@ args:
         long: edit-description
         value_name: EditorName
         help: Edits a description with editor.
+        default_value: vim
         takes_value: true
+
