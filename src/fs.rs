@@ -64,7 +64,6 @@ pub fn read_file_description(path: &LsiPath) -> Result<String> {
     path.pop();
     let path = path.to_str().unwrap();
     let desc_path = format!("{}/.file_description_lsi/.{}.lsi", path, filename);
-    println!("{}", &desc_path);
 
     let desc_path = Path::new(&desc_path);
     let mut f = File::open(desc_path)?;
