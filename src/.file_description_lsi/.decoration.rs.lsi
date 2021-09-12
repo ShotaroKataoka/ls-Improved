@@ -1,2 +1,2 @@
-descriptionに装飾を施すコード
-Viewの行ごとの処理で呼ばれる
+;g;View;e; | Format a description
+     | This is called in each iter of view.rs

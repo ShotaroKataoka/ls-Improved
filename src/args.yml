@@ -1,5 +1,5 @@
 name: ls-Improved
-version: "1.0.0-alpha0"
+version: "1.0.0-alpha4"
 author: Shotaro Kataoka <@ShotaroKataoka>
 about: Shows directory strusture with their descriptions.
 args:
