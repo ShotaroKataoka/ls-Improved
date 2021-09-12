@@ -40,7 +40,7 @@ fn launch_editor(path: &PathBuf, editor: &str) -> Result<()> {
             format!("{}/.{}.lsi", path.to_str().unwrap(), filename)
         },
     };
-    println!("Edit {} by {}", &filepath, &editor);
+    println!("Exec: {} {}", &editor, &filepath);
 
     Command::new(editor).arg(filepath).exec();
     Ok(())
