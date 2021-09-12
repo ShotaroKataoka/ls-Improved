@@ -26,24 +26,26 @@ args:
     - config_path:
         short: c
         long: config-path
-        help: Sets config.
+        value_name: ConfigPath
+        help: Load config from <ConfigPath>.
         takes_value: true
     - desc_num:
         short: n
         long: desc-num
-        help: Sets the number of lines in the description to display.
+        value_name: Number
+        help: Sets the <Number> of lines in a description to display.
         takes_value: true
     - set_description:
         short: s
         long: set-description
         value_name: Description
-        help: Sets a description.
+        help: Sets a <Description> to <PATH>.
         takes_value: true
     - edit_description:
         short: e
         long: edit-description
-        value_name: EditorName
-        help: Edits a description with editor.
+        value_name: Editor
+        help: Edits a description of <PATH> by using the <Editor>.
         default_value: vim
         takes_value: true
 
