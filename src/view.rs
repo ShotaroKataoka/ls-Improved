@@ -7,6 +7,7 @@ use crate::decoration;
 
 pub fn display(pathes: &mut Vec<LsiPath>, colors: &Colors, cwd: &str, desc_num: &Option<usize>) -> Result<()> {
     display_cwd(cwd, &colors)?;
+    pathes.sort();
     let length = pathes.len();
     // for (i, &mut path) in pathes.iter().enumerate() {
     //     let is_last = i + 1 == length;

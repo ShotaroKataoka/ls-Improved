@@ -48,4 +48,11 @@ args:
         help: Open a description of <PATH> by <Editor>
         default_value: vim
         takes_value: true
-
+    - sort_mode:
+        short: S
+        long: sort-mode
+        value_name: Mode
+        help: Sort by <p=Path, d=Description>
+        possible_values: ["p", "d"]
+        default_value: p
+        takes_value: true

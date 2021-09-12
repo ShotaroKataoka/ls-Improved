@@ -13,7 +13,7 @@ pub fn run(args: &LsiArgs) -> Result<()> {
     // ---------------------------------- //
     // Glob target files and directories! //
     // ---------------------------------- //
-    let mut pathes = match fs::get_pathes(&args.path, &args.is_only, &args.show_hidden) {
+    let mut pathes = match fs::get_pathes(&args.path, &args.is_only, &args.show_hidden, &args.sort_mode) {
         Ok(_success) => _success,
         Err(_error) => return Err(LsiError::TestError.into()),
     };

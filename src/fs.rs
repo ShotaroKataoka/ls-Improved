@@ -14,6 +14,7 @@ pub fn get_pathes(
     path: &str,
     is_only: &Option<LsiPathKind>,
     show_hidden: &bool,
+    sort_mode: &str,
 ) -> Result<Vec<LsiPath>> {
     let pathes = match fs::read_dir(path) {
         Ok(_success) => _success,
@@ -23,7 +24,7 @@ pub fn get_pathes(
     for path in pathes {
         let path = path.unwrap().path();
         if path_filter(&path, is_only, show_hidden) {
-            let lsi_path = LsiPath::new(path);
+            let lsi_path = LsiPath::new(path, &sort_mode);
             p.push(lsi_path);
         }
     }
