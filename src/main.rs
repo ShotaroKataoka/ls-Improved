@@ -18,8 +18,11 @@ extern crate toml;
 use anyhow::Result;
 use clap::App;
 use path::LsiPathKind;
+use async_std::io;
+use std::time::Duration;
 
-fn main() -> Result<()> {
+#[async_std::main]
+async fn main() -> Result<()> {
     let yaml = load_yaml!("args.yml");
     let args = App::from_yaml(yaml).get_matches();
     let path = args.value_of("PATH").unwrap();
@@ -36,8 +39,21 @@ fn main() -> Result<()> {
     let is_edit_description = if args.occurrences_of("edit_description")==0 { false } else { true };
     let sort_mode = args.value_of("sort_mode");
 
+    // Read Piped Input
+    let mut input = io::timeout(Duration::from_millis(1), async {
+        let stdin = io::stdin();
+        let mut line = String::new();
+        stdin.read_line(&mut line).await?;
+        Ok(line)
+    }).await;
+    let path = match input {
+        Ok(mut i) => {i.retain(|c| c != '\n'); i},
+        Err(_) => path.to_string(),
+    };
+    
+
     let args = LsiArgs {
-        path: path,
+        path: &path,
         show_hidden: show_hidden,
         is_only: if is_only_files {
             Some(LsiPathKind::File)
@@ -56,10 +72,9 @@ fn main() -> Result<()> {
 
 
     match &args.is_mkdiri_mode {
-        true => { mkdiri::run(&args); },
-        false => { lsi::run(&args); },
+        true => { mkdiri::run(&args) },
+        false => { lsi::run(&args) },
     }
-    Ok(())
 }
 
 pub struct LsiArgs<'a> {

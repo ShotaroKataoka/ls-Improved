@@ -3,11 +3,9 @@ use crate::path::{LsiPath, LsiPathKind};
 use anyhow::Result;
 /// controller/fs.rs
 /// Define file/dir io.
-use std::fs;
-use std::fs::File;
-use std::io::Read;
+use std::fs::{self, File};
+use std::io::{Read, Write};
 use std::path::{Path, PathBuf};
-use std::io::Write;
 use regex::Regex;
 
 pub fn get_pathes(
