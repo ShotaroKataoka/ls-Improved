@@ -1,3 +1,7 @@
+//! This module provides functions to manipulate and display path descriptions
+//! with various color codes. It uses `regex` to perform replacements and format
+//! descriptions for consistent display.
+
 extern crate regex;
 use crate::colors::Colors;
 use crate::errors::LsiError;
@@ -5,6 +9,19 @@ use crate::path::LsiPath;
 use anyhow::Result;
 use regex::Regex;
 
+/// Runs the processing pipeline on the given path, including replacing color codes
+/// and formatting the description.
+///
+/// # Arguments
+///
+/// * `path` - A mutable reference to an `LsiPath` that contains the path description.
+/// * `colors` - A reference to `Colors` that holds various color codes.
+/// * `desc_num` - An optional reference to the number of description lines to process.
+/// * `is_last` - A reference to a boolean indicating if this is the last entry.
+///
+/// # Errors
+///
+/// Returns an error if the description is not found or any regex-related error occurs.
 pub fn run(
     path: &mut LsiPath,
     colors: &Colors,
@@ -17,6 +34,16 @@ pub fn run(
     Ok(())
 }
 
+/// Replaces custom LSI color codes in the path description with ANSI color codes.
+///
+/// # Arguments
+///
+/// * `path` - A mutable reference to an `LsiPath` that contains the path description.
+/// * `colors` - A reference to `Colors` that holds various ANSI color codes.
+///
+/// # Errors
+///
+/// Returns an error if the description is not found or any regex-related error occurs.
 fn replace_lsi_color_code(path: &mut LsiPath, colors: &Colors) -> Result<()> {
     match path.get_description() {
         Some(content) => {
@@ -63,6 +90,15 @@ fn replace_lsi_color_code(path: &mut LsiPath, colors: &Colors) -> Result<()> {
     Ok(())
 }
 
+/// Replaces ANSI escape sequences in the path description.
+///
+/// # Arguments
+///
+/// * `path` - A mutable reference to an `LsiPath` that contains the path description.
+///
+/// # Errors
+///
+/// Returns an error if the description is not found or any regex-related error occurs.
 fn replace_ansi_color_code(path: &mut LsiPath) -> Result<()> {
     match path.get_description() {
         Some(content) => {
@@ -77,10 +113,33 @@ fn replace_ansi_color_code(path: &mut LsiPath) -> Result<()> {
     Ok(())
 }
 
+/// Adds color to the description based on the provided `Colors` struct.
+///
+/// # Arguments
+///
+/// * `description` - A string slice that holds the description text.
+/// * `colors` - A reference to `Colors` that holds various ANSI color codes.
+///
+/// # Returns
+///
+/// A `String` containing the colorized description.
 fn encolor_description(description: &str, colors: &Colors) -> String {
     format!("{}{}{}", colors.description, description, colors.end)
 }
 
+/// Formats the description of the path to support multi-line display with proper indentation
+/// and tree-like structure.
+///
+/// # Arguments
+///
+/// * `path` - A mutable reference to an `LsiPath` that contains the path description.
+/// * `colors` - A reference to `Colors` that holds various ANSI color codes.
+/// * `line_num` - An optional reference to the number of description lines to process.
+/// * `is_last` - A reference to a boolean indicating if this is the last entry.
+///
+/// # Errors
+///
+/// Returns an error if the description is not found or any regex-related error occurs.
 fn format_multiline(
     path: &mut LsiPath,
     colors: &Colors,
@@ -90,7 +149,7 @@ fn format_multiline(
     let len = path.len();
     match path.get_description() {
         Some(content) => {
-            let desc: Vec<&str> = content.split("\n").collect();
+            let desc: Vec<&str> = content.split('\n').collect();
             let num = match line_num {
                 Some(n) => {
                     if n > &desc.len() {

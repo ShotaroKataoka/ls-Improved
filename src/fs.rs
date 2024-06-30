@@ -1,13 +1,31 @@
+//! This module provides utilities for interacting with file paths, directories, and 
+//! managing descriptions associated with them. It includes functions to gather paths, 
+//! filter them according to specified criteria, and read/write descriptions.
+
 use crate::errors::LsiError;
 use crate::path::{LsiPath, LsiPathKind};
 use anyhow::Result;
 use regex::Regex;
-/// controller/fs.rs
-/// Define file/dir io.
 use std::fs::{self, File};
 use std::io::{Read, Write};
 use std::path::{Path, PathBuf};
 
+/// Collects paths from the target directory and applies specified filters and sorting.
+///
+/// # Arguments
+///
+/// * `path` - A string slice that holds the path of the directory to list.
+/// * `is_only` - An optional filter to list only files or directories specified by `LsiPathKind`.
+/// * `show_hidden` - A boolean flag indicating whether to include hidden files.
+/// * `sort_mode` - A string slice specifying how to sort the paths.
+///
+/// # Errors
+///
+/// Returns an error if the target path does not exist or cannot be read.
+///
+/// # Returns
+///
+/// A vector of `LsiPath` objects representing paths in the target directory.
 pub fn get_pathes(
     path: &str,
     is_only: &Option<LsiPathKind>,
@@ -30,16 +48,27 @@ pub fn get_pathes(
     Ok(p)
 }
 
+/// Filters a path according to specified criteria.
+///
+/// # Arguments
+///
+/// * `path` - A reference to the path to filter.
+/// * `is_only` - An optional filter to include only specific kinds of paths (`LsiPathKind`).
+/// * `show_hidden` - A boolean flag indicating whether to include hidden paths.
+///
+/// # Returns
+///
+/// A boolean indicating whether the path meets the filter criteria.
 fn path_filter(path: &PathBuf, is_only: &Option<LsiPathKind>, show_hidden: &bool) -> bool {
     match is_only {
         Some(kind) => match kind {
             LsiPathKind::Dir => {
-                let is_target = if path.is_dir() { true } else { false };
+                let is_target = path.is_dir();
                 let is_hidden = LsiPath::is_hidden(path);
                 is_target && (!is_hidden || *show_hidden)
             }
             LsiPathKind::File => {
-                let is_target = if path.is_file() { true } else { false };
+                let is_target = path.is_file();
                 let is_hidden = LsiPath::is_hidden(path);
                 is_target && (!is_hidden || *show_hidden)
             }
@@ -48,6 +77,19 @@ fn path_filter(path: &PathBuf, is_only: &Option<LsiPathKind>, show_hidden: &bool
     }
 }
 
+/// Reads a directory description from a `.description.lsi` file located in the directory.
+///
+/// # Arguments
+///
+/// * `path` - A reference to an `LsiPath` representing the directory.
+///
+/// # Errors
+///
+/// Returns an error if the description file cannot be read.
+///
+/// # Returns
+///
+/// A string containing the description read from the file.
 pub fn read_dir_description(path: &LsiPath) -> Result<String> {
     let desc_path = path.absolute_path()? + "/.description.lsi";
     let desc_path = Path::new(&desc_path);
@@ -57,6 +99,19 @@ pub fn read_dir_description(path: &LsiPath) -> Result<String> {
     Ok(content.trim().to_string())
 }
 
+/// Reads a file description from a `.file_description_lsi/.<filename>.lsi` file.
+///
+/// # Arguments
+///
+/// * `path` - A reference to an `LsiPath` representing the file.
+///
+/// # Errors
+///
+/// Returns an error if the description file cannot be read.
+///
+/// # Returns
+///
+/// A string containing the description read from the file.
 pub fn read_file_description(path: &LsiPath) -> Result<String> {
     let mut path = PathBuf::from(path.absolute_path()?);
     let filename = path.file_name().unwrap().to_str().unwrap().to_string();
@@ -71,6 +126,16 @@ pub fn read_file_description(path: &LsiPath) -> Result<String> {
     Ok(content.trim().to_string())
 }
 
+/// Writes a description to a file or directory description file.
+///
+/// # Arguments
+///
+/// * `path` - A reference to the `PathBuf` representing the target path.
+/// * `content` - A string containing the description to write.
+///
+/// # Errors
+///
+/// Returns an error if the description file cannot be created or written to.
 pub fn write_description(path: &PathBuf, content: String) -> Result<()> {
     let content = Regex::new(r"\\n")
         .unwrap()
@@ -93,14 +158,12 @@ pub fn write_description(path: &PathBuf, content: String) -> Result<()> {
         format!("{}/.{}.lsi", path.to_str().unwrap(), filename)
     };
 
-    let mut file = match File::create(&filename) {
-        Err(why) => panic!("Couldn't create {}: {}", &filename, why),
-        Ok(file) => file,
-    };
+    let mut file = File::create(&filename)
+        .map_err(|why| anyhow::anyhow!("Couldn't create {}: {}", &filename, why))?;
 
-    match file.write_all(content.as_bytes()) {
-        Err(why) => panic!("Couldn't write \"{}\" to {}: {}", content, &filename, why),
-        Ok(_) => println!("Success: Write description to {}", &filename),
-    }
+    file.write_all(content.as_bytes())
+        .map_err(|why| anyhow::anyhow!("Couldn't write \"{}\" to {}: {}", content, &filename, why))?;
+    println!("Success: Write description to {}", &filename);
+    
     Ok(())
 }

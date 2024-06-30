@@ -1,3 +1,7 @@
+//! This module provides functionality for handling the mkdiri tasks.
+//! It includes functions to set or edit descriptions for directories or files, 
+//! and to launch text editors.
+
 use crate::errors::LsiError;
 use crate::fs::write_description;
 use crate::{LsiArgs};
@@ -6,11 +10,39 @@ use std::os::unix::process::CommandExt;
 use std::path::PathBuf;
 use std::process::Command;
 
+/// Runs the mkdiri module based on the provided arguments.
+///
+/// This function handles the main logic of the mkdiri module. It determines
+/// whether to set a new description, edit an existing one, or print an error 
+/// if neither is provided.
+///
+/// # Arguments
+///
+/// * `args` - A reference to the `LsiArgs` struct containing the current configuration.
+///
+/// # Returns
+///
+/// Returns a `Result` which is `Ok` if the operation is successful or an error otherwise.
+
 pub fn run(args: &LsiArgs) -> Result<()> {
     let path = PathBuf::from(&args.path);
     mkdiri_description(&path, args.set_description, args.edit_description)
 }
 
+/// Handles the description setting or editing logic.
+///
+/// Depending on whether a description or editor is provided, this function 
+/// sets a description directly or launches an editor to edit it.
+///
+/// # Arguments
+///
+/// * `path` - A reference to the target `PathBuf`.
+/// * `description` - An optional description string to set.
+/// * `editor` - An optional text editor command to use.
+///
+/// # Returns
+///
+/// Returns a `Result` which is `Ok` if the operation is successful or an error otherwise.
 fn mkdiri_description(
     path: &PathBuf,
     description: Option<&str>,
@@ -25,6 +57,19 @@ fn mkdiri_description(
     }
 }
 
+/// Launches a text editor to edit the description of a directory or file.
+///
+/// This function attempts to launch the specified text editor with the path to 
+/// the description file as an argument.
+///
+/// # Arguments
+///
+/// * `path` - A reference to the target `PathBuf`.
+/// * `editor` - The text editor command to launch.
+///
+/// # Returns
+///
+/// Returns a `Result` which is `Ok` if the command is launched successfully or an error otherwise.
 fn launch_editor(path: &PathBuf, editor: &str) -> Result<()> {
     let mut path = path.canonicalize()?;
     let filepath = match path.is_dir() {
