@@ -1,5 +1,7 @@
 # Use the official Rust image from the Docker Hub
 FROM rust:latest
+RUN rustup component add rustfmt
+RUN rustup component add clippy
 
 # Set the working directory inside the container
 WORKDIR /usr/src/app
