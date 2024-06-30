@@ -1,96 +1,88 @@
-# ls-Improved: descriptive ls-like-command working on Python
+# ls-Improved: Descriptive ls-like Command in Rust
+
 ![ls](https://github.com/ShotaroKataoka/ls-Improved/blob/master/doc/images/lsi.png)
 
-[![Downloads](https://pepy.tech/badge/ls-improved)](https://pepy.tech/project/ls-improved)  
+[![Downloads](https://pepy.tech/badge/ls-improved)](https://pepy.tech/project/ls-improved)
 
-[日本語README](https://github.com/ShotaroKataoka/ls-Improved/blob/master/README.ja.md)
+[日本語 README](https://github.com/ShotaroKataoka/ls-Improved/blob/master/README.ja.md)
 
 ## What is it?
-**ls-Improved (lsi)** prints out a directory structure with its descriptions. 
-I've been using it when tackling some seriese of experiments.(e.g. machine leaning experiments.)  
+
+**ls-Improved (lsi)** is a command-line tool for listing directory structures along with their descriptions. It is particularly useful for managing and accessing experimental results, which can often be buried deep within multiple directories.
 
 ### Example
-We have some directories like below.  
-Sometimes we'd like to access the best result of experiments, but it is not easy.  It is necessary to open all of directories or note `experiments_summary.txt` beforehand in order to do it.  
+
+Consider a directory structure filled with experimental results. Finding the best result can be cumbersome, often requiring you to open multiple directories or maintain a separate summary file.
 
 ![ls](https://github.com/ShotaroKataoka/ls-Improved/blob/master/doc/images/ls_using.png)
 
-Now we have the **ls-Improved(lsi)** command here.  It allows us to see list of directories with its descriptions simultaneously.  
+With **ls-Improved (lsi)**, you can view the list of directories along with their descriptions in a single command:
 
 ![lsi](https://github.com/ShotaroKataoka/ls-Improved/blob/master/doc/images/lsi_using.png)
 
-## Requirements
-developed on Python2.7 and Python3.7 (maybe ≧Python2.7 is ok.)  
-It is working on Python, so this command dose not depend on OS.  
-
 ## Install
-### pip install
-```
-# PyPI
-pip install ls-Improved
-```
 
-### manual install
-For person who do not like PyPI, manual install version exists.  
+`Follow these steps to download the latest version of the binary file and set up the PATH:`
 
-1. download latest manual version from github release.  
-`wget https://github.com/ShotaroKataoka/ls-Improved/archive/v0.3.0.beta1.manual.zip`  
-2. unzip downloaded zip file.  
-3. set PATH environment to `bin/` directory.  
-(set PATH to unziped `bin/` directory or place `bin/lsi` and `bin/mkdiri` to `/usr/local/bin/` )  
+1. Visit the GitHub releases page.
+2. Find the latest version release and download the corresponding binary file.
+3. Place the downloaded binary file in an appropriate directory (e.g., `/usr/local/bin`).
+4. Add the directory to your environment variables. Typically, you can do this by adding the following line to your `~/.bashrc` or `~/.zshrc` file:
+   ```sh
+   export PATH=$PATH:/usr/local/bin
+   ```
+5. To apply the changes, restart your terminal or run the following command:
+   ```sh
+   source ~/.bashrc  # or source ~/.zshrc
+   ```
+
+With these steps, the installation will be complete, and you will be able to use the binary file from the command line.
 
 ## Usage
-### How works
-`lsi` read `.description.lsi` files which are in each directories.  
-`.description.lsi` is simple text file.  It is made by `mkdiri` command.  
 
-**In brief:**
-- `mkdiri` make a directory with the `.description.lsi` text file.
-- `lsi` print out directory structure with `.description.lsi` content.
+Below are the usage details:
 
-### mkdiri
-`mkdiri` make a directory with the `.description.lsi`.
-- `mkdiri DIRECTORY 'DESCRIPTION'` : make `DIRECTORY` and write `DESCRIPTION` into `.description.lsi`  
-- `mkdiri DIRECTORY` : make `DIRECTORY` and create empty `.description.lsi`  
-- `mkdiri -f FILE-PATH 'DESCRIPTION'` : write `FILE-PATH`'s `DESCRIPTION` into `.file_description.lsi`  
-- `mkdiri -a DIRECTORY 'DESCRIPTION'` : overwrite or create `.description.lsi` in existing directory.  
-- `mkdiri -h` : Show help
+### Basic Commands
 
-Advanced feature ( **!! these commands create `~/.lsirc` !!** ):
-- `mkdiri -e` : Show current mkdiri mode. (LSI MODE or ANSI MODE)
-- `mkdiri --ANSI-MODE`  : Set ANSI-ESCAPE-SEQUENCE MODE. (convert decoration to ANSI escape sequence)
-- `mkdiri --LSI-MODE`  : Set LSI-ESCAPE-SEQUENCE MODE. (default)
+- `lsi [PATH]`: Show the directory structure and descriptions of the specified `PATH` (default is `"./"`).
+- `lsi -a, --all`: Include entries that start with `.` (hidden files and directories).
+- `lsi -f, --only-files`: Show only files, not directories.
+- `lsi -d, --only-dirs`: Show only directories, not files.
+- `lsi -c, --config-path <ConfigPath>`: Load configuration from the specified `ConfigPath`.
+- `lsi -n, --line-num <Number>`: Limit the description lines to the specified `Number`.
+- `lsi -S, --sort-mode <Mode>`: Sort by path (`p`) or description (`d`).
 
-**tips:**  
-Add decoration to description :  
-- `\n` : make new line
-- `;r;` `;g;` `;b;` `;w;` `;p;` : add color to text
-- `;_;` : add underline to text
-- `;e;` : end decoration
+### Managing Descriptions
 
-**Example**  
-![mkdiri_decoration](https://github.com/ShotaroKataoka/ls-Improved/blob/master/doc/images/mkdiri_decoration.png)  
+- `lsi -s, --set-description <Description> [PATH]`: Write the specified `Description` to the `.description.lsi` file in the specified `PATH`.
+- `lsi -e, --edit-description <Editor> [PATH]`: Open the description `.description.lsi` file in the specified `Editor` (default is `vim`).
 
-### lsi
-`lsi` print out directory structure with `.description.lsi` content.  
-- `lsi` : Show directory structure and these descriptions in the current directory
-- `lsi DIRECTORY` : Show directory structure and these descriptions in the `DIRECTORY`
-- `lsi -a` : Show hidden files and directories
-- `lsi -f` : Show only files
-- `lsi -d` : Show only directories
-- `lsi -s 'SEARCH_WORD'` : search file-name and description with `SEARCH_WORD`
-- `lsi -n NUMBER`: Raise warning if number of files is bigger than NUMBER.
-- `lsi -h` : Show help
+Example command to set a description:
 
-**tips:**  
-Adding following alias to `.bashrc` is useful :  
+```sh
+lsi -s "This is a brief description" ./experiments/run1
 ```
-alias clear='clear && lsi ././'
-function cdlsi (){
-    /cd $@ && lsi ././
+
+Example command to edit a description using nano:
+
+```sh
+lsi -e nano ./experiments/run1
+```
+
+## Configuration Tips
+
+It is beneficial to add the following aliases to your `.bashrc` or `.zshrc` for quicker navigation and usage:
+
+```sh
+alias clear='clear && lsi ./'
+function cdlsi () {
+    cd "$@" && lsi ./
 }
 alias cd='cdlsi'
 ```
 
-## Related projects
+## Related Projects
+
 - [Emacs client](https://github.com/conao3/dired-lsi.el) by [conao3](https://github.com/conao3)
+
+Feel free to explore, contribute, and open issues if you encounter any. Happy organizing!

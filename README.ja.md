@@ -1,90 +1,90 @@
-# ls-Improved : 説明文つきのlsっぽいコマンド
+# ls-Improved : 説明文つきの ls っぽいコマンド
+
 ![ls](https://github.com/ShotaroKataoka/ls-Improved/blob/master/doc/images/lsi.png)
 
 [![Downloads](https://pepy.tech/badge/ls-improved)](https://pepy.tech/project/ls-improved)  
-[Qiita記事](https://qiita.com/m_oba/items/828467a0f483e8dab845)  
+[Qiita 記事](https://qiita.com/m_oba/items/828467a0f483e8dab845)
+
 ## なにこれ？
-**ls-Improved(lsi)** はディレクトリやファイルの一覧を表示する`ls`っぽいコマンドです。`ls`との違いはディレクトリの説明文も一緒に表示してくれることです。  
-似たような名前のディレクトリをたくさん生成する場合などに、それらのディレクトリにそれぞれ特徴をメモしておくことで一覧性が良くなります。（機械学習の実験ディレクトリにパラメータをメモしたりして使っています。コマンドライン上で簡単に確認できるので便利です。）
+
+**ls-Improved(lsi)** はディレクトリやファイルの一覧を表示する`ls`っぽいコマンドです。`ls`との違いはディレクトリの説明文も一緒に表示することです。  
+似たような名前のディレクトリをたくさん生成する場合などに、それぞれのディレクトリに特徴をメモしておくことで一覧性が向上します。（機械学習の実験ディレクトリにパラメータをメモする際などに便利です。）
 
 ### 使用例
+
 下のような機械学習の実験ディレクトリがあったとします。  
-しばしば、「このパラメータで実験したディレクトリはどれかなー。」とか「最良の結果を出した実験はどれだっけ」とかで迷うことがあります。  
-そういうときは全ディレクトリをひとつひとつ確認したり、どこかのテキストファイルにすべての実験結果をメモしておいてそれを確認したりしますが、結構めんどくさいです。  
+しばしば、「このパラメータで実験したディレクトリはどれかな？」とか「最良の結果を出した実験はどれだっけ？」などとなることがあります。  
+全ディレクトリをひとつひとつ確認したり、実験結果をどこかのテキストファイルにメモしておくのは手間がかかることがあります。
 
 ![ls](https://github.com/ShotaroKataoka/ls-Improved/blob/master/doc/images/ls_using.png)
 
-そういう背景があり**ls-Improved** を開発しました。このコマンドを使えば、下のようにどのディレクトリがどういったものか、ということが一目でわかります。
+この背景から**ls-Improved** を開発しました。このコマンドを使うと、以下のように各ディレクトリの内容が一目でわかります。
 
 ![lsi](https://github.com/ShotaroKataoka/ls-Improved/blob/master/doc/images/lsi_using.png)
 
+## インストール
 
-## Requirements
-Python2.7とPython3.7で開発しました。おそらくPython2.7以上で動作します。それ以下は確認してないです。  
-また、Pythonで動作するのでOSに依存しないはずです。
+`最新バージョンのバイナリファイルをダウンロードして、パスを設定する手順は以下の通りです。`
 
-## Install
-### pip install
-```
-# PyPI
-pip install ls-Improved
-```
+1. GitHub のリリースページにアクセスします。
+2. 最新バージョンのリリースを見つけて、対応するバイナリファイルをダウンロードします。
+3. ダウンロードしたバイナリファイルを適切なディレクトリに配置します（例: `/usr/local/bin`）。
+4. 環境変数にパスを追加します。一般的な方法として、以下の内容を`~/.bashrc`または`~/.zshrc`に追加します。
+   ```sh
+   export PATH=$PATH:/usr/local/bin
+   ```
+5. 変更を反映させるためにターミナルを再起動するか、以下のコマンドを実行します。
+   ```sh
+   source ~/.bashrc  # または source ~/.zshrc
+   ```
 
-### 手動でのインストール
-pipする権限がない場合などは以下の手順でインストールしてください。  
-1. githubのreleaseから最新のmanual install versionをダウンロードしてください。
-`wget https://github.com/ShotaroKataoka/ls-Improved/archive/v0.3.0.beta1.manual.zip`
-2. ダウンロードしたzipファイルを解凍してください。
-3. 解凍したディレクトリの中にある`bin/`にパスを通します。
-解凍した`bin/`を環境変数に追加するか、`bin/lsi`と`bin/mkdiri`をパスが通っている場所（`/usr/local/bin`など）に配置してください。
+これでインストールが完了し、コマンドラインからバイナリファイルを使用できるようになります。
 
 ## 使い方
-### 動作の仕組み
-`lsi`は各ディレクトリにある`.description.lsi`というテキストファイルを読み取って、それをそのディレクトリの説明文として表示しています。
-`.description.lsi`は単純なテキストファイルであり、`mkdiri`というコマンドによって生成されます。（他のプログラムやvimなどで生成しても問題ありません。）
 
-### mkdiri
-- `mkdiri DIRECTORY 'DESCRIPTION'` : DIRECTORYというディレクトリを作成し，'DESCRIPTION'という説明文を`.description.lsi`に作成  
-- `mkdiri DIRECTORY` : ディレクトリを作成し，空の`.description.lsi`を作成  
-- `mkdiri -a DIRECTORY 'DESCRIPTION'` : 既存のディレクトリに説明文を上書き（`.description.lsi`が存在しない場合、新規作成する）  
-- `mkdiri -f FILE-PATH 'DESCRIPTION'` : ファイルに説明文を付けます。ファイルと同じ階層の `.file_description.lsi` に書き込みされます。
-- `mkdiri -h` : ヘルプ表示
+以下に各コマンドの使用例を示します。
 
-Advanced feature (!! **これらのコマンドは `~/.lsirc` を生成するので注意** !!:)
-- `mkdiri -e` : 現在の保存モードを表示. (LSI MODE or ANSI MODE)
-- `mkdiri --ANSI-MODE`  : 保存モードを ANSIエスケープシーケンスにする. (説明文内の装飾コードをANSIエスケープシーケンスに変換してファイルに書き込む)
-- `mkdiri --LSI-MODE`  : 保存モードをLSIエスケープシーケンスにする．（デフォルト）
+### 基本コマンド
 
-**tips:**  
-説明文には装飾をすることができます。  
-- `\n` : コマンドライン上での生成時、改行を追加します。
-- `;r;` `;g;` `;b;` `;w;` `;p;` : テキストの色を変更します。
-- `;_;` : テキストに下線を追加します。
-- `;e;` : 装飾を終了します。
+- `lsi [PATH]`: 指定された`PATH`（デフォルトは`"./"`）のディレクトリ構造と説明文を表示します。
+- `lsi -a, --all`: `.`で始まるエントリ（隠しファイル・ディレクトリ）を含めて表示します。
+- `lsi -f, --only-files`: ファイルのみを表示します（ディレクトリは表示しません）。
+- `lsi -d, --only-dirs`: ディレクトリのみを表示します（ファイルは表示しません）。
+- `lsi -c, --config-path <ConfigPath>`: 指定した`ConfigPath`から設定を読み込みます。
+- `lsi -n, --line-num <Number>`: 説明文の行数を指定した`Number`に制限します。
+- `lsi -S, --sort-mode <Mode>`: パス (`p`) または 説明 (`d`) でソートします。
 
-**例**  
+### 説明文の管理
 
-![lsi](https://github.com/ShotaroKataoka/ls-Improved/blob/master/doc/images/mkdiri_decoration.png)
+- `lsi -s, --set-description <Description> [PATH]`: 指定された`PATH`の `.description.lsi` ファイルに`Description`を書き込みます。
+- `lsi -e, --edit-description <Editor> [PATH]`: 指定された`PATH`の `.description.lsi` ファイルを`Editor`（デフォルトは`vim`）で開きます。
 
-### lsi
-- `lsi` : カレントディレクトリ内のファイルとディレクトリを表示  
-- `lsi DIRECTORY` : パス内のファイルとディレクトリを表示  
-- `lsi -a` : 隠れファイル・ディレクトリも表示  
-- `lsi -F` : ファイルのみを表示
-- `lsi -D` : ディレクトリのみを表示
-- `lsi -s 'SEARCH_WORD'` : `SEARCH_WORD`でファイル名・説明文内を検索
-- `lsi -n NUMBER` : NUMBER以上のファイル数なら警告するようにする
-- `lsi -h` : ヘルプ表示
+説明文を設定する例:
 
-**tips:**  
-お好みで `.bashrc` に以下のエイリアスを追加すると便利です。  
+```sh
+lsi -s "これは簡単な説明です" ./experiments/run1
 ```
-alias clear='clear && lsi ././'
-function cdlsi (){
-    /cd $@ && lsi ././
+
+nano で説明文を編集する例:
+
+```sh
+lsi -e nano ./experiments/run1
+```
+
+## 設定のヒント
+
+以下のエイリアスを`.bashrc`や`.zshrc`に追加すると、より便利に使えます：
+
+```sh
+alias clear='clear && lsi ./'
+function cdlsi () {
+    cd "$@" && lsi ./
 }
 alias cd='cdlsi'
 ```
 
-## 関連
-- [Emacs client](https://github.com/conao3/dired-lsi.el) by [conao3](https://github.com/conao3)
+## 関連プロジェクト
+
+- [Emacs クライアント](https://github.com/conao3/dired-lsi.el) by [conao3](https://github.com/conao3)
+
+試してみてください。バグ報告やフィードバックもお待ちしています。

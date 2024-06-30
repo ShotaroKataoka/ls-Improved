@@ -3,7 +3,7 @@ name: Release
 on:
   push:
     tags:
-      - 'v*'
+      - "v*"
 jobs:
   build:
     strategy:
@@ -63,19 +63,19 @@ jobs:
   build-deb:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
+      - uses: actions/checkout@v1
 
-    - name: Rust Cargo Deb Package Build (amd64, Ubuntu)
-      id: debbuild
-      uses: ebbflow-io/cargo-deb-amd64-ubuntu@1.0
+      - name: Rust Cargo Deb Package Build (amd64, Ubuntu)
+        id: debbuild
+        uses: ebbflow-io/cargo-deb-amd64-ubuntu@1.0
 
-    - run: ls target/x86_64-unknown-linux-musl/debian/*
+      - run: ls target/x86_64-unknown-linux-musl/debian/*
 
-    - name: Upload deb artifact
-      uses: actions/upload-artifact@v2
-      with:
-        name: build-deb
-        path: target/x86_64-unknown-linux-musl/debian/*
+      - name: Upload deb artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: build-deb
+          path: target/x86_64-unknown-linux-musl/debian/*
 
   create-release:
     needs: [build, build-deb]

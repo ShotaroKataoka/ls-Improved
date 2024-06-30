@@ -4,6 +4,12 @@ version = "1.0.0"
 authors = ["ShotaroKataoka <s183347@stn.nagaokaut.ac.jp>"]
 edition = "2018"
 
+description = "A description of what your project does"
+repository = "https://github.com/ShotaroKataoka/ls-Improved"
+keywords = ["ls", "description", "cli"]
+license = "MIT"  # or the license you wish to use
+categories = ["command-line-utilities"]
+
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 [profile.release]
 opt-level = 3
