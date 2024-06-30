@@ -1,0 +1,9 @@
+version: "3.8"
+
+services:
+  rust-app:
+    build: .
+    volumes:
+      - .:/usr/src/app
+    stdin_open: true
+    tty: true
