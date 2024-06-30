@@ -49,3 +49,10 @@
 ## 依存関係を最新版に更新する
 
 `cargo update`
+
+# リリース
+
+```
+git tag -a vx.x.x -m 'hoge'
+git push origin vx.x.x
+```
