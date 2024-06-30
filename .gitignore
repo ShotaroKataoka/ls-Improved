@@ -1,7 +1,2 @@
-build/
-dist/
-__pycache__/
-ls_Improved.egg-info
-.description.lsi
-.file_description.lsi
-.DS_Store
+/target
+/test
