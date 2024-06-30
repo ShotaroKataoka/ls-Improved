@@ -1,5 +1,5 @@
 //! This module provides functions to display directory listings with color-coded and
-//! decorated output. It includes functionalities to sort and format paths, display 
+//! decorated output. It includes functionalities to sort and format paths, display
 //! current working directory, and handle descriptions.
 
 use crate::colors::Colors;
@@ -30,14 +30,14 @@ pub fn display(
     cwd: &str,
     desc_num: &Option<usize>,
 ) -> Result<()> {
-    display_cwd(cwd, &colors)?;
+    display_cwd(cwd, colors)?;
     pathes.sort();
     let length = pathes.len();
     let mut i = 0;
     for path in pathes {
         i += 1;
         let is_last = i == length;
-        display_a_line(&mut *path, is_last, &colors, desc_num)?;
+        display_a_line(&mut *path, is_last, colors, desc_num)?;
     }
     Ok(())
 }
@@ -62,7 +62,7 @@ fn display_cwd(cwd: &str, colors: &Colors) -> Result<()> {
         Some(c) => format!(
             "{}{}/{}",
             colors.current_dir,
-            c.to_str().unwrap().to_string(),
+            c.to_str().unwrap(),
             colors.end
         ),
         None => format!("{}/{}", colors.current_dir, colors.end),
@@ -107,7 +107,7 @@ fn display_a_line(
     colors: &Colors,
     desc_num: &Option<usize>,
 ) -> Result<()> {
-    decoration::run(&mut *path, &colors, &desc_num, &is_last)?;
+    decoration::run(&mut *path, colors, desc_num, &is_last)?;
     let prefix_char = match is_last {
         true => "└──",
         false => "├──",

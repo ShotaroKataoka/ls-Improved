@@ -49,7 +49,7 @@ fn replace_lsi_color_code(path: &mut LsiPath, colors: &Colors) -> Result<()> {
         Some(content) => {
             let content = Regex::new(r";r;")
                 .unwrap()
-                .replace_all(&content, &colors.red)
+                .replace_all(content, &colors.red)
                 .to_string();
             let content = Regex::new(r";g;")
                 .unwrap()
@@ -104,7 +104,7 @@ fn replace_ansi_color_code(path: &mut LsiPath) -> Result<()> {
         Some(content) => {
             let content = Regex::new("\\\\033")
                 .unwrap()
-                .replace_all(&content, "\x1b")
+                .replace_all(content, "\x1b")
                 .to_string();
             path.set_description(content);
         }
@@ -165,13 +165,13 @@ fn format_multiline(
             } else {
                 let mut description: String = encolor_description(desc[0], colors);
                 let tree_prefix = if *is_last { " " } else { "│" };
-                for i in 1..num {
+                for d in desc.iter().take(num).skip(1) {
                     description = format!(
                         "{}\n{}   {}\t  {}",
                         description,
                         tree_prefix,
                         " ".repeat(len),
-                        encolor_description(desc[i], colors)
+                        encolor_description(d, colors)
                     );
                 }
                 path.set_description(description)

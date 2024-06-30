@@ -1,5 +1,5 @@
 //! This module defines and implements the main functionality of the application.
-//! It processes command-line arguments, handles configuration settings, and orchestrates 
+//! It processes command-line arguments, handles configuration settings, and orchestrates
 //! the execution flow of different modules including lsi and mkdiri.
 
 mod colors;
@@ -28,7 +28,7 @@ use std::time::Duration;
 
 /// The main function serves as the entry point of the application.
 ///
-/// It reads command-line arguments, configures the runtime environment, 
+/// It reads command-line arguments, configures the runtime environment,
 /// and dispatches tasks to relevant modules based on the specified options.
 ///
 /// # Errors
@@ -40,20 +40,20 @@ async fn main() -> Result<()> {
     // Load command-line arguments from the YAML file.
     let yaml = load_yaml!("args.yml");
     let args = App::from_yaml(yaml).get_matches();
-    
+
     // Retrieve values from the command-line arguments.
     let path = args.value_of("PATH").unwrap();
     let show_hidden = args.is_present("show_all");
     let is_only_files = args.is_present("only_files");
     let is_only_dirs = args.is_present("only_directories");
     let config_path = args.value_of("config_path");
-    
+
     // Handle the optional description number.
     let desc_num = match value_t!(args.value_of("desc_num"), usize) {
         Ok(n) => Some(n),
         Err(_) => None,
     };
-    
+
     // Options for managing descriptions.
     let set_description = args.value_of("set_description");
     let edit_description = args.value_of("edit_description");
@@ -66,8 +66,9 @@ async fn main() -> Result<()> {
         let mut line = String::new();
         stdin.read_line(&mut line).await?;
         Ok(line)
-    }).await;
-    
+    })
+    .await;
+
     // Determine the effective path to use.
     let path = match input {
         Ok(mut i) => {

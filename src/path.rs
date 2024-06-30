@@ -1,7 +1,7 @@
 use anyhow::Result;
 use regex::Regex;
 use std::cmp::Ordering;
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 use unicode_width::UnicodeWidthStr;
 
 /// Represents the types of paths (files or directories).
@@ -34,7 +34,7 @@ impl LsiPath {
     pub fn new(path: PathBuf, sort_mode: &str) -> LsiPath {
         let flag = path.is_dir();
         LsiPath {
-            path: path,
+            path,
             description: None,
             kind: if flag {
                 LsiPathKind::Dir
@@ -54,7 +54,7 @@ impl LsiPath {
     /// # Returns
     ///
     /// `true` if the path is hidden, `false` otherwise.
-    pub fn is_hidden(path: &PathBuf) -> bool {
+    pub fn is_hidden(path: &Path) -> bool {
         matches!(
             path.file_name()
                 .unwrap()
@@ -165,8 +165,7 @@ impl Ord for LsiPath {
 
 impl PartialOrd for LsiPath {
     fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
-        let (name1, name2) = format_for_eq(self, other);
-        Some(name1.cmp(&name2))
+        Some(self.cmp(other))
     }
 }
 
@@ -179,7 +178,10 @@ impl PartialEq for LsiPath {
 
 impl PartialEq<LsiPathKind> for LsiPathKind {
     fn eq(&self, other: &Self) -> bool {
-        self == other
+        match self {
+            LsiPathKind::Dir => matches!(other, LsiPathKind::Dir),
+            LsiPathKind::File => matches!(other, LsiPathKind::File),
+        }
     }
 }
 

@@ -62,12 +62,23 @@ impl Colors {
     /// * A `Colors` struct initialized with settings from the configuration.
     fn from_cfg(color_conf: &ColorConf) -> Colors {
         let terms = [
-            "red", "blue", "green", "white", "purple", "yellow", "cyan", "underline", 
-            "end", "dir", "current_dir", "file", "description",
+            "red",
+            "blue",
+            "green",
+            "white",
+            "purple",
+            "yellow",
+            "cyan",
+            "underline",
+            "end",
+            "dir",
+            "current_dir",
+            "file",
+            "description",
         ];
         let mut ansi = HashMap::new();
         for term in terms.iter() {
-            match color_conf.get(*term).as_ref() {
+            match color_conf.get(term).as_ref() {
                 Some(cs) => {
                     let mut term_ansi = String::new();
                     for c in cs {
@@ -75,7 +86,9 @@ impl Colors {
                     }
                     ansi.insert(*term, term_ansi);
                 }
-                None => { ansi.insert(*term, Colors::default_one(term).to_string()); },
+                None => {
+                    ansi.insert(*term, Colors::default_one(term).to_string());
+                }
             };
         }
         Colors::create(ansi)
@@ -88,8 +101,19 @@ impl Colors {
     /// * A `Colors` struct initialized with default settings.
     fn default() -> Colors {
         let terms = [
-            "red", "blue", "green", "white", "purple", "yellow", "cyan", "underline", 
-            "end", "dir", "current_dir", "file", "description",
+            "red",
+            "blue",
+            "green",
+            "white",
+            "purple",
+            "yellow",
+            "cyan",
+            "underline",
+            "end",
+            "dir",
+            "current_dir",
+            "file",
+            "description",
         ];
         let mut ansi = HashMap::new();
         for term in terms.iter() {

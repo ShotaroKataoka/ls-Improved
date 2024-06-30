@@ -33,15 +33,11 @@ use anyhow::Result;
 
 pub fn run(args: &LsiArgs) -> Result<()> {
     // Glob target files and directories
-    let mut pathes = match fs::get_pathes(
-        &args.path,
-        &args.is_only,
-        &args.show_hidden,
-        &args.sort_mode,
-    ) {
-        Ok(_success) => _success,
-        Err(_error) => return Err(LsiError::PathNotFound.into()),
-    };
+    let mut pathes =
+        match fs::get_pathes(args.path, &args.is_only, &args.show_hidden, &args.sort_mode) {
+            Ok(_success) => _success,
+            Err(_error) => return Err(LsiError::PathNotFound.into()),
+        };
 
     // Read Configs
     let config = match &args.config_path {
@@ -58,7 +54,7 @@ pub fn run(args: &LsiArgs) -> Result<()> {
     get_and_set_descriptions(&mut pathes)?;
 
     // Display LSI results
-    match view::display(&mut pathes, &colors, &args.path, &args.desc_num) {
+    match view::display(&mut pathes, &colors, args.path, &args.desc_num) {
         Ok(()) => (),
         Err(_error) => return Err(LsiError::FailedDisplay.into()),
     };
@@ -80,8 +76,8 @@ pub fn run(args: &LsiArgs) -> Result<()> {
 /// - `LsiError::DescriptionNotFound`: If the description cannot be read
 fn get_and_set_description(path: &mut LsiPath) -> Result<()> {
     let _description = match path.kind {
-        LsiPathKind::Dir => fs::read_dir_description(&path),
-        LsiPathKind::File => fs::read_file_description(&path),
+        LsiPathKind::Dir => fs::read_dir_description(path),
+        LsiPathKind::File => fs::read_file_description(path),
     };
     match _description {
         Ok(content) => {

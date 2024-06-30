@@ -1,4 +1,4 @@
-//! This module handles the configuration of the application. It includes structures for 
+//! This module handles the configuration of the application. It includes structures for
 //! configuration settings and functions for reading and deserializing configuration files.
 
 use serde::Deserialize;

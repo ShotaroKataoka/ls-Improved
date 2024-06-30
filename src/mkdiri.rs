@@ -1,19 +1,19 @@
 //! This module provides functionality for handling the mkdiri tasks.
-//! It includes functions to set or edit descriptions for directories or files, 
+//! It includes functions to set or edit descriptions for directories or files,
 //! and to launch text editors.
 
 use crate::errors::LsiError;
 use crate::fs::write_description;
-use crate::{LsiArgs};
+use crate::LsiArgs;
 use anyhow::Result;
 use std::os::unix::process::CommandExt;
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 use std::process::Command;
 
 /// Runs the mkdiri module based on the provided arguments.
 ///
 /// This function handles the main logic of the mkdiri module. It determines
-/// whether to set a new description, edit an existing one, or print an error 
+/// whether to set a new description, edit an existing one, or print an error
 /// if neither is provided.
 ///
 /// # Arguments
@@ -31,7 +31,7 @@ pub fn run(args: &LsiArgs) -> Result<()> {
 
 /// Handles the description setting or editing logic.
 ///
-/// Depending on whether a description or editor is provided, this function 
+/// Depending on whether a description or editor is provided, this function
 /// sets a description directly or launches an editor to edit it.
 ///
 /// # Arguments
@@ -43,11 +43,7 @@ pub fn run(args: &LsiArgs) -> Result<()> {
 /// # Returns
 ///
 /// Returns a `Result` which is `Ok` if the operation is successful or an error otherwise.
-fn mkdiri_description(
-    path: &PathBuf,
-    description: Option<&str>,
-    editor: Option<&str>,
-) -> Result<()> {
+fn mkdiri_description(path: &Path, description: Option<&str>, editor: Option<&str>) -> Result<()> {
     match description {
         Some(d) => write_description(path, d.to_string()),
         None => match editor {
@@ -59,7 +55,7 @@ fn mkdiri_description(
 
 /// Launches a text editor to edit the description of a directory or file.
 ///
-/// This function attempts to launch the specified text editor with the path to 
+/// This function attempts to launch the specified text editor with the path to
 /// the description file as an argument.
 ///
 /// # Arguments
@@ -70,7 +66,7 @@ fn mkdiri_description(
 /// # Returns
 ///
 /// Returns a `Result` which is `Ok` if the command is launched successfully or an error otherwise.
-fn launch_editor(path: &PathBuf, editor: &str) -> Result<()> {
+fn launch_editor(path: &Path, editor: &str) -> Result<()> {
     let mut path = path.canonicalize()?;
     let filepath = match path.is_dir() {
         true => format!("{}/.description.lsi", path.to_str().unwrap()),

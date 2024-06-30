@@ -1,5 +1,5 @@
-//! This module provides utilities for interacting with file paths, directories, and 
-//! managing descriptions associated with them. It includes functions to gather paths, 
+//! This module provides utilities for interacting with file paths, directories, and
+//! managing descriptions associated with them. It includes functions to gather paths,
 //! filter them according to specified criteria, and read/write descriptions.
 
 use crate::errors::LsiError;
@@ -40,7 +40,7 @@ pub fn get_pathes(
     for path in pathes {
         let path = path.unwrap().path();
         if path_filter(&path, is_only, show_hidden) {
-            let lsi_path = LsiPath::new(path, &sort_mode);
+            let lsi_path = LsiPath::new(path, sort_mode);
             p.push(lsi_path);
         }
     }
@@ -59,7 +59,7 @@ pub fn get_pathes(
 /// # Returns
 ///
 /// A boolean indicating whether the path meets the filter criteria.
-fn path_filter(path: &PathBuf, is_only: &Option<LsiPathKind>, show_hidden: &bool) -> bool {
+fn path_filter(path: &Path, is_only: &Option<LsiPathKind>, show_hidden: &bool) -> bool {
     match is_only {
         Some(kind) => match kind {
             LsiPathKind::Dir => {
@@ -136,7 +136,7 @@ pub fn read_file_description(path: &LsiPath) -> Result<String> {
 /// # Errors
 ///
 /// Returns an error if the description file cannot be created or written to.
-pub fn write_description(path: &PathBuf, content: String) -> Result<()> {
+pub fn write_description(path: &Path, content: String) -> Result<()> {
     let content = Regex::new(r"\\n")
         .unwrap()
         .replace_all(&content, "\n")
@@ -161,9 +161,10 @@ pub fn write_description(path: &PathBuf, content: String) -> Result<()> {
     let mut file = File::create(&filename)
         .map_err(|why| anyhow::anyhow!("Couldn't create {}: {}", &filename, why))?;
 
-    file.write_all(content.as_bytes())
-        .map_err(|why| anyhow::anyhow!("Couldn't write \"{}\" to {}: {}", content, &filename, why))?;
+    file.write_all(content.as_bytes()).map_err(|why| {
+        anyhow::anyhow!("Couldn't write \"{}\" to {}: {}", content, &filename, why)
+    })?;
     println!("Success: Write description to {}", &filename);
-    
+
     Ok(())
 }
