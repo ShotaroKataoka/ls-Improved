@@ -22,21 +22,23 @@ With **ls-Improved (lsi)**, you can view the list of directories along with thei
 
 ## Install
 
-`Follow these steps to download the latest version of the binary file and set up the PATH:`
+`Follow these steps to download the latest version of the binary file, extract it, and set up the PATH:`
 
 1. Visit the GitHub releases page.
-2. Find the latest version release and download the corresponding binary file.
-3. Place the downloaded binary file in an appropriate directory (e.g., `/usr/local/bin`).
-4. Add the directory to your environment variables. Typically, you can do this by adding the following line to your `~/.bashrc` or `~/.zshrc` file:
+2. Find the latest version release and download the corresponding binary file in zip format.
+3. Extract the downloaded zip file. You can use the following command to unzip:
+   ```sh
+   unzip <downloaded-file.zip>
+   ```
+4. Place the extracted binary file in an appropriate directory (e.g., `/usr/local/bin`).
+5. Add the directory to your environment variables. Typically, you can do this by adding the following line to your `~/.bashrc` or `~/.zshrc` file:
    ```sh
    export PATH=$PATH:/usr/local/bin
    ```
-5. To apply the changes, restart your terminal or run the following command:
+6. To apply the changes, restart your terminal or run the following command:
    ```sh
    source ~/.bashrc  # or source ~/.zshrc
    ```
-
-With these steps, the installation will be complete, and you will be able to use the binary file from the command line.
 
 ## Usage
 
