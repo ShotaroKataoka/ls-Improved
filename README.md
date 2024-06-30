@@ -2,8 +2,6 @@
 
 ![ls](https://github.com/ShotaroKataoka/ls-Improved/blob/master/doc/images/lsi.png)
 
-[![Downloads](https://pepy.tech/badge/ls-improved)](https://pepy.tech/project/ls-improved)
-
 [日本語 README](https://github.com/ShotaroKataoka/ls-Improved/blob/master/README.ja.md)
 
 ## What is it?

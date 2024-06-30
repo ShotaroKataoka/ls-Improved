@@ -2,7 +2,6 @@
 
 ![ls](https://github.com/ShotaroKataoka/ls-Improved/blob/master/doc/images/lsi.png)
 
-[![Downloads](https://pepy.tech/badge/ls-improved)](https://pepy.tech/project/ls-improved)  
 [Qiita 記事](https://qiita.com/m_oba/items/828467a0f483e8dab845)
 
 ## なにこれ？
