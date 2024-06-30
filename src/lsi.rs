@@ -7,7 +7,6 @@ use crate::errors::LsiError;
 use crate::path::{LsiPath, LsiPathKind};
 use crate::{fs, view, LsiArgs};
 use anyhow::Result;
-use std::path::PathBuf;
 
 pub fn run(args: &LsiArgs) -> Result<()> {
     // ---------------------------------- //

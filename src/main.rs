@@ -44,7 +44,7 @@ async fn main() -> Result<()> {
     let sort_mode = args.value_of("sort_mode");
 
     // Read Piped Input
-    let mut input = io::timeout(Duration::from_millis(1), async {
+    let input = io::timeout(Duration::from_millis(1), async {
         let stdin = io::stdin();
         let mut line = String::new();
         stdin.read_line(&mut line).await?;

@@ -1,6 +1,6 @@
 use crate::errors::LsiError;
 use crate::fs::write_description;
-use crate::{decoration, fs, view, LsiArgs};
+use crate::{LsiArgs};
 use anyhow::Result;
 use std::os::unix::process::CommandExt;
 use std::path::PathBuf;
