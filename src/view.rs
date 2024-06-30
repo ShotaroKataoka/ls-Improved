@@ -1,11 +1,16 @@
 use crate::colors::Colors;
+use crate::decoration;
 /// Define how to display lines.
 use crate::path::{LsiPath, LsiPathKind};
 use anyhow::Result;
 use std::path::PathBuf;
-use crate::decoration;
 
-pub fn display(pathes: &mut Vec<LsiPath>, colors: &Colors, cwd: &str, desc_num: &Option<usize>) -> Result<()> {
+pub fn display(
+    pathes: &mut Vec<LsiPath>,
+    colors: &Colors,
+    cwd: &str,
+    desc_num: &Option<usize>,
+) -> Result<()> {
     display_cwd(cwd, &colors)?;
     pathes.sort();
     let length = pathes.len();
@@ -16,7 +21,7 @@ pub fn display(pathes: &mut Vec<LsiPath>, colors: &Colors, cwd: &str, desc_num: 
     let mut i = 0;
     for path in pathes {
         i += 1;
-        let is_last = i==length;
+        let is_last = i == length;
         display_a_line(&mut *path, is_last, &colors, desc_num)?;
     }
     Ok(())
@@ -37,7 +42,11 @@ fn display_cwd(cwd: &str, colors: &Colors) -> Result<()> {
         let parent = format!(
             "{}{}/{}",
             colors.dir,
-            if abs.to_str().unwrap()=="/" {""} else { abs.to_str().unwrap() },
+            if abs.to_str().unwrap() == "/" {
+                ""
+            } else {
+                abs.to_str().unwrap()
+            },
             colors.end
         );
         println!("{}{}", parent, cwd);
@@ -47,7 +56,12 @@ fn display_cwd(cwd: &str, colors: &Colors) -> Result<()> {
     Ok(())
 }
 
-fn display_a_line(path: &mut LsiPath, is_last: bool, colors: &Colors, desc_num: &Option<usize>) -> Result<()> {
+fn display_a_line(
+    path: &mut LsiPath,
+    is_last: bool,
+    colors: &Colors,
+    desc_num: &Option<usize>,
+) -> Result<()> {
     decoration::run(&mut *path, &colors, &desc_num, &is_last)?;
     let prefix_char = match is_last {
         true => "└──",

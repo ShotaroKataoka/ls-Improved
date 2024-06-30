@@ -1,27 +1,26 @@
-use crate::{decoration, fs, view, LsiArgs};
 use crate::errors::LsiError;
-use anyhow::Result;
-use std::path::PathBuf;
 use crate::fs::write_description;
-use std::process::Command;
+use crate::{decoration, fs, view, LsiArgs};
+use anyhow::Result;
 use std::os::unix::process::CommandExt;
-
+use std::path::PathBuf;
+use std::process::Command;
 
 pub fn run(args: &LsiArgs) -> Result<()> {
     let path = PathBuf::from(&args.path);
     mkdiri_description(&path, args.set_description, args.edit_description)
 }
 
-fn mkdiri_description(path: &PathBuf, description: Option<&str>, editor: Option<&str>) -> Result<()> {
+fn mkdiri_description(
+    path: &PathBuf,
+    description: Option<&str>,
+    editor: Option<&str>,
+) -> Result<()> {
     match description {
-        Some(d) => {
-            write_description(path, d.to_string())
-        },
-        None => {
-            match editor {
-                Some(e) => launch_editor(path, e),
-                None => Err(LsiError::TestError.into())
-            }
+        Some(d) => write_description(path, d.to_string()),
+        None => match editor {
+            Some(e) => launch_editor(path, e),
+            None => Err(LsiError::TestError.into()),
         },
     }
 }
@@ -38,11 +37,10 @@ fn launch_editor(path: &PathBuf, editor: &str) -> Result<()> {
                 std::fs::create_dir(path.to_str().unwrap())?;
             }
             format!("{}/.{}.lsi", path.to_str().unwrap(), filename)
-        },
+        }
     };
     println!("Exec: {} {}", &editor, &filepath);
 
     Command::new(editor).arg(filepath).exec();
     Ok(())
 }
-

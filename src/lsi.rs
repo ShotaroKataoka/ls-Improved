@@ -13,7 +13,12 @@ pub fn run(args: &LsiArgs) -> Result<()> {
     // ---------------------------------- //
     // Glob target files and directories! //
     // ---------------------------------- //
-    let mut pathes = match fs::get_pathes(&args.path, &args.is_only, &args.show_hidden, &args.sort_mode) {
+    let mut pathes = match fs::get_pathes(
+        &args.path,
+        &args.is_only,
+        &args.show_hidden,
+        &args.sort_mode,
+    ) {
         Ok(_success) => _success,
         Err(_error) => return Err(LsiError::TestError.into()),
     };
@@ -53,8 +58,12 @@ fn get_and_set_description(path: &mut LsiPath) -> Result<()> {
         LsiPathKind::File => fs::read_file_description(&path),
     };
     match _description {
-        Ok(content) => { path.set_description(content); }
-        Err(_error) => { return Err(LsiError::TestError.into()); }
+        Ok(content) => {
+            path.set_description(content);
+        }
+        Err(_error) => {
+            return Err(LsiError::TestError.into());
+        }
     }
     Ok(())
 }

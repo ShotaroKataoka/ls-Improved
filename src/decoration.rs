@@ -5,7 +5,12 @@ use crate::path::LsiPath;
 use anyhow::Result;
 use regex::Regex;
 
-pub fn run(path: &mut LsiPath, colors: &Colors, desc_num: &Option<usize>, is_last: &bool) -> Result<()> {
+pub fn run(
+    path: &mut LsiPath,
+    colors: &Colors,
+    desc_num: &Option<usize>,
+    is_last: &bool,
+) -> Result<()> {
     let _ = replace_lsi_color_code(path, colors);
     let _ = replace_ansi_color_code(path);
     let _ = format_multiline(path, colors, desc_num, is_last);
@@ -76,7 +81,12 @@ fn encolor_description(description: &str, colors: &Colors) -> String {
     format!("{}{}{}", colors.description, description, colors.end)
 }
 
-fn format_multiline(path: &mut LsiPath, colors: &Colors, line_num: &Option<usize>, is_last: &bool) -> Result<()> {
+fn format_multiline(
+    path: &mut LsiPath,
+    colors: &Colors,
+    line_num: &Option<usize>,
+    is_last: &bool,
+) -> Result<()> {
     let len = path.len();
     match path.get_description() {
         Some(content) => {

@@ -1,9 +1,9 @@
 use anyhow::Result;
+use regex::Regex;
 /// Define LsiPath, LsiPathKind models.
 use std::cmp::Ordering;
 use std::path::PathBuf;
 use unicode_width::UnicodeWidthStr;
-use regex::Regex;
 
 #[derive(Eq)]
 pub enum LsiPathKind {
@@ -25,7 +25,11 @@ impl LsiPath {
         LsiPath {
             path: path,
             description: None,
-            kind: if flag { LsiPathKind::Dir } else { LsiPathKind::File },
+            kind: if flag {
+                LsiPathKind::Dir
+            } else {
+                LsiPathKind::File
+            },
             sort_mode: sort_mode.to_string(),
         }
     }
@@ -68,17 +72,14 @@ impl LsiPath {
     pub fn get_plain_description(&self) -> Option<String> {
         match &self.description {
             Some(d) => {
-                let content = Regex::new(r";.;")
-                    .unwrap()
-                    .replace_all(d, "")
-                    .to_string();
+                let content = Regex::new(r";.;").unwrap().replace_all(d, "").to_string();
                 let content = Regex::new("\\\\033")
                     .unwrap()
                     .replace_all(&content, "")
                     .to_string();
                 Some(content)
-            },
-            None => { None }
+            }
+            None => None,
         }
     }
 
@@ -128,12 +129,12 @@ fn format_for_eq(path1: &LsiPath, path2: &LsiPath) -> (String, String) {
             let name1 = format_description(path1);
             let name2 = format_description(path2);
             (name1, name2)
-        },
+        }
         _ => {
             let name1 = format_name(path1);
             let name2 = format_name(path2);
             (name1, name2)
-        },
+        }
     }
 }
 
@@ -146,17 +147,13 @@ fn format_name(path: &LsiPath) -> String {
 
 fn format_description(path: &LsiPath) -> String {
     match path.get_plain_description() {
-        Some(d) => { 
-            match path.kind {
-                LsiPathKind::Dir => format!("0_0_{}{}", d, path.file_name()),
-                LsiPathKind::File => format!("1_0_{}{}", d, path.file_name()),
-            }
+        Some(d) => match path.kind {
+            LsiPathKind::Dir => format!("0_0_{}{}", d, path.file_name()),
+            LsiPathKind::File => format!("1_0_{}{}", d, path.file_name()),
         },
-        None => {
-            match path.kind {
-                LsiPathKind::Dir => format!("0_1_{}", path.file_name()),
-                LsiPathKind::File => format!("1_1_{}", path.file_name()),
-            }
+        None => match path.kind {
+            LsiPathKind::Dir => format!("0_1_{}", path.file_name()),
+            LsiPathKind::File => format!("1_1_{}", path.file_name()),
         },
     }
 }

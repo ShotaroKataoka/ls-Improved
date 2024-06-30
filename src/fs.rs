@@ -1,12 +1,12 @@
 use crate::errors::LsiError;
 use crate::path::{LsiPath, LsiPathKind};
 use anyhow::Result;
+use regex::Regex;
 /// controller/fs.rs
 /// Define file/dir io.
 use std::fs::{self, File};
 use std::io::{Read, Write};
 use std::path::{Path, PathBuf};
-use regex::Regex;
 
 pub fn get_pathes(
     path: &str,
@@ -78,7 +78,10 @@ pub fn write_description(path: &PathBuf, content: String) -> Result<()> {
         .to_string();
 
     let filename = if path.is_dir() {
-        format!("{}/.description.lsi", path.canonicalize()?.to_str().unwrap())
+        format!(
+            "{}/.description.lsi",
+            path.canonicalize()?.to_str().unwrap()
+        )
     } else {
         let mut path = PathBuf::from(path.canonicalize()?.to_str().unwrap());
         let filename = path.file_name().unwrap().to_str().unwrap().to_string();

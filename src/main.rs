@@ -1,12 +1,12 @@
 mod colors;
 mod config;
-mod lsi;
 mod decoration;
 mod errors;
 mod fs;
+mod lsi;
+mod mkdiri;
 mod path;
 mod view;
-mod mkdiri;
 extern crate exitcode;
 extern crate unicode_width;
 
@@ -16,9 +16,9 @@ extern crate serde_derive;
 extern crate toml;
 
 use anyhow::Result;
+use async_std::io;
 use clap::App;
 use path::LsiPathKind;
-use async_std::io;
 use std::time::Duration;
 
 #[async_std::main]
@@ -36,7 +36,11 @@ async fn main() -> Result<()> {
     };
     let set_description = args.value_of("set_description");
     let edit_description = args.value_of("edit_description");
-    let is_edit_description = if args.occurrences_of("edit_description")==0 { false } else { true };
+    let is_edit_description = if args.occurrences_of("edit_description") == 0 {
+        false
+    } else {
+        true
+    };
     let sort_mode = args.value_of("sort_mode");
 
     // Read Piped Input
@@ -45,12 +49,15 @@ async fn main() -> Result<()> {
         let mut line = String::new();
         stdin.read_line(&mut line).await?;
         Ok(line)
-    }).await;
+    })
+    .await;
     let path = match input {
-        Ok(mut i) => {i.retain(|c| c != '\n'); i},
+        Ok(mut i) => {
+            i.retain(|c| c != '\n');
+            i
+        }
         Err(_) => path.to_string(),
     };
-    
 
     let args = LsiArgs {
         path: &path,
@@ -70,10 +77,9 @@ async fn main() -> Result<()> {
         sort_mode: sort_mode.unwrap().to_string(),
     };
 
-
     match &args.is_mkdiri_mode {
-        true => { mkdiri::run(&args) },
-        false => { lsi::run(&args) },
+        true => mkdiri::run(&args),
+        false => lsi::run(&args),
     }
 }
 
