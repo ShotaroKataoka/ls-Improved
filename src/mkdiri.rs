@@ -20,7 +20,7 @@ fn mkdiri_description(
         Some(d) => write_description(path, d.to_string()),
         None => match editor {
             Some(e) => launch_editor(path, e),
-            None => Err(LsiError::TestError.into()),
+            None => Err(LsiError::FailedLaunchEditor.into()),
         },
     }
 }

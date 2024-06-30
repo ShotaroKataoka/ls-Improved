@@ -58,7 +58,7 @@ fn replace_lsi_color_code(path: &mut LsiPath, colors: &Colors) -> Result<()> {
                 .to_string();
             path.set_description(content);
         }
-        None => return Err(LsiError::TestError.into()),
+        None => return Err(LsiError::DescriptionNotFound.into()),
     };
     Ok(())
 }
@@ -72,7 +72,7 @@ fn replace_ansi_color_code(path: &mut LsiPath) -> Result<()> {
                 .to_string();
             path.set_description(content);
         }
-        None => return Err(LsiError::TestError.into()),
+        None => return Err(LsiError::DescriptionNotFound.into()),
     };
     Ok(())
 }
@@ -118,7 +118,7 @@ fn format_multiline(
                 path.set_description(description)
             }
         }
-        None => return Err(LsiError::TestError.into()),
+        None => return Err(LsiError::DescriptionNotFound.into()),
     };
     Ok(())
 }

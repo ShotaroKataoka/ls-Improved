@@ -19,7 +19,7 @@ pub fn run(args: &LsiArgs) -> Result<()> {
         &args.sort_mode,
     ) {
         Ok(_success) => _success,
-        Err(_error) => return Err(LsiError::TestError.into()),
+        Err(_error) => return Err(LsiError::PathNotFound.into()),
     };
 
     // ------------  //
@@ -46,7 +46,7 @@ pub fn run(args: &LsiArgs) -> Result<()> {
     // -------------------- //
     match view::display(&mut pathes, &colors, &args.path, &args.desc_num) {
         Ok(()) => (),
-        Err(_error) => return Err(LsiError::TestError.into()),
+        Err(_error) => return Err(LsiError::FailedDisplay.into()),
     };
     Ok(())
 }
@@ -61,7 +61,7 @@ fn get_and_set_description(path: &mut LsiPath) -> Result<()> {
             path.set_description(content);
         }
         Err(_error) => {
-            return Err(LsiError::TestError.into());
+            return Err(LsiError::DescriptionNotFound.into());
         }
     }
     Ok(())

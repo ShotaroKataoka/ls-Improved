@@ -16,7 +16,7 @@ pub fn get_pathes(
 ) -> Result<Vec<LsiPath>> {
     let pathes = match fs::read_dir(path) {
         Ok(_success) => _success,
-        Err(_error) => return Err(LsiError::TestError.into()),
+        Err(_error) => return Err(LsiError::PathNotFound.into()),
     };
     let mut p = Vec::new();
     for path in pathes {
