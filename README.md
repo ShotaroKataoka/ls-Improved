@@ -1,4 +1,4 @@
-# ls-Improved: Descriptive ls-like Command in Rust
+# ls-Improved: Descriptive ls-like Command
 
 ![ls](https://github.com/ShotaroKataoka/ls-Improved/blob/master/doc/images/lsi.png)
 
