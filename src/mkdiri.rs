@@ -48,7 +48,7 @@ fn mkdiri_description(path: &Path, description: Option<&str>, editor: Option<&st
         Some(d) => write_description(path, d.to_string()),
         None => match editor {
             Some(e) => launch_editor(path, e),
-            None => Err(LsiError::FailedLaunchEditor.into()),
+            None => Err(LsiError::FailedLaunchEditor("No editor specified".to_string()).into()),
         },
     }
 }
@@ -82,6 +82,8 @@ fn launch_editor(path: &Path, editor: &str) -> Result<()> {
     };
     println!("Exec: {} {}", &editor, &filepath);
 
-    Command::new(editor).arg(filepath).exec();
-    Ok(())
+    // exec replaces the current process, so if it returns, it's an error
+    let err = Command::new(editor).arg(filepath).exec();
+    // We only reach this point if exec failed
+    Err(LsiError::FailedLaunchEditor(format!("Failed to launch editor: {}", err)).into())
 }

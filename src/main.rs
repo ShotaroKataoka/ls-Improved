@@ -2,16 +2,6 @@
 //! It processes command-line arguments, handles configuration settings, and orchestrates
 //! the execution flow of different modules including lsi and mkdiri.
 
-mod colors;
-mod config;
-mod decoration;
-mod errors;
-mod fs;
-mod lsi;
-mod mkdiri;
-mod path;
-mod view;
-
 extern crate exitcode;
 extern crate unicode_width;
 
@@ -23,7 +13,8 @@ extern crate toml;
 use anyhow::Result;
 use async_std::io;
 use clap::App;
-use path::LsiPathKind;
+use ls_improved::path::LsiPathKind;
+use ls_improved::{lsi, mkdiri, LsiArgs};
 use std::time::Duration;
 
 /// The main function serves as the entry point of the application.
@@ -42,7 +33,7 @@ async fn main() -> Result<()> {
     let args = App::from_yaml(yaml).get_matches();
 
     // Retrieve values from the command-line arguments.
-    let path = args.value_of("PATH").unwrap();
+    let path = args.value_of("PATH").unwrap_or(".");
     let show_hidden = args.is_present("show_all");
     let is_only_files = args.is_present("only_files");
     let is_only_dirs = args.is_present("only_directories");
@@ -58,7 +49,7 @@ async fn main() -> Result<()> {
     let set_description = args.value_of("set_description");
     let edit_description = args.value_of("edit_description");
     let is_edit_description = args.occurrences_of("edit_description") > 0;
-    let sort_mode = args.value_of("sort_mode").unwrap();
+    let sort_mode = args.value_of("sort_mode").unwrap_or("p");
 
     // Read piped input with a timeout.
     let input = io::timeout(Duration::from_millis(1), async {
@@ -100,26 +91,4 @@ async fn main() -> Result<()> {
         true => mkdiri::run(&args),
         false => lsi::run(&args),
     }
-}
-
-/// This struct encapsulates command-line argument values and configurations for lsi/mkdiri.
-pub struct LsiArgs<'a> {
-    /// The path to list or manage.
-    pub path: &'a str,
-    /// Whether to show hidden files or not.
-    pub show_hidden: bool,
-    /// An optional filter to list only files or directories.
-    pub is_only: Option<LsiPathKind>,
-    /// The path to the configuration file.
-    pub config_path: Option<&'a str>,
-    /// An optional description number.
-    pub desc_num: Option<usize>,
-    /// Whether the current mode is mkdiri or not.
-    pub is_mkdiri_mode: bool,
-    /// The description to set (if applicable).
-    pub set_description: Option<&'a str>,
-    /// The description to edit (if applicable).
-    pub edit_description: Option<&'a str>,
-    /// The mode for sorting entries.
-    pub sort_mode: String,
 }

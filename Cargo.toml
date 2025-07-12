@@ -1,31 +1,44 @@
 [package]
-name = "ls-Improved"
-version = "1.0.0"
+name = "ls-improved"
+version = "1.1.0"
 authors = ["ShotaroKataoka <s183347@stn.nagaokaut.ac.jp>"]
-edition = "2018"
+edition = "2021"
 
-description = "A description of what your project does"
+description = "A command-line tool for listing directory structures along with their descriptions"
 repository = "https://github.com/ShotaroKataoka/ls-Improved"
-keywords = ["ls", "description", "cli"]
-license = "MIT"  # or the license you wish to use
-categories = ["command-line-utilities"]
+keywords = ["ls", "description", "cli", "directory", "filesystem"]
+license = "MIT"
+categories = ["command-line-utilities", "filesystem"]
+readme = "README.md"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 [profile.release]
 opt-level = 3
+lto = true
+codegen-units = 1
+panic = "abort"
+strip = true
 
 [[bin]]
 name = "lsi"
 path = "src/main.rs"
 
+[lib]
+name = "ls_improved"
+path = "src/lib.rs"
+
 [dependencies]
 exitcode = "1.1.2"
-clap = {version = "2.33.3", features = ["yaml"]}
-thiserror = "1.0.26"
-anyhow = "1.0.42"
-regex = "1.8.4"
-toml = "0.5.8"
-serde = { version = "1.0.129", features = ["derive"] }
-serde_derive = "1.0.129"
-unicode-width = "0.1.8"
-async-std = {version = "1.4.0", features = ["attributes"] }
+clap = { version = "2.34.0", features = ["yaml"] }
+thiserror = "1.0.50"
+anyhow = "1.0.75"
+regex = "1.10.2"
+toml = "0.8.8"
+serde = { version = "1.0.193", features = ["derive"] }
+serde_derive = "1.0.193"
+unicode-width = "0.1.11"
+async-std = { version = "1.12.0", features = ["attributes"] }
+
+[dev-dependencies]
+tempfile = "3.8.1"
+assert_cmd = "2.0.12"
+predicates = "3.0.4"

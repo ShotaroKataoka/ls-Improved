@@ -1,3 +1,6 @@
+//! This module provides types and functions for handling file paths and their metadata.
+//! It includes functionality for path comparison, sorting, and description management.
+
 use anyhow::Result;
 use regex::Regex;
 use std::cmp::Ordering;
@@ -5,18 +8,24 @@ use std::path::{Path, PathBuf};
 use unicode_width::UnicodeWidthStr;
 
 /// Represents the types of paths (files or directories).
-#[derive(Eq)]
+#[derive(Debug, Clone, Copy, Eq, PartialEq)]
 pub enum LsiPathKind {
+    /// Represents a directory path
     Dir,
+    /// Represents a file path
     File,
 }
 
 /// Represents a path along with its metadata and sorting mode.
-#[derive(Eq)]
+#[derive(Debug, Eq)]
 pub struct LsiPath {
+    /// The underlying path
     path: PathBuf,
+    /// Optional description for the path
     description: Option<String>,
+    /// The kind of path (file or directory)
     pub kind: LsiPathKind,
+    /// The mode used for sorting
     sort_mode: String,
 }
 
@@ -31,16 +40,17 @@ impl LsiPath {
     /// # Returns
     ///
     /// A `LsiPath` instance.
-    pub fn new(path: PathBuf, sort_mode: &str) -> LsiPath {
-        let flag = path.is_dir();
-        LsiPath {
+    pub fn new(path: PathBuf, sort_mode: &str) -> Self {
+        let kind = if path.is_dir() {
+            LsiPathKind::Dir
+        } else {
+            LsiPathKind::File
+        };
+        
+        Self {
             path,
             description: None,
-            kind: if flag {
-                LsiPathKind::Dir
-            } else {
-                LsiPathKind::File
-            },
+            kind,
             sort_mode: sort_mode.to_string(),
         }
     }
@@ -49,32 +59,28 @@ impl LsiPath {
     ///
     /// # Arguments
     ///
-    /// * `path` - The PathBuf to be checked.
+    /// * `path` - The Path to be checked.
     ///
     /// # Returns
     ///
     /// `true` if the path is hidden, `false` otherwise.
     pub fn is_hidden(path: &Path) -> bool {
-        matches!(
-            path.file_name()
-                .unwrap()
-                .to_str()
-                .unwrap()
-                .chars()
-                .take(1)
-                .collect::<String>()
-                .as_ref(),
-            "."
-        )
+        path.file_name()
+            .and_then(|name| name.to_str())
+            .map(|name| name.starts_with('.'))
+            .unwrap_or(false)
     }
 
     /// Retrieves the file name of the path as a string slice.
     ///
     /// # Returns
     ///
-    /// The file name as a string slice.
+    /// The file name as a string slice, or an empty string if the file name is invalid.
     pub fn file_name(&self) -> &str {
-        self.get_path().file_name().unwrap().to_str().unwrap()
+        self.path
+            .file_name()
+            .and_then(|name| name.to_str())
+            .unwrap_or("")
     }
 
     /// Gets the absolute path as a String.
@@ -83,11 +89,10 @@ impl LsiPath {
     ///
     /// A Result containing the absolute path as a String.
     pub fn absolute_path(&self) -> Result<String> {
-        Ok(self
-            .get_path()
+        Ok(self.path
             .canonicalize()?
             .to_str()
-            .unwrap()
+            .ok_or_else(|| anyhow::anyhow!("Invalid path encoding"))?
             .to_string())
     }
 
@@ -95,9 +100,9 @@ impl LsiPath {
     ///
     /// # Arguments
     ///
-    /// * `_description` - The description to be set.
-    pub fn set_description(&mut self, _description: String) {
-        self.description = Some(_description);
+    /// * `description` - The description to be set.
+    pub fn set_description(&mut self, description: String) {
+        self.description = Some(description);
     }
 
     /// Gets the description of the path.
@@ -115,17 +120,17 @@ impl LsiPath {
     ///
     /// The plain description as an Option containing a String.
     pub fn get_plain_description(&self) -> Option<String> {
-        match &self.description {
-            Some(d) => {
-                let content = Regex::new(r";.;").unwrap().replace_all(d, "").to_string();
-                let content = Regex::new("\\\\033")
-                    .unwrap()
-                    .replace_all(&content, "")
-                    .to_string();
-                Some(content)
-            }
-            None => None,
-        }
+        self.description.as_ref().map(|d| {
+            let content = Regex::new(r";.;")
+                .unwrap_or_else(|_| Regex::new(r"").unwrap())
+                .replace_all(d, "")
+                .to_string();
+            
+            Regex::new("\\\\033")
+                .unwrap_or_else(|_| Regex::new(r"").unwrap())
+                .replace_all(&content, "")
+                .to_string()
+        })
     }
 
     /// Gets the sort mode of the path.
@@ -137,15 +142,6 @@ impl LsiPath {
         &self.sort_mode
     }
 
-    /// Gets the underlying PathBuf of the LsiPath.
-    ///
-    /// # Returns
-    ///
-    /// The PathBuf of the path.
-    fn get_path(&self) -> &PathBuf {
-        &self.path
-    }
-
     /// Gets the length of the file name (in Unicode width).
     ///
     /// # Returns
@@ -153,6 +149,15 @@ impl LsiPath {
     /// The length of the file name.
     pub fn len(&self) -> usize {
         UnicodeWidthStr::width(self.file_name())
+    }
+    
+    /// Returns whether the path is empty.
+    ///
+    /// # Returns
+    ///
+    /// `true` if the path's file name has zero length, `false` otherwise.
+    pub fn is_empty(&self) -> bool {
+        self.len() == 0
     }
 }
 
@@ -173,15 +178,6 @@ impl PartialEq for LsiPath {
     fn eq(&self, other: &Self) -> bool {
         let (name1, name2) = format_for_eq(self, other);
         name1 == name2
-    }
-}
-
-impl PartialEq<LsiPathKind> for LsiPathKind {
-    fn eq(&self, other: &Self) -> bool {
-        match self {
-            LsiPathKind::Dir => matches!(other, LsiPathKind::Dir),
-            LsiPathKind::File => matches!(other, LsiPathKind::File),
-        }
     }
 }
 
@@ -221,8 +217,8 @@ fn format_for_eq(path1: &LsiPath, path2: &LsiPath) -> (String, String) {
 /// The formatted name as a String.
 fn format_name(path: &LsiPath) -> String {
     match path.kind {
-        LsiPathKind::Dir => "0_".to_string() + path.file_name(),
-        LsiPathKind::File => "1_".to_string() + path.file_name(),
+        LsiPathKind::Dir => format!("0_{}", path.file_name()),
+        LsiPathKind::File => format!("1_{}", path.file_name()),
     }
 }
 
@@ -237,9 +233,9 @@ fn format_name(path: &LsiPath) -> String {
 /// The formatted description as a String.
 fn format_description(path: &LsiPath) -> String {
     match path.get_plain_description() {
-        Some(d) => match path.kind {
-            LsiPathKind::Dir => format!("0_0_{}{}", d, path.file_name()),
-            LsiPathKind::File => format!("1_0_{}{}", d, path.file_name()),
+        Some(desc) => match path.kind {
+            LsiPathKind::Dir => format!("0_0_{}{}", desc, path.file_name()),
+            LsiPathKind::File => format!("1_0_{}{}", desc, path.file_name()),
         },
         None => match path.kind {
             LsiPathKind::Dir => format!("0_1_{}", path.file_name()),
